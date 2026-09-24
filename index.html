@@ -169,6 +169,7 @@ footer{text-align:center;color:#64748b;font-size:12px;margin-top:35px}
 <div class="sub">O backup guarda movimentos, recorrentes, parcelas, dívidas e metas em um arquivo.</div>
 <button class="primary" onclick="exportarBackup()">⬇️ Exportar backup</button>
 <button class="secondary" onclick="document.getElementById('arquivoBackup').click()">⬆️ Restaurar backup</button>
+<button class="secondary" onclick="recuperarBaseLocal()">🛟 Procurar dados antigos neste iPhone</button>
 <input id="arquivoBackup" type="file" accept=".json,application/json" style="display:none" onchange="importarBackup(event)">
 </div>
 <div class="item">
@@ -182,18 +183,61 @@ footer{text-align:center;color:#64748b;font-size:12px;margin-top:35px}
 </div>
 </section>
 
-<footer>Minha Carteira • Versão 3</footer>
+<footer>Minha Carteira • Recuperação</footer>
 </div>
 
 <script>
-const KEY="minhaCarteiraV2";
-const antigo=localStorage.getItem("minhaCarteiraV1");
-let db=JSON.parse(localStorage.getItem(KEY)) || (antigo ? JSON.parse(antigo) : {
-movimentos:[],recorrentes:[],parcelas:[],dividas:[],metas:[]
-});
-db.movimentos ||= []; db.recorrentes ||= []; db.parcelas ||= []; db.dividas ||= []; db.metas ||= [];
+const KEY="minhaCarteira";
+const EMPTY={movimentos:[],recorrentes:[],parcelas:[],dividas:[],metas:[]};
 
-function save(){localStorage.setItem(KEY,JSON.stringify(db));render();}
+function lerBase(chave){
+  try{
+    const raw=localStorage.getItem(chave);
+    if(!raw)return null;
+    const obj=JSON.parse(raw);
+    if(!obj || typeof obj!=="object")return null;
+    obj.movimentos=Array.isArray(obj.movimentos)?obj.movimentos:[];
+    obj.recorrentes=Array.isArray(obj.recorrentes)?obj.recorrentes:[];
+    obj.parcelas=Array.isArray(obj.parcelas)?obj.parcelas:[];
+    obj.dividas=Array.isArray(obj.dividas)?obj.dividas:[];
+    obj.metas=Array.isArray(obj.metas)?obj.metas:[];
+    return obj;
+  }catch(e){return null;}
+}
+
+function quantidadeDados(x){
+  if(!x)return 0;
+  return x.movimentos.length+x.recorrentes.length+x.parcelas.length+x.dividas.length+x.metas.length;
+}
+
+/* Recuperação: procura primeiro a base nova com dados e, se ela estiver vazia,
+   procura as bases das versões anteriores. */
+const bases=[
+  lerBase("minhaCarteira"),
+  lerBase("minhaCarteiraV1"),
+  lerBase("minhaCarteiraV2")
+];
+let db=bases.find(x=>quantidadeDados(x)>0) || bases.find(x=>x) || JSON.parse(JSON.stringify(EMPTY));
+
+/* Guarda uma cópia de recuperação sem apagar nenhuma base antiga. */
+try{
+  if(quantidadeDados(db)>0){
+    localStorage.setItem("minhaCarteiraRecuperacao",JSON.stringify(db));
+    localStorage.setItem(KEY,JSON.stringify(db));
+  }
+}catch(e){}
+
+function save(){
+  const raw=JSON.stringify(db);
+  try{
+    localStorage.setItem("minhaCarteiraRecuperacao",raw);
+    localStorage.setItem(KEY,raw);
+    localStorage.setItem("minhaCarteiraV1",raw);
+  }catch(e){
+    alert("Não foi possível salvar os dados neste dispositivo.");
+  }
+  render();
+}
 function money(v){return Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});}
 function dateBR(d){if(!d)return "-";return new Date(d+"T12:00:00").toLocaleDateString("pt-BR");}
 function today(){return new Date().toISOString().slice(0,10);}
@@ -404,6 +448,25 @@ event.target.value="";
 };
 reader.readAsText(file);
 }
+
+function recuperarBaseLocal(){
+  const fontes=["minhaCarteiraRecuperacao","minhaCarteiraV1","minhaCarteiraV2","minhaCarteira"];
+  let melhor=null, qtd=0;
+  fontes.forEach(ch=>{
+    const x=lerBase(ch);
+    const n=quantidadeDados(x);
+    if(n>qtd){melhor=x;qtd=n;}
+  });
+  if(!melhor || qtd===0){
+    alert("Não encontrei lançamentos antigos no armazenamento deste site.");
+    return;
+  }
+  if(!confirm(`Encontrei ${qtd} registros antigos. Restaurar esses dados agora?`))return;
+  db=melhor;
+  save();
+  alert("✅ Dados recuperados. Confira Movimentos, Parcelas, Dívidas e Recorrentes.");
+}
+
 function limparTudo(){
 if(!confirm("Tem certeza que deseja apagar TODOS os dados?"))return;
 if(!confirm("Última confirmação: faça um backup antes. Apagar agora?"))return;
