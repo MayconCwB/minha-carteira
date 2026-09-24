@@ -7,1059 +7,409 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Minha Carteira">
-
 <title>Minha Carteira</title>
-
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-  background:#0b0f14;
-  color:#f5f5f5;
-}
-header{
-  padding:24px 18px 18px;
-  background:#111827;
-  position:sticky;
-  top:0;
-  z-index:5;
-}
-header h1{margin:0;font-size:27px}
-header p{margin:5px 0 0;color:#9ca3af}
-
-.container{
-  max-width:850px;
-  margin:auto;
-  padding:15px;
-  padding-bottom:100px;
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-.card{
-  background:#151c26;
-  border:1px solid #263241;
-  border-radius:18px;
-  padding:16px;
-}
-.card.full{grid-column:1/-1}
-.card small{color:#9ca3af}
-.value{
-  display:block;
-  margin-top:7px;
-  font-size:22px;
-  font-weight:700;
-}
-.green{color:#4ade80}
-.red{color:#fb7185}
-.yellow{color:#facc15}
-
-nav{
-  display:flex;
-  gap:7px;
-  overflow-x:auto;
-  padding:12px 0;
-  position:sticky;
-  top:86px;
-  z-index:4;
-  background:#0b0f14;
-}
-nav button{
-  white-space:nowrap;
-  border:0;
-  border-radius:12px;
-  padding:10px 14px;
-  background:#1b2430;
-  color:#ddd;
-}
-nav button.active{
-  background:#2563eb;
-  color:white;
-}
-
-section{display:none}
-section.active{display:block}
-
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#0b0f14;color:#f5f5f5}
+header{padding:24px 18px 18px;background:#111827;position:sticky;top:0;z-index:5}
+header h1{margin:0;font-size:27px} header p{margin:5px 0 0;color:#9ca3af}
+.container{max-width:850px;margin:auto;padding:15px;padding-bottom:100px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:#151c26;border:1px solid #263241;border-radius:18px;padding:16px}
+.card.full{grid-column:1/-1}.card small{color:#9ca3af}
+.value{display:block;margin-top:7px;font-size:22px;font-weight:700}
+.green{color:#4ade80}.red{color:#fb7185}.yellow{color:#facc15}
+nav{display:flex;gap:7px;overflow-x:auto;padding:12px 0;position:sticky;top:86px;z-index:4;background:#0b0f14}
+nav button{white-space:nowrap;border:0;border-radius:12px;padding:10px 14px;background:#1b2430;color:#ddd}
+nav button.active{background:#2563eb;color:white}
+section{display:none} section.active{display:block}
 h2{font-size:21px;margin:18px 0 12px}
-
-form{
-  background:#151c26;
-  border:1px solid #263241;
-  border-radius:18px;
-  padding:15px;
-}
-label{
-  display:block;
-  margin-top:11px;
-  color:#cbd5e1;
-  font-size:14px;
-}
-input,select,textarea{
-  width:100%;
-  margin-top:6px;
-  padding:13px;
-  border-radius:11px;
-  border:1px solid #334155;
-  background:#0f1720;
-  color:white;
-  font-size:16px;
-}
+form{background:#151c26;border:1px solid #263241;border-radius:18px;padding:15px}
+label{display:block;margin-top:11px;color:#cbd5e1;font-size:14px}
+input,select,textarea{width:100%;margin-top:6px;padding:13px;border-radius:11px;border:1px solid #334155;background:#0f1720;color:white;font-size:16px}
 textarea{min-height:80px}
-
-button.primary{
-  width:100%;
-  margin-top:15px;
-  padding:14px;
-  border:0;
-  border-radius:12px;
-  background:#2563eb;
-  color:white;
-  font-size:16px;
-  font-weight:700;
-}
-
-.item{
-  margin-top:10px;
-  background:#151c26;
-  border:1px solid #263241;
-  border-radius:15px;
-  padding:14px;
-}
-.item strong{font-size:16px}
-.item .sub{
-  color:#9ca3af;
-  font-size:13px;
-  margin-top:4px;
-}
-.item .money{
-  font-size:18px;
-  font-weight:700;
-  margin-top:8px;
-}
-.item-actions{
-  display:flex;
-  gap:7px;
-  margin-top:10px;
-}
-.item-actions button{
-  border:0;
-  border-radius:9px;
-  padding:8px 10px;
-  background:#263241;
-  color:white;
-}
+button.primary{width:100%;margin-top:15px;padding:14px;border:0;border-radius:12px;background:#2563eb;color:white;font-size:16px;font-weight:700}
+button.secondary{width:100%;margin-top:10px;padding:13px;border:1px solid #334155;border-radius:12px;background:#1b2430;color:white;font-size:15px}
+.item{margin-top:10px;background:#151c26;border:1px solid #263241;border-radius:15px;padding:14px}
+.item strong{font-size:16px}.item .sub{color:#9ca3af;font-size:13px;margin-top:4px}
+.item .money{font-size:18px;font-weight:700;margin-top:8px}
+.item-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.item-actions button{border:0;border-radius:9px;padding:8px 10px;background:#263241;color:white}
 .item-actions button.delete{background:#7f1d1d}
-
-.empty{
-  color:#94a3b8;
-  text-align:center;
-  padding:25px;
-}
-
-.alert{
-  margin-top:12px;
-  padding:14px;
-  border-radius:14px;
-  background:#3f151c;
-  border:1px solid #7f1d1d;
-  color:#fecdd3;
-}
-
-.ok{
-  margin-top:12px;
-  padding:14px;
-  border-radius:14px;
-  background:#12321f;
-  border:1px solid #166534;
-  color:#bbf7d0;
-}
-
-.progress{
-  height:9px;
-  background:#263241;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:9px;
-}
-.progress div{
-  height:100%;
-  background:#2563eb;
-}
-
-footer{
-  text-align:center;
-  color:#64748b;
-  font-size:12px;
-  margin-top:35px;
-}
+.empty{color:#94a3b8;text-align:center;padding:25px}
+.alert,.ok{margin-top:12px;padding:14px;border-radius:14px}
+.alert{background:#3f151c;border:1px solid #7f1d1d;color:#fecdd3}
+.ok{background:#12321f;border:1px solid #166534;color:#bbf7d0}
+.progress{height:9px;background:#263241;border-radius:20px;overflow:hidden;margin-top:9px}
+.progress div{height:100%;background:#2563eb}
+.statline{display:flex;justify-content:space-between;gap:10px;margin-top:10px;padding:12px;border-radius:12px;background:#0f1720}
+.timeline{position:relative;margin-top:12px}
+.daycard{margin-top:12px;background:#151c26;border:1px solid #263241;border-radius:16px;padding:15px}
+.dayhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.dayhead strong{font-size:17px}.daytotal{font-size:19px;font-weight:700}
+.timelineitem{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid #263241}
+.timelineitem:first-child{margin-top:10px}
+.need{margin-top:10px;padding:12px;border-radius:12px;background:#3f151c;border:1px solid #7f1d1d;color:#fecdd3}
+.covered{margin-top:10px;padding:12px;border-radius:12px;background:#12321f;border:1px solid #166534;color:#bbf7d0}
+.muted{color:#94a3b8;font-size:13px}
+footer{text-align:center;color:#64748b;font-size:12px;margin-top:35px}
+@media(max-width:520px){.cards{grid-template-columns:1fr}.card.full{grid-column:auto}}
 </style>
 </head>
-
 <body>
-
-<header>
-  <h1>💰 Minha Carteira</h1>
-  <p>Controle financeiro pessoal</p>
-</header>
-
+<header><h1>💰 Minha Carteira</h1><p>Controle financeiro pessoal</p></header>
 <div class="container">
-
 <nav>
-  <button class="active" onclick="showTab('resumo',this)">Resumo</button>
-  <button onclick="showTab('movimentos',this)">Movimentos</button>
-  <button onclick="showTab('recorrentes',this)">Recorrentes</button>
-  <button onclick="showTab('parcelas',this)">Parcelas</button>
-  <button onclick="showTab('dividas',this)">Dívidas</button>
-  <button onclick="showTab('metas',this)">Metas</button>
+<button class="active" onclick="showTab('resumo',this)">Resumo</button>
+<button onclick="showTab('movimentos',this)">Movimentos</button>
+<button onclick="showTab('recorrentes',this)">Recorrentes</button>
+<button onclick="showTab('parcelas',this)">Parcelas</button>
+<button onclick="showTab('dividas',this)">Dívidas</button>
+<button onclick="showTab('metas',this)">Metas</button>
+<button onclick="showTab('planejamento',this)">Planejamento</button>
+<button onclick="showTab('backup',this)">Backup</button>
 </nav>
 
-<!-- RESUMO -->
 <section id="resumo" class="active">
-
 <div class="cards">
-
-<div class="card">
-<small>Saldo atual</small>
-<span id="saldoAtual" class="value">R$ 0,00</span>
+<div class="card"><small>Saldo atual</small><span id="saldoAtual" class="value">R$ 0,00</span></div>
+<div class="card"><small>Entradas do mês</small><span id="entradasMes" class="value green">R$ 0,00</span></div>
+<div class="card"><small>Gastos do mês</small><span id="gastosMes" class="value red">R$ 0,00</span></div>
+<div class="card"><small>Compromissos do mês</small><span id="compromissos" class="value yellow">R$ 0,00</span></div>
+<div class="card full"><small>Quanto preciso ter para pagar tudo?</small><span id="precisoTer" class="value">R$ 0,00</span></div>
+<div class="card full"><small>Saldo previsto depois dos compromissos</small><span id="saldoPrevisto" class="value">R$ 0,00</span></div>
 </div>
-
-<div class="card">
-<small>Entradas do mês</small>
-<span id="entradasMes" class="value green">R$ 0,00</span>
-</div>
-
-<div class="card">
-<small>Gastos do mês</small>
-<span id="gastosMes" class="value red">R$ 0,00</span>
-</div>
-
-<div class="card">
-<small>Compromissos</small>
-<span id="compromissos" class="value yellow">R$ 0,00</span>
-</div>
-
-<div class="card full">
-<small>Quanto preciso ter para pagar tudo?</small>
-<span id="precisoTer" class="value">R$ 0,00</span>
-</div>
-
-<div class="card full">
-<small>Saldo depois dos compromissos</small>
-<span id="saldoPrevisto" class="value">R$ 0,00</span>
-</div>
-
-</div>
-
 <div id="alerta"></div>
-
-<h2>📅 Próximos compromissos</h2>
-<div id="proximos"></div>
-
-<h2>📊 Situação financeira</h2>
-<div id="situacao"></div>
-
+<h2>📅 Próximos compromissos</h2><div id="proximos"></div>
+<h2>📊 Situação financeira</h2><div id="situacao"></div>
 </section>
 
-
-<!-- MOVIMENTOS -->
 <section id="movimentos">
-
 <h2>➕ Novo movimento</h2>
-
 <form id="movimentoForm">
-
-<label>Tipo</label>
-<select id="movTipo">
-<option value="entrada">Entrada</option>
-<option value="saida">Gasto</option>
-</select>
-
-<label>Descrição</label>
-<input id="movDescricao" required placeholder="Ex: Salário">
-
-<label>Valor</label>
-<input id="movValor" required type="number" step="0.01" placeholder="0,00">
-
-<label>Data</label>
-<input id="movData" required type="date">
-
-<label>Categoria</label>
-<input id="movCategoria" placeholder="Ex: Alimentação">
-
-<label>Observação</label>
-<textarea id="movObs" placeholder="Opcional"></textarea>
-
+<label>Tipo</label><select id="movTipo"><option value="entrada">Entrada</option><option value="saida">Gasto</option></select>
+<label>Descrição</label><input id="movDescricao" required placeholder="Ex: Salário">
+<label>Valor</label><input id="movValor" required type="number" step="0.01" min="0" placeholder="0,00">
+<label>Data</label><input id="movData" required type="date">
+<label>Categoria</label><input id="movCategoria" placeholder="Ex: Alimentação">
+<label>Observação</label><textarea id="movObs" placeholder="Opcional"></textarea>
 <button class="primary">Adicionar movimento</button>
-
 </form>
-
-<h2>📋 Movimentos</h2>
-<div id="listaMovimentos"></div>
-
+<h2>📋 Movimentos</h2><div id="listaMovimentos"></div>
 </section>
 
-
-<!-- RECORRENTES -->
 <section id="recorrentes">
-
 <h2>🔄 Gasto recorrente</h2>
-
 <form id="recorrenteForm">
-
-<label>Descrição</label>
-<input id="recNome" required placeholder="Ex: Internet">
-
-<label>Valor mensal</label>
-<input id="recValor" required type="number" step="0.01">
-
-<label>Dia do vencimento</label>
-<input id="recDia" required type="number" min="1" max="31">
-
-<label>Categoria</label>
-<input id="recCategoria" placeholder="Ex: Casa">
-
+<label>Descrição</label><input id="recNome" required placeholder="Ex: Internet">
+<label>Valor mensal</label><input id="recValor" required type="number" step="0.01" min="0">
+<label>Dia do vencimento</label><input id="recDia" required type="number" min="1" max="31">
+<label>Categoria</label><input id="recCategoria" placeholder="Ex: Casa">
 <button class="primary">Adicionar recorrente</button>
-
 </form>
-
-<h2>📋 Meus recorrentes</h2>
-<div id="listaRecorrentes"></div>
-
+<h2>📋 Meus recorrentes</h2><div id="listaRecorrentes"></div>
 </section>
 
-
-<!-- PARCELAS -->
 <section id="parcelas">
-
 <h2>💳 Novo parcelamento</h2>
-
 <form id="parcelaForm">
-
-<label>O que estou pagando?</label>
-<input id="parNome" required placeholder="Ex: Notebook">
-
-<label>Valor da parcela</label>
-<input id="parValor" required type="number" step="0.01">
-
-<label>Total de parcelas</label>
-<input id="parTotal" required type="number" min="1">
-
-<label>Parcelas restantes</label>
-<input id="parRestantes" required type="number" min="1">
-
-<label>Dia do vencimento</label>
-<input id="parDia" required type="number" min="1" max="31">
-
-<label>Observação</label>
-<input id="parObs">
-
+<label>O que estou pagando?</label><input id="parNome" required placeholder="Ex: Notebook">
+<label>Valor da parcela</label><input id="parValor" required type="number" step="0.01" min="0">
+<label>Total de parcelas</label><input id="parTotal" required type="number" min="1">
+<label>Parcelas restantes</label><input id="parRestantes" required type="number" min="0">
+<label>Dia do vencimento</label><input id="parDia" required type="number" min="1" max="31">
+<label>Observação</label><input id="parObs">
 <button class="primary">Adicionar parcelamento</button>
-
 </form>
-
-<h2>📋 Parcelamentos</h2>
-<div id="listaParcelas"></div>
-
+<h2>📋 Parcelamentos</h2><div id="listaParcelas"></div>
 </section>
 
-
-<!-- DIVIDAS -->
 <section id="dividas">
-
 <h2>🤝 Nova dívida</h2>
-
 <form id="dividaForm">
-
-<label>Para quem devo?</label>
-<input id="divPessoa" required placeholder="Ex: João">
-
-<label>Valor</label>
-<input id="divValor" required type="number" step="0.01">
-
-<label>Data para pagar</label>
-<input id="divData" required type="date">
-
-<label>Descrição</label>
-<input id="divDescricao" placeholder="Ex: Dinheiro emprestado">
-
+<label>Para quem devo?</label><input id="divPessoa" required placeholder="Ex: João">
+<label>Valor</label><input id="divValor" required type="number" step="0.01" min="0">
+<label>Data para pagar</label><input id="divData" required type="date">
+<label>Descrição</label><input id="divDescricao" placeholder="Ex: Dinheiro emprestado">
 <button class="primary">Adicionar dívida</button>
-
 </form>
-
-<h2>📋 Dívidas</h2>
-<div id="listaDividas"></div>
-
+<h2>📋 Dívidas</h2><div id="listaDividas"></div>
 </section>
 
-
-<!-- METAS -->
 <section id="metas">
-
 <h2>🎯 Nova meta</h2>
-
 <form id="metaForm">
-
-<label>Nome da meta</label>
-<input id="metaNome" required placeholder="Ex: Viagem">
-
-<label>Valor desejado</label>
-<input id="metaAlvo" required type="number" step="0.01">
-
-<label>Quanto já tenho</label>
-<input id="metaAtual" required type="number" step="0.01" value="0">
-
-<label>Data desejada</label>
-<input id="metaData" type="date">
-
+<label>Nome da meta</label><input id="metaNome" required placeholder="Ex: Viagem">
+<label>Valor desejado</label><input id="metaAlvo" required type="number" step="0.01" min="0">
+<label>Quanto já tenho</label><input id="metaAtual" required type="number" step="0.01" min="0" value="0">
+<label>Data desejada</label><input id="metaData" type="date">
 <button class="primary">Adicionar meta</button>
-
 </form>
-
-<h2>📋 Minhas metas</h2>
-<div id="listaMetas"></div>
-
+<h2>📋 Minhas metas</h2><div id="listaMetas"></div>
 </section>
 
-<footer>
-Minha Carteira • Versão inicial
-</footer>
 
+<section id="planejamento">
+<h2>📅 Planejamento por data</h2>
+<div class="item">
+<strong>Quanto preciso ter em cada dia?</strong>
+<div class="sub">O app usa os recorrentes, parcelas e dívidas que você já cadastrou e organiza os compromissos pela data de vencimento.</div>
 </div>
+<div id="planejamentoResumo"></div>
+<h2>🗓️ Compromissos do próximo mês</h2>
+<div id="timelineProximo"></div>
+<h2>🗓️ Compromissos deste mês</h2>
+<div id="timelineAtual"></div>
+</section>
 
+<section id="backup">
+<h2>💾 Backup dos seus dados</h2>
+<div class="item">
+<strong>Proteja seus lançamentos</strong>
+<div class="sub">O backup guarda movimentos, recorrentes, parcelas, dívidas e metas em um arquivo.</div>
+<button class="primary" onclick="exportarBackup()">⬇️ Exportar backup</button>
+<button class="secondary" onclick="document.getElementById('arquivoBackup').click()">⬆️ Restaurar backup</button>
+<input id="arquivoBackup" type="file" accept=".json,application/json" style="display:none" onchange="importarBackup(event)">
+</div>
+<div class="item">
+<strong>Resumo do backup</strong>
+<div id="resumoBackup" class="sub">Calculando...</div>
+</div>
+<div class="item">
+<strong>⚠️ Apagar todos os dados</strong>
+<div class="sub">Use somente se quiser começar do zero. Faça um backup antes.</div>
+<button class="secondary" onclick="limparTudo()">Apagar todos os dados</button>
+</div>
+</section>
+
+<footer>Minha Carteira • Versão 3</footer>
+</div>
 
 <script>
+const KEY="minhaCarteiraV2";
+const antigo=localStorage.getItem("minhaCarteiraV1");
+let db=JSON.parse(localStorage.getItem(KEY)) || (antigo ? JSON.parse(antigo) : {
+movimentos:[],recorrentes:[],parcelas:[],dividas:[],metas:[]
+});
+db.movimentos ||= []; db.recorrentes ||= []; db.parcelas ||= []; db.dividas ||= []; db.metas ||= [];
 
-const KEY="minhaCarteiraV1";
-
-let db=JSON.parse(localStorage.getItem(KEY)) || {
-  movimentos:[],
-  recorrentes:[],
-  parcelas:[],
-  dividas:[],
-  metas:[]
-};
-
-function save(){
-  localStorage.setItem(KEY,JSON.stringify(db));
-  render();
-}
-
-function money(v){
-  return Number(v||0).toLocaleString("pt-BR",{
-    style:"currency",
-    currency:"BRL"
-  });
-}
-
-function dateBR(d){
-  if(!d)return "-";
-  return new Date(d+"T12:00:00").toLocaleDateString("pt-BR");
-}
-
-function today(){
-  return new Date().toISOString().slice(0,10);
-}
-
-function monthNow(){
-  return new Date().toISOString().slice(0,7);
-}
+function save(){localStorage.setItem(KEY,JSON.stringify(db));render();}
+function money(v){return Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});}
+function dateBR(d){if(!d)return "-";return new Date(d+"T12:00:00").toLocaleDateString("pt-BR");}
+function today(){return new Date().toISOString().slice(0,10);}
+function monthNow(){return new Date().toISOString().slice(0,7);}
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
 
 function showTab(id,btn){
-
-  document.querySelectorAll("section").forEach(s=>{
-    s.classList.remove("active");
-  });
-
-  document.getElementById(id).classList.add("active");
-
-  document.querySelectorAll("nav button").forEach(b=>{
-    b.classList.remove("active");
-  });
-
-  btn.classList.add("active");
-
-  window.scrollTo(0,0);
+document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active"); window.scrollTo(0,0);
 }
-
-
-// MOVIMENTOS
 
 document.getElementById("movData").value=today();
-
 document.getElementById("movimentoForm").onsubmit=e=>{
-  e.preventDefault();
-
-  db.movimentos.push({
-    id:Date.now(),
-    tipo:movTipo.value,
-    descricao:movDescricao.value,
-    valor:Number(movValor.value),
-    data:movData.value,
-    categoria:movCategoria.value,
-    obs:movObs.value
-  });
-
-  e.target.reset();
-  movData.value=today();
-
-  save();
+e.preventDefault();
+db.movimentos.push({id:Date.now(),tipo:movTipo.value,descricao:movDescricao.value.trim(),valor:Number(movValor.value),data:movData.value,categoria:movCategoria.value.trim(),obs:movObs.value.trim()});
+e.target.reset();movData.value=today();save();
 };
-
-
-// RECORRENTES
-
 document.getElementById("recorrenteForm").onsubmit=e=>{
-  e.preventDefault();
-
-  db.recorrentes.push({
-    id:Date.now(),
-    nome:recNome.value,
-    valor:Number(recValor.value),
-    dia:Number(recDia.value),
-    categoria:recCategoria.value
-  });
-
-  e.target.reset();
-  save();
+e.preventDefault();
+db.recorrentes.push({id:Date.now(),nome:recNome.value.trim(),valor:Number(recValor.value),dia:Number(recDia.value),categoria:recCategoria.value.trim()});
+e.target.reset();save();
 };
-
-
-// PARCELAS
-
 document.getElementById("parcelaForm").onsubmit=e=>{
-  e.preventDefault();
-
-  db.parcelas.push({
-    id:Date.now(),
-    nome:parNome.value,
-    valor:Number(parValor.value),
-    total:Number(parTotal.value),
-    restantes:Number(parRestantes.value),
-    dia:Number(parDia.value),
-    obs:parObs.value
-  });
-
-  e.target.reset();
-  save();
+e.preventDefault();
+const total=Number(parTotal.value), restantes=Number(parRestantes.value);
+if(restantes>total){alert("As parcelas restantes não podem ser maiores que o total.");return;}
+db.parcelas.push({id:Date.now(),nome:parNome.value.trim(),valor:Number(parValor.value),total,restantes,dia:Number(parDia.value),obs:parObs.value.trim()});
+e.target.reset();save();
 };
-
-
-// DIVIDAS
-
 document.getElementById("dividaForm").onsubmit=e=>{
-  e.preventDefault();
-
-  db.dividas.push({
-    id:Date.now(),
-    pessoa:divPessoa.value,
-    valor:Number(divValor.value),
-    data:divData.value,
-    descricao:divDescricao.value,
-    paga:false
-  });
-
-  e.target.reset();
-  save();
+e.preventDefault();
+db.dividas.push({id:Date.now(),pessoa:divPessoa.value.trim(),valor:Number(divValor.value),data:divData.value,descricao:divDescricao.value.trim(),paga:false});
+e.target.reset();save();
 };
-
-
-// METAS
-
 document.getElementById("metaForm").onsubmit=e=>{
-  e.preventDefault();
-
-  db.metas.push({
-    id:Date.now(),
-    nome:metaNome.value,
-    alvo:Number(metaAlvo.value),
-    atual:Number(metaAtual.value),
-    data:metaData.value
-  });
-
-  e.target.reset();
-  save();
+e.preventDefault();
+db.metas.push({id:Date.now(),nome:metaNome.value.trim(),alvo:Number(metaAlvo.value),atual:Number(metaAtual.value),data:metaData.value});
+e.target.reset();save();
 };
 
-
-// EXCLUIR
-
-function del(tipo,id){
-  if(!confirm("Excluir este registro?"))return;
-
-  db[tipo]=db[tipo].filter(x=>x.id!==id);
-  save();
+function del(tipo,id){if(!confirm("Excluir este registro?"))return;db[tipo]=db[tipo].filter(x=>x.id!==id);save();}
+function pagarDivida(id){const d=db.dividas.find(x=>x.id===id);if(d)d.paga=!d.paga;save();}
+function baixarParcela(id){const p=db.parcelas.find(x=>x.id===id);if(!p)return;if(p.restantes>0)p.restantes--;if(p.restantes===0)alert("🎉 Parcelamento concluído!");save();}
+function adicionarMeta(id){
+const valor=prompt("Quanto deseja adicionar à meta?");
+if(valor===null)return;const n=Number(valor);
+if(!isNaN(n)&&n>0){const m=db.metas.find(x=>x.id===id);if(m)m.atual+=n;save();}
 }
 
-function pagarDivida(id){
-
-  const d=db.dividas.find(x=>x.id===id);
-
-  if(d)d.paga=!d.paga;
-
-  save();
+function compromissosMes(){
+const mes=monthNow();
+const recorrentes=db.recorrentes.reduce((s,x)=>s+Number(x.valor||0),0);
+const parcelas=db.parcelas.filter(x=>x.restantes>0).reduce((s,x)=>s+Number(x.valor||0),0);
+const dividas=db.dividas.filter(x=>!x.paga&&x.data.startsWith(mes)).reduce((s,x)=>s+Number(x.valor||0),0);
+return {recorrentes,parcelas,dividas,total:recorrentes+parcelas+dividas};
 }
-
-
-// CÁLCULOS
 
 function calcular(){
-
-  const mes=monthNow();
-
-  let saldo=0;
-  let entradas=0;
-  let gastos=0;
-
-  db.movimentos.forEach(m=>{
-
-    if(m.data<=today()){
-
-      if(m.tipo==="entrada") saldo+=m.valor;
-      else saldo-=m.valor;
-
-    }
-
-    if(m.data.startsWith(mes)){
-
-      if(m.tipo==="entrada") entradas+=m.valor;
-      else gastos+=m.valor;
-
-    }
-
-  });
-
-  let recorrentes=db.recorrentes.reduce((s,x)=>s+x.valor,0);
-
-  let parcelas=db.parcelas
-    .filter(x=>x.restantes>0)
-    .reduce((s,x)=>s+x.valor,0);
-
-  let dividas=db.dividas
-    .filter(x=>!x.paga && x.data.startsWith(mes))
-    .reduce((s,x)=>s+x.valor,0);
-
-  let compromissos=recorrentes+parcelas+dividas;
-
-  document.getElementById("saldoAtual").textContent=money(saldo);
-  document.getElementById("entradasMes").textContent=money(entradas);
-  document.getElementById("gastosMes").textContent=money(gastos);
-  document.getElementById("compromissos").textContent=money(compromissos);
-  document.getElementById("precisoTer").textContent=money(compromissos);
-
-  const previsto=saldo-compromissos;
-
-  const sp=document.getElementById("saldoPrevisto");
-
-  sp.textContent=money(previsto);
-  sp.className="value "+(previsto<0?"red":"green");
-
-  const alerta=document.getElementById("alerta");
-
-  if(previsto<0){
-
-    alerta.innerHTML=
-      `<div class="alert">
-      ⚠️ Atenção: faltam <strong>${money(Math.abs(previsto))}</strong>
-      para cobrir todos os compromissos considerados.
-      </div>`;
-
-  }else{
-
-    alerta.innerHTML=
-      `<div class="ok">
-      ✅ Depois dos compromissos, a previsão é ficar com
-      <strong>${money(previsto)}</strong>.
-      </div>`;
-
-  }
-
-  return {saldo,entradas,gastos,recorrentes,parcelas,dividas,compromissos};
-
+const mes=monthNow();let saldo=0,entradas=0,gastos=0;
+db.movimentos.forEach(m=>{
+if(m.data<=today())saldo+=(m.tipo==="entrada"?m.valor:-m.valor);
+if(m.data.startsWith(mes)){if(m.tipo==="entrada")entradas+=m.valor;else gastos+=m.valor;}
+});
+const c=compromissosMes();
+document.getElementById("saldoAtual").textContent=money(saldo);
+document.getElementById("entradasMes").textContent=money(entradas);
+document.getElementById("gastosMes").textContent=money(gastos);
+document.getElementById("compromissos").textContent=money(c.total);
+document.getElementById("precisoTer").textContent=money(Math.max(c.total,0));
+const previsto=saldo-c.total,sp=document.getElementById("saldoPrevisto");
+sp.textContent=money(previsto);sp.className="value "+(previsto<0?"red":"green");
+document.getElementById("alerta").innerHTML=previsto<0
+?`<div class="alert">⚠️ Faltam <strong>${money(Math.abs(previsto))}</strong> para cobrir os compromissos considerados deste mês.</div>`
+:`<div class="ok">✅ Depois dos compromissos, a previsão é ficar com <strong>${money(previsto)}</strong>.</div>`;
+return {saldo,entradas,gastos,...c};
 }
 
 
-// RENDER
+function dataDoDiaNoMes(ano,mes,dia){
+const ultimo=new Date(ano,mes+1,0).getDate();
+const d=Math.min(Number(dia)||1,ultimo);
+return `${ano}-${String(mes+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+}
+
+function compromissosPorData(ano,mes){
+const itens={};
+function add(data,nome,valor,tipo){
+if(!data)return;
+if(!itens[data])itens[data]=[];
+itens[data].push({nome,valor:Number(valor||0),tipo});
+}
+db.recorrentes.forEach(x=>add(dataDoDiaNoMes(ano,mes,x.dia),"Recorrente • "+x.nome,x.valor,"recorrente"));
+db.parcelas.filter(x=>x.restantes>0).forEach(x=>add(dataDoDiaNoMes(ano,mes,x.dia),"Parcela • "+x.nome,x.valor,"parcela"));
+db.dividas.filter(x=>!x.paga&&x.data.startsWith(`${ano}-${String(mes+1).padStart(2,"0")}`)).forEach(x=>add(x.data,"Dívida • "+x.pessoa,x.valor,"dívida"));
+return itens;
+}
+
+function entradasPorData(ano,mes){
+const itens={};
+db.movimentos.filter(x=>x.tipo==="entrada"&&x.data.startsWith(`${ano}-${String(mes+1).padStart(2,"0")}`)).forEach(x=>{
+if(!itens[x.data])itens[x.data]=[];
+itens[x.data].push({nome:"Entrada • "+x.descricao,valor:Number(x.valor||0)});
+});
+return itens;
+}
+
+function renderTimeline(id,ano,mes){
+const el=document.getElementById(id);
+const pagamentos=compromissosPorData(ano,mes);
+const entradas=entradasPorData(ano,mes);
+const datas=[...new Set([...Object.keys(pagamentos),...Object.keys(entradas)])].sort();
+if(!datas.length){el.innerHTML='<div class="empty">Nenhum compromisso ou entrada cadastrado para este período.</div>';return;}
+let saldoBase=0;
+const inicio=new Date(ano,mes,1);
+const fim=new Date(ano,mes+1,0);
+db.movimentos.forEach(x=>{if(x.tipo==="entrada"&&x.data<inicio.toISOString().slice(0,10))saldoBase+=Number(x.valor||0);if(x.tipo==="saida"&&x.data<inicio.toISOString().slice(0,10))saldoBase-=Number(x.valor||0);});
+let html="",saldo=saldoBase;
+datas.forEach(data=>{
+const pays=pagamentos[data]||[], ins=entradas[data]||[];
+const totalP=pays.reduce((s,x)=>s+x.valor,0), totalI=ins.reduce((s,x)=>s+x.valor,0);
+saldo+=totalI-totalP;
+html+=`<div class="daycard"><div class="dayhead"><strong>${dateBR(data)}</strong><span class="daytotal ${saldo<0?"red":"green"}">${money(saldo)}</span></div>`;
+ins.forEach(x=>html+=`<div class="timelineitem"><span class="green">⬆️ ${esc(x.nome)}</span><strong class="green">+ ${money(x.valor)}</strong></div>`);
+pays.forEach(x=>html+=`<div class="timelineitem"><span>🔴 ${esc(x.nome)}</span><strong class="red">- ${money(x.valor)}</strong></div>`);
+if(saldo<0)html+=`<div class="need">⚠️ Neste dia, o saldo projetado fica negativo em <strong>${money(Math.abs(saldo))}</strong>.</div>`;
+else html+=`<div class="covered">Saldo projetado após este dia: <strong>${money(saldo)}</strong></div>`;
+html+=`</div>`;
+});
+el.innerHTML=html;
+}
+
+function renderPlanejamento(){
+const agora=new Date(), ano=agora.getFullYear(), mes=agora.getMonth();
+const prox=new Date(ano,mes+1,1);
+const atual=compromissosPorData(ano,mes), futuro=compromissosPorData(prox.getFullYear(),prox.getMonth());
+const totalAtual=Object.values(atual).flat().reduce((s,x)=>s+x.valor,0);
+const totalFuturo=Object.values(futuro).flat().reduce((s,x)=>s+x.valor,0);
+const saldoAtual=calcular().saldo;
+const datasAtual=Object.keys(atual).sort();
+let minimo=saldoAtual, saldo=saldoAtual;
+datasAtual.forEach(d=>{saldo-=(atual[d]||[]).reduce((s,x)=>s+x.valor,0);minimo=Math.min(minimo,saldo);});
+const falta=Math.max(0,-minimo);
+document.getElementById("planejamentoResumo").innerHTML=`
+<div class="cards">
+<div class="card"><small>Total a pagar neste mês</small><span class="value yellow">${money(totalAtual)}</span></div>
+<div class="card"><small>Total previsto para o próximo mês</small><span class="value yellow">${money(totalFuturo)}</span></div>
+<div class="card full"><small>Maior falta de dinheiro projetada neste mês</small><span class="value ${falta>0?"red":"green"}">${money(falta)}</span></div>
+</div>`;
+renderTimeline("timelineAtual",ano,mes);
+renderTimeline("timelineProximo",prox.getFullYear(),prox.getMonth());
+}
 
 function render(){
-
-  const c=calcular();
-
-  // MOVIMENTOS
-
-  const lm=document.getElementById("listaMovimentos");
-
-  if(!db.movimentos.length){
-
-    lm.innerHTML='<div class="empty">Nenhum movimento cadastrado.</div>';
-
-  }else{
-
-    lm.innerHTML=db.movimentos
-    .slice()
-    .sort((a,b)=>b.data.localeCompare(a.data))
-    .map(x=>`
-
-      <div class="item">
-
-        <strong>${esc(x.descricao)}</strong>
-
-        <div class="sub">
-        ${dateBR(x.data)}
-        ${x.categoria?" • "+esc(x.categoria):""}
-        </div>
-
-        <div class="money ${x.tipo==="entrada"?"green":"red"}">
-        ${x.tipo==="entrada"?"+":"-"} ${money(x.valor)}
-        </div>
-
-        <div class="item-actions">
-          <button class="delete"
-          onclick="del('movimentos',${x.id})">
-          Excluir
-          </button>
-        </div>
-
-      </div>
-    `).join("");
-
-  }
-
-
-  // RECORRENTES
-
-  const lr=document.getElementById("listaRecorrentes");
-
-  if(!db.recorrentes.length){
-
-    lr.innerHTML='<div class="empty">Nenhum gasto recorrente.</div>';
-
-  }else{
-
-    lr.innerHTML=db.recorrentes.map(x=>`
-
-      <div class="item">
-
-        <strong>${esc(x.nome)}</strong>
-
-        <div class="sub">
-        Todo dia ${x.dia}
-        ${x.categoria?" • "+esc(x.categoria):""}
-        </div>
-
-        <div class="money yellow">
-        ${money(x.valor)}
-        </div>
-
-        <div class="item-actions">
-          <button class="delete"
-          onclick="del('recorrentes',${x.id})">
-          Excluir
-          </button>
-        </div>
-
-      </div>
-
-    `).join("");
-
-  }
-
-
-  // PARCELAS
-
-  const lp=document.getElementById("listaParcelas");
-
-  if(!db.parcelas.length){
-
-    lp.innerHTML='<div class="empty">Nenhum parcelamento.</div>';
-
-  }else{
-
-    lp.innerHTML=db.parcelas.map(x=>`
-
-      <div class="item">
-
-        <strong>${esc(x.nome)}</strong>
-
-        <div class="sub">
-        ${x.restantes} parcelas restantes de ${x.total}
-        • vence dia ${x.dia}
-        </div>
-
-        <div class="money yellow">
-        ${money(x.valor)} / mês
-        </div>
-
-        ${x.obs?`<div class="sub">${esc(x.obs)}</div>`:""}
-
-        <div class="item-actions">
-
-          <button onclick="baixarParcela(${x.id})">
-          Paguei 1 parcela
-          </button>
-
-          <button class="delete"
-          onclick="del('parcelas',${x.id})">
-          Excluir
-          </button>
-
-        </div>
-
-      </div>
-
-    `).join("");
-
-  }
-
-
-  // DIVIDAS
-
-  const ld=document.getElementById("listaDividas");
-
-  if(!db.dividas.length){
-
-    ld.innerHTML='<div class="empty">Nenhuma dívida cadastrada.</div>';
-
-  }else{
-
-    ld.innerHTML=db.dividas.map(x=>`
-
-      <div class="item">
-
-        <strong>${esc(x.pessoa)}</strong>
-
-        <div class="sub">
-        ${x.descricao?esc(x.descricao)+" • ":""}
-        ${dateBR(x.data)}
-        </div>
-
-        <div class="money ${x.paga?"green":"red"}">
-        ${money(x.valor)}
-        ${x.paga?" • PAGA":" • PENDENTE"}
-        </div>
-
-        <div class="item-actions">
-
-          <button onclick="pagarDivida(${x.id})">
-          ${x.paga?"Marcar pendente":"Marcar paga"}
-          </button>
-
-          <button class="delete"
-          onclick="del('dividas',${x.id})">
-          Excluir
-          </button>
-
-        </div>
-
-      </div>
-
-    `).join("");
-
-  }
-
-
-  // METAS
-
-  const lg=document.getElementById("listaMetas");
-
-  if(!db.metas.length){
-
-    lg.innerHTML='<div class="empty">Nenhuma meta cadastrada.</div>';
-
-  }else{
-
-    lg.innerHTML=db.metas.map(x=>{
-
-      const pct=x.alvo>0
-        ?Math.min(100,(x.atual/x.alvo)*100)
-        :0;
-
-      return `
-
-      <div class="item">
-
-        <strong>${esc(x.nome)}</strong>
-
-        <div class="sub">
-        ${money(x.atual)} de ${money(x.alvo)}
-        ${x.data?" • até "+dateBR(x.data):""}
-        </div>
-
-        <div class="progress">
-          <div style="width:${pct}%"></div>
-        </div>
-
-        <div class="sub" style="margin-top:7px">
-        ${pct.toFixed(0)}% concluído
-        </div>
-
-        <div class="item-actions">
-
-          <button onclick="adicionarMeta(${x.id})">
-          Adicionar dinheiro
-          </button>
-
-          <button class="delete"
-          onclick="del('metas',${x.id})">
-          Excluir
-          </button>
-
-        </div>
-
-      </div>
-
-      `;
-
-    }).join("");
-
-  }
-
-
-  // PRÓXIMOS COMPROMISSOS
-
-  const lista=[];
-
-  db.dividas
-  .filter(x=>!x.paga)
-  .forEach(x=>lista.push({
-    nome:"Dívida • "+x.pessoa,
-    data:x.data,
-    valor:x.valor
-  }));
-
-  db.recorrentes.forEach(x=>{
-
-    const d=new Date();
-    d.setDate(x.dia);
-
-    lista.push({
-      nome:"Recorrente • "+x.nome,
-      data:d.toISOString().slice(0,10),
-      valor:x.valor
-    });
-
-  });
-
-  const pn=document.getElementById("proximos");
-
-  if(!lista.length){
-
-    pn.innerHTML='<div class="empty">Nenhum compromisso próximo.</div>';
-
-  }else{
-
-    lista
-    .sort((a,b)=>a.data.localeCompare(b.data))
-    .slice(0,5)
-    .forEach(()=>{});
-
-    pn.innerHTML=lista
-    .sort((a,b)=>a.data.localeCompare(b.data))
-    .slice(0,5)
-    .map(x=>`
-
-      <div class="item">
-
-        <strong>${esc(x.nome)}</strong>
-
-        <div class="sub">${dateBR(x.data)}</div>
-
-        <div class="money yellow">${money(x.valor)}</div>
-
-      </div>
-
-    `).join("");
-
-  }
-
-
-  // SITUAÇÃO
-
-  document.getElementById("situacao").innerHTML=`
-
-    <div class="item">
-      <strong>Compromissos recorrentes</strong>
-      <div class="money">${money(c.recorrentes)}</div>
-    </div>
-
-    <div class="item">
-      <strong>Parcelamentos</strong>
-      <div class="money">${money(c.parcelas)}</div>
-    </div>
-
-    <div class="item">
-      <strong>Dívidas deste mês</strong>
-      <div class="money">${money(c.dividas)}</div>
-    </div>
-
-  `;
-
+const c=calcular();
+const lm=document.getElementById("listaMovimentos");
+lm.innerHTML=!db.movimentos.length?'<div class="empty">Nenhum movimento cadastrado.</div>':
+db.movimentos.slice().sort((a,b)=>b.data.localeCompare(a.data)).map(x=>`<div class="item"><strong>${esc(x.descricao)}</strong><div class="sub">${dateBR(x.data)}${x.categoria?" • "+esc(x.categoria):""}</div><div class="money ${x.tipo==="entrada"?"green":"red"}">${x.tipo==="entrada"?"+":"-"} ${money(x.valor)}</div><div class="item-actions"><button class="delete" onclick="del('movimentos',${x.id})">Excluir</button></div></div>`).join("");
+
+const lr=document.getElementById("listaRecorrentes");
+lr.innerHTML=!db.recorrentes.length?'<div class="empty">Nenhum gasto recorrente.</div>':
+db.recorrentes.map(x=>`<div class="item"><strong>${esc(x.nome)}</strong><div class="sub">Todo dia ${x.dia}${x.categoria?" • "+esc(x.categoria):""}</div><div class="money yellow">${money(x.valor)}</div><div class="item-actions"><button class="delete" onclick="del('recorrentes',${x.id})">Excluir</button></div></div>`).join("");
+
+const lp=document.getElementById("listaParcelas");
+lp.innerHTML=!db.parcelas.length?'<div class="empty">Nenhum parcelamento.</div>':
+db.parcelas.map(x=>`<div class="item"><strong>${esc(x.nome)}</strong><div class="sub">${x.restantes} parcelas restantes de ${x.total} • vence dia ${x.dia}</div><div class="money yellow">${money(x.valor)} / mês</div>${x.obs?`<div class="sub">${esc(x.obs)}</div>`:""}<div class="item-actions"><button onclick="baixarParcela(${x.id})">Paguei 1 parcela</button><button class="delete" onclick="del('parcelas',${x.id})">Excluir</button></div></div>`).join("");
+
+const ld=document.getElementById("listaDividas");
+ld.innerHTML=!db.dividas.length?'<div class="empty">Nenhuma dívida cadastrada.</div>':
+db.dividas.map(x=>`<div class="item"><strong>${esc(x.pessoa)}</strong><div class="sub">${x.descricao?esc(x.descricao)+" • ":""}${dateBR(x.data)}</div><div class="money ${x.paga?"green":"red"}">${money(x.valor)}${x.paga?" • PAGA":" • PENDENTE"}</div><div class="item-actions"><button onclick="pagarDivida(${x.id})">${x.paga?"Marcar pendente":"Marcar paga"}</button><button class="delete" onclick="del('dividas',${x.id})">Excluir</button></div></div>`).join("");
+
+const lg=document.getElementById("listaMetas");
+lg.innerHTML=!db.metas.length?'<div class="empty">Nenhuma meta cadastrada.</div>':
+db.metas.map(x=>{const pct=x.alvo>0?Math.min(100,(x.atual/x.alvo)*100):0;return `<div class="item"><strong>${esc(x.nome)}</strong><div class="sub">${money(x.atual)} de ${money(x.alvo)}${x.data?" • até "+dateBR(x.data):""}</div><div class="progress"><div style="width:${pct}%"></div></div><div class="sub" style="margin-top:7px">${pct.toFixed(0)}% concluído</div><div class="item-actions"><button onclick="adicionarMeta(${x.id})">Adicionar dinheiro</button><button class="delete" onclick="del('metas',${x.id})">Excluir</button></div></div>`}).join("");
+
+const lista=[];
+db.dividas.filter(x=>!x.paga).forEach(x=>lista.push({nome:"Dívida • "+x.pessoa,data:x.data,valor:x.valor}));
+db.recorrentes.forEach(x=>{const d=new Date();d.setDate(Math.min(x.dia,28));lista.push({nome:"Recorrente • "+x.nome,data:d.toISOString().slice(0,10),valor:x.valor});});
+db.parcelas.filter(x=>x.restantes>0).forEach(x=>{const d=new Date();d.setDate(Math.min(x.dia,28));lista.push({nome:"Parcela • "+x.nome,data:d.toISOString().slice(0,10),valor:x.valor});});
+const pn=document.getElementById("proximos");
+pn.innerHTML=!lista.length?'<div class="empty">Nenhum compromisso próximo.</div>':
+lista.sort((a,b)=>a.data.localeCompare(b.data)).slice(0,7).map(x=>`<div class="item"><strong>${esc(x.nome)}</strong><div class="sub">${dateBR(x.data)}</div><div class="money yellow">${money(x.valor)}</div></div>`).join("");
+
+document.getElementById("situacao").innerHTML=`<div class="statline"><span>Recorrentes</span><strong>${money(c.recorrentes)}</strong></div><div class="statline"><span>Parcelamentos</span><strong>${money(c.parcelas)}</strong></div><div class="statline"><span>Dívidas deste mês</span><strong>${money(c.dividas)}</strong></div>`;
+document.getElementById("resumoBackup").textContent=`${db.movimentos.length} movimentos • ${db.recorrentes.length} recorrentes • ${db.parcelas.length} parcelas • ${db.dividas.length} dívidas • ${db.metas.length} metas`;
+renderPlanejamento();
 }
 
-
-// FUNÇÕES EXTRAS
-
-function baixarParcela(id){
-
-  const p=db.parcelas.find(x=>x.id===id);
-
-  if(!p)return;
-
-  if(p.restantes>0)p.restantes--;
-
-  if(p.restantes===0){
-
-    alert("🎉 Parcelamento concluído!");
-
-  }
-
-  save();
+function exportarBackup(){
+const data={app:"Minha Carteira",versao:2,exportadoEm:new Date().toISOString(),dados:db};
+const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+const url=URL.createObjectURL(blob);const a=document.createElement("a");
+a.href=url;a.download="minha-carteira-backup-"+today()+".json";a.click();URL.revokeObjectURL(url);
 }
-
-
-function adicionarMeta(id){
-
-  const valor=prompt("Quanto deseja adicionar à meta?");
-
-  if(valor===null)return;
-
-  const n=Number(valor);
-
-  if(!isNaN(n)&&n>0){
-
-    const m=db.metas.find(x=>x.id===id);
-
-    if(m)m.atual+=n;
-
-    save();
-
-  }
-
+function importarBackup(event){
+const file=event.target.files[0];if(!file)return;
+const reader=new FileReader();
+reader.onload=()=>{
+try{
+const obj=JSON.parse(reader.result);
+const dados=obj.dados||obj;
+if(!dados.movimentos||!dados.recorrentes||!dados.parcelas||!dados.dividas||!dados.metas)throw new Error("Formato inválido");
+if(!confirm("Restaurar este backup substituirá os dados atuais. Continuar?"))return;
+db=dados;save();alert("✅ Backup restaurado com sucesso!");
+}catch(e){alert("❌ Não foi possível restaurar este arquivo.");}
+event.target.value="";
+};
+reader.readAsText(file);
 }
-
-
-// PROTEÇÃO CONTRA HTML INJETADO
-
-function esc(v){
-
-  return String(v||"")
-  .replaceAll("&","&amp;")
-  .replaceAll("<","&lt;")
-  .replaceAll(">","&gt;")
-  .replaceAll('"',"&quot;")
-  .replaceAll("'","&#039;");
-
+function limparTudo(){
+if(!confirm("Tem certeza que deseja apagar TODOS os dados?"))return;
+if(!confirm("Última confirmação: faça um backup antes. Apagar agora?"))return;
+db={movimentos:[],recorrentes:[],parcelas:[],dividas:[],metas:[]};save();
 }
-
-
-// INICIALIZAÇÃO
-
 render();
-
 </script>
-
 </body>
 </html>
