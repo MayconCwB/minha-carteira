@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Minha Carteira">
+
+<title>Minha Carteira</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  background:#0b0f14;
+  color:#f5f5f5;
+}
+header{
+  padding:24px 18px 18px;
+  background:#111827;
+  position:sticky;
+  top:0;
+  z-index:5;
+}
+header h1{margin:0;font-size:27px}
+header p{margin:5px 0 0;color:#9ca3af}
+
+.container{
+  max-width:850px;
+  margin:auto;
+  padding:15px;
+  padding-bottom:100px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.card{
+  background:#151c26;
+  border:1px solid #263241;
+  border-radius:18px;
+  padding:16px;
+}
+.card.full{grid-column:1/-1}
+.card small{color:#9ca3af}
+.value{
+  display:block;
+  margin-top:7px;
+  font-size:22px;
+  font-weight:700;
+}
+.green{color:#4ade80}
+.red{color:#fb7185}
+.yellow{color:#facc15}
+
+nav{
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  padding:12px 0;
+  position:sticky;
+  top:86px;
+  z-index:4;
+  background:#0b0f14;
+}
+nav button{
+  white-space:nowrap;
+  border:0;
+  border-radius:12px;
+  padding:10px 14px;
+  background:#1b2430;
+  color:#ddd;
+}
+nav button.active{
+  background:#2563eb;
+  color:white;
+}
+
+section{display:none}
+section.active{display:block}
+
+h2{font-size:21px;margin:18px 0 12px}
+
+form{
+  background:#151c26;
+  border:1px solid #263241;
+  border-radius:18px;
+  padding:15px;
+}
+label{
+  display:block;
+  margin-top:11px;
+  color:#cbd5e1;
+  font-size:14px;
+}
+input,select,textarea{
+  width:100%;
+  margin-top:6px;
+  padding:13px;
+  border-radius:11px;
+  border:1px solid #334155;
+  background:#0f1720;
+  color:white;
+  font-size:16px;
+}
+textarea{min-height:80px}
+
+button.primary{
+  width:100%;
+  margin-top:15px;
+  padding:14px;
+  border:0;
+  border-radius:12px;
+  background:#2563eb;
+  color:white;
+  font-size:16px;
+  font-weight:700;
+}
+
+.item{
+  margin-top:10px;
+  background:#151c26;
+  border:1px solid #263241;
+  border-radius:15px;
+  padding:14px;
+}
+.item strong{font-size:16px}
+.item .sub{
+  color:#9ca3af;
+  font-size:13px;
+  margin-top:4px;
+}
+.item .money{
+  font-size:18px;
+  font-weight:700;
+  margin-top:8px;
+}
+.item-actions{
+  display:flex;
+  gap:7px;
+  margin-top:10px;
+}
+.item-actions button{
+  border:0;
+  border-radius:9px;
+  padding:8px 10px;
+  background:#263241;
+  color:white;
+}
+.item-actions button.delete{background:#7f1d1d}
+
+.empty{
+  color:#94a3b8;
+  text-align:center;
+  padding:25px;
+}
+
+.alert{
+  margin-top:12px;
+  padding:14px;
+  border-radius:14px;
+  background:#3f151c;
+  border:1px solid #7f1d1d;
+  color:#fecdd3;
+}
+
+.ok{
+  margin-top:12px;
+  padding:14px;
+  border-radius:14px;
+  background:#12321f;
+  border:1px solid #166534;
+  color:#bbf7d0;
+}
+
+.progress{
+  height:9px;
+  background:#263241;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:9px;
+}
+.progress div{
+  height:100%;
+  background:#2563eb;
+}
+
+footer{
+  text-align:center;
+  color:#64748b;
+  font-size:12px;
+  margin-top:35px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>💰 Minha Carteira</h1>
+  <p>Controle financeiro pessoal</p>
+</header>
+
+<div class="container">
+
+<nav>
+  <button class="active" onclick="showTab('resumo',this)">Resumo</button>
+  <button onclick="showTab('movimentos',this)">Movimentos</button>
+  <button onclick="showTab('recorrentes',this)">Recorrentes</button>
+  <button onclick="showTab('parcelas',this)">Parcelas</button>
+  <button onclick="showTab('dividas',this)">Dívidas</button>
+  <button onclick="showTab('metas',this)">Metas</button>
+</nav>
+
+<!-- RESUMO -->
+<section id="resumo" class="active">
+
+<div class="cards">
+
+<div class="card">
+<small>Saldo atual</small>
+<span id="saldoAtual" class="value">R$ 0,00</span>
+</div>
+
+<div class="card">
+<small>Entradas do mês</small>
+<span id="entradasMes" class="value green">R$ 0,00</span>
+</div>
+
+<div class="card">
+<small>Gastos do mês</small>
+<span id="gastosMes" class="value red">R$ 0,00</span>
+</div>
+
+<div class="card">
+<small>Compromissos</small>
+<span id="compromissos" class="value yellow">R$ 0,00</span>
+</div>
+
+<div class="card full">
+<small>Quanto preciso ter para pagar tudo?</small>
+<span id="precisoTer" class="value">R$ 0,00</span>
+</div>
+
+<div class="card full">
+<small>Saldo depois dos compromissos</small>
+<span id="saldoPrevisto" class="value">R$ 0,00</span>
+</div>
+
+</div>
+
+<div id="alerta"></div>
+
+<h2>📅 Próximos compromissos</h2>
+<div id="proximos"></div>
+
+<h2>📊 Situação financeira</h2>
+<div id="situacao"></div>
+
+</section>
+
+
+<!-- MOVIMENTOS -->
+<section id="movimentos">
+
+<h2>➕ Novo movimento</h2>
+
+<form id="movimentoForm">
+
+<label>Tipo</label>
+<select id="movTipo">
+<option value="entrada">Entrada</option>
+<option value="saida">Gasto</option>
+</select>
+
+<label>Descrição</label>
+<input id="movDescricao" required placeholder="Ex: Salário">
+
+<label>Valor</label>
+<input id="movValor" required type="number" step="0.01" placeholder="0,00">
+
+<label>Data</label>
+<input id="movData" required type="date">
+
+<label>Categoria</label>
+<input id="movCategoria" placeholder="Ex: Alimentação">
+
+<label>Observação</label>
+<textarea id="movObs" placeholder="Opcional"></textarea>
+
+<button class="primary">Adicionar movimento</button>
+
+</form>
+
+<h2>📋 Movimentos</h2>
+<div id="listaMovimentos"></div>
+
+</section>
+
+
+<!-- RECORRENTES -->
+<section id="recorrentes">
+
+<h2>🔄 Gasto recorrente</h2>
+
+<form id="recorrenteForm">
+
+<label>Descrição</label>
+<input id="recNome" required placeholder="Ex: Internet">
+
+<label>Valor mensal</label>
+<input id="recValor" required type="number" step="0.01">
+
+<label>Dia do vencimento</label>
+<input id="recDia" required type="number" min="1" max="31">
+
+<label>Categoria</label>
+<input id="recCategoria" placeholder="Ex: Casa">
+
+<button class="primary">Adicionar recorrente</button>
+
+</form>
+
+<h2>📋 Meus recorrentes</h2>
+<div id="listaRecorrentes"></div>
+
+</section>
+
+
+<!-- PARCELAS -->
+<section id="parcelas">
+
+<h2>💳 Novo parcelamento</h2>
+
+<form id="parcelaForm">
+
+<label>O que estou pagando?</label>
+<input id="parNome" required placeholder="Ex: Notebook">
+
+<label>Valor da parcela</label>
+<input id="parValor" required type="number" step="0.01">
+
+<label>Total de parcelas</label>
+<input id="parTotal" required type="number" min="1">
+
+<label>Parcelas restantes</label>
+<input id="parRestantes" required type="number" min="1">
+
+<label>Dia do vencimento</label>
+<input id="parDia" required type="number" min="1" max="31">
+
+<label>Observação</label>
+<input id="parObs">
+
+<button class="primary">Adicionar parcelamento</button>
+
+</form>
+
+<h2>📋 Parcelamentos</h2>
+<div id="listaParcelas"></div>
+
+</section>
+
+
+<!-- DIVIDAS -->
+<section id="dividas">
+
+<h2>🤝 Nova dívida</h2>
+
+<form id="dividaForm">
+
+<label>Para quem devo?</label>
+<input id="divPessoa" required placeholder="Ex: João">
+
+<label>Valor</label>
+<input id="divValor" required type="number" step="0.01">
+
+<label>Data para pagar</label>
+<input id="divData" required type="date">
+
+<label>Descrição</label>
+<input id="divDescricao" placeholder="Ex: Dinheiro emprestado">
+
+<button class="primary">Adicionar dívida</button>
+
+</form>
+
+<h2>📋 Dívidas</h2>
+<div id="listaDividas"></div>
+
+</section>
+
+
+<!-- METAS -->
+<section id="metas">
+
+<h2>🎯 Nova meta</h2>
+
+<form id="metaForm">
+
+<label>Nome da meta</label>
+<input id="metaNome" required placeholder="Ex: Viagem">
+
+<label>Valor desejado</label>
+<input id="metaAlvo" required type="number" step="0.01">
+
+<label>Quanto já tenho</label>
+<input id="metaAtual" required type="number" step="0.01" value="0">
+
+<label>Data desejada</label>
+<input id="metaData" type="date">
+
+<button class="primary">Adicionar meta</button>
+
+</form>
+
+<h2>📋 Minhas metas</h2>
+<div id="listaMetas"></div>
+
+</section>
+
+<footer>
+Minha Carteira • Versão inicial
+</footer>
+
+</div>
+
+
+<script>
+
+const KEY="minhaCarteiraV1";
+
+let db=JSON.parse(localStorage.getItem(KEY)) || {
+  movimentos:[],
+  recorrentes:[],
+  parcelas:[],
+  dividas:[],
+  metas:[]
+};
+
+function save(){
+  localStorage.setItem(KEY,JSON.stringify(db));
+  render();
+}
+
+function money(v){
+  return Number(v||0).toLocaleString("pt-BR",{
+    style:"currency",
+    currency:"BRL"
+  });
+}
+
+function dateBR(d){
+  if(!d)return "-";
+  return new Date(d+"T12:00:00").toLocaleDateString("pt-BR");
+}
+
+function today(){
+  return new Date().toISOString().slice(0,10);
+}
+
+function monthNow(){
+  return new Date().toISOString().slice(0,7);
+}
+
+function showTab(id,btn){
+
+  document.querySelectorAll("section").forEach(s=>{
+    s.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+
+  document.querySelectorAll("nav button").forEach(b=>{
+    b.classList.remove("active");
+  });
+
+  btn.classList.add("active");
+
+  window.scrollTo(0,0);
+}
+
+
+// MOVIMENTOS
+
+document.getElementById("movData").value=today();
+
+document.getElementById("movimentoForm").onsubmit=e=>{
+  e.preventDefault();
+
+  db.movimentos.push({
+    id:Date.now(),
+    tipo:movTipo.value,
+    descricao:movDescricao.value,
+    valor:Number(movValor.value),
+    data:movData.value,
+    categoria:movCategoria.value,
+    obs:movObs.value
+  });
+
+  e.target.reset();
+  movData.value=today();
+
+  save();
+};
+
+
+// RECORRENTES
+
+document.getElementById("recorrenteForm").onsubmit=e=>{
+  e.preventDefault();
+
+  db.recorrentes.push({
+    id:Date.now(),
+    nome:recNome.value,
+    valor:Number(recValor.value),
+    dia:Number(recDia.value),
+    categoria:recCategoria.value
+  });
+
+  e.target.reset();
+  save();
+};
+
+
+// PARCELAS
+
+document.getElementById("parcelaForm").onsubmit=e=>{
+  e.preventDefault();
+
+  db.parcelas.push({
+    id:Date.now(),
+    nome:parNome.value,
+    valor:Number(parValor.value),
+    total:Number(parTotal.value),
+    restantes:Number(parRestantes.value),
+    dia:Number(parDia.value),
+    obs:parObs.value
+  });
+
+  e.target.reset();
+  save();
+};
+
+
+// DIVIDAS
+
+document.getElementById("dividaForm").onsubmit=e=>{
+  e.preventDefault();
+
+  db.dividas.push({
+    id:Date.now(),
+    pessoa:divPessoa.value,
+    valor:Number(divValor.value),
+    data:divData.value,
+    descricao:divDescricao.value,
+    paga:false
+  });
+
+  e.target.reset();
+  save();
+};
+
+
+// METAS
+
+document.getElementById("metaForm").onsubmit=e=>{
+  e.preventDefault();
+
+  db.metas.push({
+    id:Date.now(),
+    nome:metaNome.value,
+    alvo:Number(metaAlvo.value),
+    atual:Number(metaAtual.value),
+    data:metaData.value
+  });
+
+  e.target.reset();
+  save();
+};
+
+
+// EXCLUIR
+
+function del(tipo,id){
+  if(!confirm("Excluir este registro?"))return;
+
+  db[tipo]=db[tipo].filter(x=>x.id!==id);
+  save();
+}
+
+function pagarDivida(id){
+
+  const d=db.dividas.find(x=>x.id===id);
+
+  if(d)d.paga=!d.paga;
+
+  save();
+}
+
+
+// CÁLCULOS
+
+function calcular(){
+
+  const mes=monthNow();
+
+  let saldo=0;
+  let entradas=0;
+  let gastos=0;
+
+  db.movimentos.forEach(m=>{
+
+    if(m.data<=today()){
+
+      if(m.tipo==="entrada") saldo+=m.valor;
+      else saldo-=m.valor;
+
+    }
+
+    if(m.data.startsWith(mes)){
+
+      if(m.tipo==="entrada") entradas+=m.valor;
+      else gastos+=m.valor;
+
+    }
+
+  });
+
+  let recorrentes=db.recorrentes.reduce((s,x)=>s+x.valor,0);
+
+  let parcelas=db.parcelas
+    .filter(x=>x.restantes>0)
+    .reduce((s,x)=>s+x.valor,0);
+
+  let dividas=db.dividas
+    .filter(x=>!x.paga && x.data.startsWith(mes))
+    .reduce((s,x)=>s+x.valor,0);
+
+  let compromissos=recorrentes+parcelas+dividas;
+
+  document.getElementById("saldoAtual").textContent=money(saldo);
+  document.getElementById("entradasMes").textContent=money(entradas);
+  document.getElementById("gastosMes").textContent=money(gastos);
+  document.getElementById("compromissos").textContent=money(compromissos);
+  document.getElementById("precisoTer").textContent=money(compromissos);
+
+  const previsto=saldo-compromissos;
+
+  const sp=document.getElementById("saldoPrevisto");
+
+  sp.textContent=money(previsto);
+  sp.className="value "+(previsto<0?"red":"green");
+
+  const alerta=document.getElementById("alerta");
+
+  if(previsto<0){
+
+    alerta.innerHTML=
+      `<div class="alert">
+      ⚠️ Atenção: faltam <strong>${money(Math.abs(previsto))}</strong>
+      para cobrir todos os compromissos considerados.
+      </div>`;
+
+  }else{
+
+    alerta.innerHTML=
+      `<div class="ok">
+      ✅ Depois dos compromissos, a previsão é ficar com
+      <strong>${money(previsto)}</strong>.
+      </div>`;
+
+  }
+
+  return {saldo,entradas,gastos,recorrentes,parcelas,dividas,compromissos};
+
+}
+
+
+// RENDER
+
+function render(){
+
+  const c=calcular();
+
+  // MOVIMENTOS
+
+  const lm=document.getElementById("listaMovimentos");
+
+  if(!db.movimentos.length){
+
+    lm.innerHTML='<div class="empty">Nenhum movimento cadastrado.</div>';
+
+  }else{
+
+    lm.innerHTML=db.movimentos
+    .slice()
+    .sort((a,b)=>b.data.localeCompare(a.data))
+    .map(x=>`
+
+      <div class="item">
+
+        <strong>${esc(x.descricao)}</strong>
+
+        <div class="sub">
+        ${dateBR(x.data)}
+        ${x.categoria?" • "+esc(x.categoria):""}
+        </div>
+
+        <div class="money ${x.tipo==="entrada"?"green":"red"}">
+        ${x.tipo==="entrada"?"+":"-"} ${money(x.valor)}
+        </div>
+
+        <div class="item-actions">
+          <button class="delete"
+          onclick="del('movimentos',${x.id})">
+          Excluir
+          </button>
+        </div>
+
+      </div>
+    `).join("");
+
+  }
+
+
+  // RECORRENTES
+
+  const lr=document.getElementById("listaRecorrentes");
+
+  if(!db.recorrentes.length){
+
+    lr.innerHTML='<div class="empty">Nenhum gasto recorrente.</div>';
+
+  }else{
+
+    lr.innerHTML=db.recorrentes.map(x=>`
+
+      <div class="item">
+
+        <strong>${esc(x.nome)}</strong>
+
+        <div class="sub">
+        Todo dia ${x.dia}
+        ${x.categoria?" • "+esc(x.categoria):""}
+        </div>
+
+        <div class="money yellow">
+        ${money(x.valor)}
+        </div>
+
+        <div class="item-actions">
+          <button class="delete"
+          onclick="del('recorrentes',${x.id})">
+          Excluir
+          </button>
+        </div>
+
+      </div>
+
+    `).join("");
+
+  }
+
+
+  // PARCELAS
+
+  const lp=document.getElementById("listaParcelas");
+
+  if(!db.parcelas.length){
+
+    lp.innerHTML='<div class="empty">Nenhum parcelamento.</div>';
+
+  }else{
+
+    lp.innerHTML=db.parcelas.map(x=>`
+
+      <div class="item">
+
+        <strong>${esc(x.nome)}</strong>
+
+        <div class="sub">
+        ${x.restantes} parcelas restantes de ${x.total}
+        • vence dia ${x.dia}
+        </div>
+
+        <div class="money yellow">
+        ${money(x.valor)} / mês
+        </div>
+
+        ${x.obs?`<div class="sub">${esc(x.obs)}</div>`:""}
+
+        <div class="item-actions">
+
+          <button onclick="baixarParcela(${x.id})">
+          Paguei 1 parcela
+          </button>
+
+          <button class="delete"
+          onclick="del('parcelas',${x.id})">
+          Excluir
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+  }
+
+
+  // DIVIDAS
+
+  const ld=document.getElementById("listaDividas");
+
+  if(!db.dividas.length){
+
+    ld.innerHTML='<div class="empty">Nenhuma dívida cadastrada.</div>';
+
+  }else{
+
+    ld.innerHTML=db.dividas.map(x=>`
+
+      <div class="item">
+
+        <strong>${esc(x.pessoa)}</strong>
+
+        <div class="sub">
+        ${x.descricao?esc(x.descricao)+" • ":""}
+        ${dateBR(x.data)}
+        </div>
+
+        <div class="money ${x.paga?"green":"red"}">
+        ${money(x.valor)}
+        ${x.paga?" • PAGA":" • PENDENTE"}
+        </div>
+
+        <div class="item-actions">
+
+          <button onclick="pagarDivida(${x.id})">
+          ${x.paga?"Marcar pendente":"Marcar paga"}
+          </button>
+
+          <button class="delete"
+          onclick="del('dividas',${x.id})">
+          Excluir
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+  }
+
+
+  // METAS
+
+  const lg=document.getElementById("listaMetas");
+
+  if(!db.metas.length){
+
+    lg.innerHTML='<div class="empty">Nenhuma meta cadastrada.</div>';
+
+  }else{
+
+    lg.innerHTML=db.metas.map(x=>{
+
+      const pct=x.alvo>0
+        ?Math.min(100,(x.atual/x.alvo)*100)
+        :0;
+
+      return `
+
+      <div class="item">
+
+        <strong>${esc(x.nome)}</strong>
+
+        <div class="sub">
+        ${money(x.atual)} de ${money(x.alvo)}
+        ${x.data?" • até "+dateBR(x.data):""}
+        </div>
+
+        <div class="progress">
+          <div style="width:${pct}%"></div>
+        </div>
+
+        <div class="sub" style="margin-top:7px">
+        ${pct.toFixed(0)}% concluído
+        </div>
+
+        <div class="item-actions">
+
+          <button onclick="adicionarMeta(${x.id})">
+          Adicionar dinheiro
+          </button>
+
+          <button class="delete"
+          onclick="del('metas',${x.id})">
+          Excluir
+          </button>
+
+        </div>
+
+      </div>
+
+      `;
+
+    }).join("");
+
+  }
+
+
+  // PRÓXIMOS COMPROMISSOS
+
+  const lista=[];
+
+  db.dividas
+  .filter(x=>!x.paga)
+  .forEach(x=>lista.push({
+    nome:"Dívida • "+x.pessoa,
+    data:x.data,
+    valor:x.valor
+  }));
+
+  db.recorrentes.forEach(x=>{
+
+    const d=new Date();
+    d.setDate(x.dia);
+
+    lista.push({
+      nome:"Recorrente • "+x.nome,
+      data:d.toISOString().slice(0,10),
+      valor:x.valor
+    });
+
+  });
+
+  const pn=document.getElementById("proximos");
+
+  if(!lista.length){
+
+    pn.innerHTML='<div class="empty">Nenhum compromisso próximo.</div>';
+
+  }else{
+
+    lista
+    .sort((a,b)=>a.data.localeCompare(b.data))
+    .slice(0,5)
+    .forEach(()=>{});
+
+    pn.innerHTML=lista
+    .sort((a,b)=>a.data.localeCompare(b.data))
+    .slice(0,5)
+    .map(x=>`
+
+      <div class="item">
+
+        <strong>${esc(x.nome)}</strong>
+
+        <div class="sub">${dateBR(x.data)}</div>
+
+        <div class="money yellow">${money(x.valor)}</div>
+
+      </div>
+
+    `).join("");
+
+  }
+
+
+  // SITUAÇÃO
+
+  document.getElementById("situacao").innerHTML=`
+
+    <div class="item">
+      <strong>Compromissos recorrentes</strong>
+      <div class="money">${money(c.recorrentes)}</div>
+    </div>
+
+    <div class="item">
+      <strong>Parcelamentos</strong>
+      <div class="money">${money(c.parcelas)}</div>
+    </div>
+
+    <div class="item">
+      <strong>Dívidas deste mês</strong>
+      <div class="money">${money(c.dividas)}</div>
+    </div>
+
+  `;
+
+}
+
+
+// FUNÇÕES EXTRAS
+
+function baixarParcela(id){
+
+  const p=db.parcelas.find(x=>x.id===id);
+
+  if(!p)return;
+
+  if(p.restantes>0)p.restantes--;
+
+  if(p.restantes===0){
+
+    alert("🎉 Parcelamento concluído!");
+
+  }
+
+  save();
+}
+
+
+function adicionarMeta(id){
+
+  const valor=prompt("Quanto deseja adicionar à meta?");
+
+  if(valor===null)return;
+
+  const n=Number(valor);
+
+  if(!isNaN(n)&&n>0){
+
+    const m=db.metas.find(x=>x.id===id);
+
+    if(m)m.atual+=n;
+
+    save();
+
+  }
+
+}
+
+
+// PROTEÇÃO CONTRA HTML INJETADO
+
+function esc(v){
+
+  return String(v||"")
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
+
+}
+
+
+// INICIALIZAÇÃO
+
+render();
+
+</script>
+
+</body>
+</html>
