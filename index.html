@@ -140,6 +140,10 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       --radius: 12px;
     }
 
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
     body {
       background-color: var(--bg);
       color: var(--text);
@@ -149,6 +153,8 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
+      max-width: 100%;
     }
 
     /* Header & Top Bar */
@@ -159,6 +165,8 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       position: sticky;
       top: 0;
       z-index: 40;
+      overflow-x: hidden;
+      max-width: 100%;
     }
 
     .mc-header-row {
@@ -167,7 +175,8 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.75rem;
+      gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .mc-brand {
@@ -218,6 +227,13 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       align-items: center;
       gap: 0.35rem;
       transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+    @media (max-width: 480px) {
+      .tab-btn {
+        padding: 0.38rem 0.55rem;
+        font-size: 0.75rem;
+      }
     }
     .tab-btn:hover {
       color: var(--text);
@@ -236,7 +252,9 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       max-width: 1080px;
       width: 100%;
       margin: 0 auto;
-      padding: 1rem;
+      padding: 1rem 0.75rem;
+      overflow-x: hidden;
+      box-sizing: border-box;
     }
 
     /* Grid cards */
@@ -244,6 +262,7 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
+      width: 100%;
     }
     @media (max-width: 640px) {
       .grid-2 {
@@ -257,6 +276,9 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       border-radius: var(--radius);
       padding: 1.1rem;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      min-width: 0;
+      max-width: 100%;
+      overflow-wrap: break-word;
     }
     .card.full {
       grid-column: 1 / -1;
@@ -270,6 +292,7 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       align-items: center;
       justify-content: space-between;
       gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     /* Badges */
@@ -282,6 +305,10 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       font-size: 0.7rem;
       font-weight: 600;
       line-height: 1.2;
+      max-width: 100%;
+      white-space: normal;
+      overflow-wrap: break-word;
+      margin: 2px 0;
     }
     .badge-green { background: rgba(52, 211, 153, 0.18); color: var(--green); border: 1px solid rgba(52, 211, 153, 0.3); }
     .badge-red { background: rgba(248, 113, 113, 0.18); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.3); }
@@ -348,9 +375,14 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       border-radius: 8px;
       color: var(--text);
       padding: 0.55rem 0.75rem;
-      font-size: 0.85rem;
+      font-size: 16px;
       outline: none;
       transition: border-color 0.15s ease;
+    }
+    @media (min-width: 768px) {
+      .form-control {
+        font-size: 0.85rem;
+      }
     }
     .form-control:focus {
       border-color: var(--accent);
@@ -360,6 +392,11 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
       gap: 0.6rem;
+    }
+    @media (max-width: 480px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* Form editing state */
@@ -390,23 +427,33 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       display: flex;
       flex-direction: column;
       gap: 0.45rem;
+      min-width: 0;
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
     .item-head {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
       gap: 0.5rem;
+      flex-wrap: wrap;
+      min-width: 0;
     }
     .item-title {
       font-weight: 600;
       font-size: 0.9rem;
       color: var(--text);
       word-break: break-word;
+      overflow-wrap: break-word;
+      min-width: 0;
+      flex: 1 1 auto;
     }
     .item-val {
       font-size: 0.95rem;
       font-weight: 700;
       white-space: nowrap;
+      flex-shrink: 0;
+      margin-left: auto;
     }
     .val-in { color: var(--green); }
     .val-out { color: var(--red); }
@@ -417,6 +464,9 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       gap: 0.4rem;
       font-size: 0.75rem;
       color: var(--text-muted);
+      overflow-wrap: break-word;
+      word-break: break-word;
+      min-width: 0;
     }
     .item-actions {
       display: flex;
@@ -426,6 +476,15 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       margin-top: 0.25rem;
       padding-top: 0.4rem;
       border-top: 1px solid rgba(255, 255, 255, 0.04);
+      width: 100%;
+    }
+    .item-actions .btn {
+      flex: 1 1 calc(50% - 0.4rem);
+      min-width: 120px;
+      white-space: normal;
+      line-height: 1.25;
+      text-align: center;
+      word-break: normal;
     }
 
     /* Progress bar */
@@ -474,18 +533,42 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       margin: 0.2rem 0;
     }
 
+    /* Statline, timelineitem, dayhead generic support */
+    .statline, .timelineitem, .dayhead {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      min-width: 0;
+    }
+    .statline span, .timelineitem span, .dayhead span {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    .statline strong, .timelineitem strong, .dayhead strong {
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-left: auto;
+    }
+
     /* Timeline in Planning */
     .timeline {
       display: flex;
       flex-direction: column;
       gap: 0.65rem;
       margin-top: 0.85rem;
+      min-width: 0;
     }
     .daycard {
       background: #0f1725;
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 0.7rem 0.85rem;
+      min-width: 0;
+      overflow-wrap: break-word;
     }
     .daycard-header {
       display: flex;
@@ -493,6 +576,13 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       align-items: center;
       font-size: 0.82rem;
       font-weight: 600;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      min-width: 0;
+    }
+    .daycard-header span:first-child {
+      flex: 1 1 auto;
+      min-width: 0;
     }
     .daycard-details summary {
       cursor: pointer;
@@ -500,19 +590,38 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       font-size: 0.75rem;
       margin: 0.4rem 0 0.2rem 0;
       user-select: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 0.5rem;
     }
     .daycard-items {
       display: flex;
       flex-direction: column;
       gap: 0.35rem;
       padding: 0.4rem 0;
+      min-width: 0;
     }
     .daycard-row {
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       font-size: 0.75rem;
       padding: 0.2rem 0;
       border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      min-width: 0;
+    }
+    .daycard-row span {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    .daycard-row strong {
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-left: auto;
     }
     .daycard-footer {
       font-size: 0.78rem;
@@ -522,6 +631,19 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       border-top: 1px solid rgba(255, 255, 255, 0.06);
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      min-width: 0;
+    }
+    .daycard-footer span:first-child {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .daycard-footer span:last-child {
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-left: auto;
     }
 
     /* Toast */
@@ -534,9 +656,10 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       flex-direction: column;
       gap: 0.5rem;
       z-index: 100;
-      width: 90%;
+      width: calc(100vw - 24px);
       max-width: 420px;
       pointer-events: none;
+      box-sizing: border-box;
     }
     .toast {
       background: #1c2738;
@@ -548,6 +671,10 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
       animation: toastIn 0.2s ease;
       pointer-events: auto;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      max-width: 100%;
+      box-sizing: border-box;
     }
     @keyframes toastIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -565,6 +692,9 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       justify-content: center;
       z-index: 90;
       padding: 1rem;
+      max-height: 100dvh;
+      overflow-y: auto;
+      box-sizing: border-box;
     }
     .modal-overlay.hidden { display: none; }
     .authcard {
@@ -573,8 +703,11 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       border-radius: var(--radius);
       padding: 1.5rem;
       width: 100%;
-      max-width: 380px;
+      max-width: min(380px, 100%);
+      box-sizing: border-box;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      max-height: 90dvh;
+      overflow-y: auto;
     }
 
     /* Sections show/hide */
@@ -979,11 +1112,11 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
         <p class="muted" style="font-size:0.8rem; margin:0 0 1rem 0;">
           Acompanhe dia a dia o saldo projetado, considerando receitas esperadas e todos os pagamentos (recorrentes, parcelas e dívidas ajustadas).
         </p>
-        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:0.5rem;">
-          <button class="btn secondary btn-sm" onclick="mudarMes(-1)">⬅️ Mês anterior</button>
-          <input type="month" id="planejamentoMes" class="form-control" style="width:auto; padding:0.35rem 0.6rem;" onchange="renderPlanejamento()">
-          <button class="btn secondary btn-sm" onclick="mudarMes(1)">Próximo mês ➡️</button>
-          <button class="btn secondary btn-sm" onclick="irHoje()">Hoje</button>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:0.4rem; width:100%;">
+          <button class="btn secondary btn-sm" style="flex:1 1 auto;" onclick="mudarMes(-1)">⬅️ Anterior</button>
+          <input type="month" id="planejamentoMes" class="form-control" style="flex:2 1 130px; min-width:0; padding:0.35rem 0.6rem;" onchange="renderPlanejamento()">
+          <button class="btn secondary btn-sm" style="flex:1 1 auto;" onclick="mudarMes(1)">Próximo ➡️</button>
+          <button class="btn secondary btn-sm" style="flex:1 1 auto;" onclick="irHoje()">Hoje</button>
         </div>
       </div>
 
@@ -1263,9 +1396,13 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
         if (!raw) return null;
         const obj = JSON.parse(raw);
         if (!obj || typeof obj !== "object") return null;
+        const recs = Array.isArray(obj.recorrentes) ? obj.recorrentes : [];
+        recs.forEach(r => {
+          if (!Array.isArray(r.pagos)) r.pagos = [];
+        });
         return {
           movimentos: Array.isArray(obj.movimentos) ? obj.movimentos : [],
-          recorrentes: Array.isArray(obj.recorrentes) ? obj.recorrentes : [],
+          recorrentes: recs,
           parcelas: Array.isArray(obj.parcelas) ? obj.parcelas : [],
           dividas: Array.isArray(obj.dividas) ? obj.dividas : [],
           metas: Array.isArray(obj.metas) ? obj.metas : [],
@@ -1306,6 +1443,11 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
 
       if (melhor && melhor.q > 0) {
         db = melhor.base;
+        if (Array.isArray(db.recorrentes)) {
+          db.recorrentes.forEach(r => {
+            if (!Array.isArray(r.pagos)) r.pagos = [];
+          });
+        }
         // Auto-reparo na canônica e recuperação
         try { localStorage.setItem(CHAVE_CANONICA, JSON.stringify(db)); } catch (e) {}
         try { localStorage.setItem(CHAVE_RECUPERACAO, JSON.stringify(db)); } catch (e) {}
@@ -1424,9 +1566,13 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
     /* --- OBTENÇÃO DE COMPROMISSOS DE UM MÊS --- */
     function compromissosMes(ano, mes1a12) {
       const lista = [];
+      const mesChave = `${ano}-${String(mes1a12).padStart(2, "0")}`;
 
-      // 1. Recorrentes
+      // 1. Recorrentes (exclui os já pagos no mês informado)
       db.recorrentes.forEach(r => {
+        const pagos = Array.isArray(r.pagos) ? r.pagos : [];
+        if (pagos.includes(mesChave)) return;
+
         let dia = Number(r.dia);
         const maxDias = diasNoMes(ano, mes1a12);
         if (dia > maxDias) dia = maxDias;
@@ -1600,6 +1746,8 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
         }
       });
       db.recorrentes.forEach(r => {
+        const pagos = Array.isArray(r.pagos) ? r.pagos : [];
+        if (pagos.includes(prefixoMesAtual)) return;
         const cat = r.categoria || "Fixos";
         mapaCat[cat] = (mapaCat[cat] || 0) + Number(r.valor);
       });
@@ -1800,14 +1948,23 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
 
       const hoje = today();
       const [hAno, hMes, hDia] = hoje.split("-").map(Number);
+      const mesAtualChave = monthNow();
 
       box.innerHTML = filtrados.map(r => {
+        const pagos = Array.isArray(r.pagos) ? r.pagos : [];
+        const isPagoMes = pagos.includes(mesAtualChave);
+
         let diaNum = Number(r.dia);
         let maxD = diasNoMes(hAno, hMes);
         if (diaNum > maxD) diaNum = maxD;
         const dataVenc = `${hAno}-${String(hMes).padStart(2, "0")}-${String(diaNum).padStart(2, "0")}`;
         const diff = diasEntre(hoje, dataVenc);
-        const badgeProximo = (diff >= 0 && diff <= 3) ? `<span class="badge badge-yellow">⏰ Vence em ${diff === 0 ? 'hoje' : diff + 'd'}</span>` : "";
+        const badgeProximo = (!isPagoMes && diff >= 0 && diff <= 3) ? `<span class="badge badge-yellow">⏰ Vence em ${diff === 0 ? 'hoje' : diff + 'd'}</span>` : "";
+        const badgePago = isPagoMes ? `<span class="badge badge-green">✅ Pago neste mês</span>` : "";
+
+        const btnAcaoPago = isPagoMes
+          ? `<button class="btn btn-sm secondary" onclick="desfazerRecorrentePagoMes('${r.id}')">↩️ Desfazer (voltou a dever)</button>`
+          : `<button class="btn btn-sm success" onclick="marcarRecorrentePagoMes('${r.id}')">✅ Paguei neste mês</button>`;
 
         return `
           <div class="item-card">
@@ -1819,14 +1976,56 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
               <span>📅 Todo dia ${r.dia}</span>
               <span class="badge badge-muted">${esc(r.categoria)}</span>
               ${badgeProximo}
+              ${badgePago}
             </div>
             <div class="item-actions">
+              ${btnAcaoPago}
               <button class="btn btn-sm secondary" onclick="editarRegistro('recorrentes', '${r.id}')">✏️ Editar</button>
               <button class="btn btn-sm delete" onclick="del('recorrentes', '${r.id}')">🗑️ Excluir</button>
             </div>
           </div>
         `;
       }).join("");
+    }
+
+    function marcarRecorrentePagoMes(id) {
+      const r = db.recorrentes.find(x => x.id === id);
+      if (!r) return;
+      if (!Array.isArray(r.pagos)) r.pagos = [];
+      const mesAtual = monthNow();
+      if (!r.pagos.includes(mesAtual)) {
+        r.pagos.push(mesAtual);
+
+        const [ano, mes] = mesAtual.split("-").map(Number);
+        let dia = Number(r.dia) || 1;
+        const maxD = diasNoMes(ano, mes);
+        if (dia > maxD) dia = maxD;
+        const dataEfetiva = `${mesAtual}-${String(dia).padStart(2, "0")}`;
+
+        db.historico.push({
+          id: uid(),
+          tipo: "movimento",
+          status: "concluido",
+          nome: `Recorrente pago • ${r.nome}`,
+          valor: Number(r.valor) || 0,
+          dataOriginal: dataEfetiva,
+          dataRegistro: today(),
+          info: `Mês ${mesAtual}`,
+          refId: r.id
+        });
+
+        toast("✅ Recorrente pago neste mês — saiu dos compromissos.");
+        save();
+      }
+    }
+
+    function desfazerRecorrentePagoMes(id) {
+      const r = db.recorrentes.find(x => x.id === id);
+      if (!r || !Array.isArray(r.pagos)) return;
+      const mesAtual = monthNow();
+      r.pagos = r.pagos.filter(m => m !== mesAtual);
+      toast("↩️ Pagamento desfeito — compromisso voltou.");
+      save();
     }
 
     function salvarRecorrente(e) {
@@ -1845,11 +2044,12 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
       if (id) {
         const idx = db.recorrentes.findIndex(r => r.id === id);
         if (idx !== -1) {
-          db.recorrentes[idx] = { id, nome, valor, dia, categoria };
+          const pagosAntigos = Array.isArray(db.recorrentes[idx].pagos) ? db.recorrentes[idx].pagos : [];
+          db.recorrentes[idx] = { id, nome, valor, dia, categoria, pagos: pagosAntigos };
           toast("✅ Recorrente atualizado!");
         }
       } else {
-        db.recorrentes.push({ id: uid(), nome, valor, dia, categoria });
+        db.recorrentes.push({ id: uid(), nome, valor, dia, categoria, pagos: [] });
         toast("✅ Despesa recorrente cadastrada!");
       }
 
@@ -2056,8 +2256,29 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
           toast("✅ Dívida atualizada!");
         }
       } else {
-        db.dividas.push({ id: uid(), pessoa, valor, data, descricao });
-        toast("✅ Dívida registrada!");
+        let dataSalva = data;
+        let msgToast = "✅ Dívida registrada!";
+
+        const hojeIso = today();
+        const [hAno, hMes, hDia] = hojeIso.split("-").map(Number);
+        const [dAno, dMes, dDia] = data.split("-").map(Number);
+
+        // Se a data informada está no mês/ano atual e o DIA já passou em relação a hoje
+        if (dAno === hAno && dMes === hMes && dDia < hDia) {
+          let proxMes = dMes + 1;
+          let proxAno = dAno;
+          if (proxMes > 12) {
+            proxMes = 1;
+            proxAno += 1;
+          }
+          const maxDiasProx = diasNoMes(proxAno, proxMes);
+          const diaAjustado = Math.min(dDia, maxDiasProx);
+          dataSalva = `${proxAno}-${String(proxMes).padStart(2, "0")}-${String(diaAjustado).padStart(2, "0")}`;
+          msgToast = `⏭️ O dia ${dDia} já passou — a dívida foi registrada para o próximo mês (${dateBR(dataSalva)}).`;
+        }
+
+        db.dividas.push({ id: uid(), pessoa, valor, data: dataSalva, descricao });
+        toast(msgToast);
       }
 
       cancelarEdicao("dividas");
@@ -2703,9 +2924,14 @@ table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 
           const rawDados = parsed.dados || parsed;
           if (typeof rawDados !== "object") throw new Error("Formato inválido");
 
+          const recsImport = Array.isArray(rawDados.recorrentes) ? rawDados.recorrentes : [];
+          recsImport.forEach(r => {
+            if (!Array.isArray(r.pagos)) r.pagos = [];
+          });
+
           const novoDb = {
             movimentos: Array.isArray(rawDados.movimentos) ? rawDados.movimentos : [],
-            recorrentes: Array.isArray(rawDados.recorrentes) ? rawDados.recorrentes : [],
+            recorrentes: recsImport,
             parcelas: Array.isArray(rawDados.parcelas) ? rawDados.parcelas : [],
             dividas: Array.isArray(rawDados.dividas) ? rawDados.dividas : [],
             metas: Array.isArray(rawDados.metas) ? rawDados.metas : [],
