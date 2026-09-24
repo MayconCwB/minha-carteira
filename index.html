@@ -1,567 +1,3124 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Minha Carteira">
-<meta name="theme-color" content="#0d1420">
-<title>Minha Carteira</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0d1420;color:#e8eef7;padding:20px 14px calc(30px + env(safe-area-inset-bottom));padding-top:calc(20px + env(safe-area-inset-top))}
-.container{max-width:680px;margin:0 auto}
-header{text-align:center;margin-bottom:18px}
-header h1{font-size:24px}
-header p{color:#8fa3bf;font-size:13px;margin-top:4px}
-#userBar{display:flex;justify-content:center;align-items:center;gap:10px;font-size:12px;color:#8fa3bf;margin-bottom:14px;flex-wrap:wrap}
-.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
-.badge-green{background:rgba(52,211,153,.15);color:#34d399}
-.badge-red{background:rgba(248,113,113,.15);color:#f87171}
-.badge-yellow{background:rgba(251,191,36,.15);color:#fbbf24}
-.badge-blue{background:rgba(79,140,255,.15);color:#4f8cff}
-nav{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:18px}
-nav button{background:#1a2434;color:#8fa3bf;border:1px solid #263241;padding:8px 14px;border-radius:10px;font-size:13px;cursor:pointer}
-nav button.active{background:#4f8cff;color:#fff;border-color:#4f8cff}
-section{display:none}
-section.active{display:block}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.card{background:#131c2b;border:1px solid #263241;border-radius:12px;padding:14px}
-.card.full{grid-column:1/-1}
-.card small{display:block;color:#8fa3bf;font-size:11px;margin-bottom:6px}
-.card .value{font-size:19px;font-weight:700}
-.green{color:#34d399}.red{color:#f87171}.yellow{color:#fbbf24}
-.item{background:#131c2b;border:1px solid #263241;border-radius:12px;padding:13px;margin-bottom:10px}
-.item strong{font-size:15px}
-.sub{color:#8fa3bf;font-size:12px;margin-top:3px}
-.money{font-size:15px;font-weight:700;margin-top:4px}
-.item-actions{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
-button.primary{background:#4f8cff;color:#fff;border:none;padding:10px 16px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer}
-button.secondary{background:transparent;color:#8fa3bf;border:1px solid #263241;padding:10px 16px;border-radius:10px;font-size:13px;cursor:pointer}
-button.delete{background:rgba(248,113,113,.12);color:#f87171;border:none;padding:10px 16px;border-radius:10px;font-size:13px;cursor:pointer}
-.item-actions button{padding:7px 12px;font-size:12px}
-form{background:#131c2b;border:1px solid #263241;border-radius:12px;padding:14px;margin-bottom:18px}
-form.editing{border-color:#4f8cff}
-label{display:block;font-size:12px;color:#8fa3bf;margin:9px 0 4px}
-input,select,textarea{width:100%;background:#0d1420;border:1px solid #263241;color:#e8eef7;padding:10px;border-radius:9px;font-size:15px}
-textarea{min-height:60px;resize:vertical}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.searchbar{margin-bottom:10px}
-.progress{background:#0d1420;border-radius:6px;height:8px;overflow:hidden;margin-top:8px}
-.progress div{background:#4f8cff;height:100%}
-.daycard{background:#131c2b;border:1px solid #263241;border-radius:12px;padding:13px;margin-bottom:10px}
-.dayhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.dayhead strong{font-size:16px}
-.daytotal{font-size:16px;font-weight:700}
-.timelineitem{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid #263241;font-size:13px}
-details summary{cursor:pointer;color:#4f8cff;font-size:13px;margin-top:6px}
-.need{margin-top:8px;font-size:12px;color:#f87171}
-.covered{margin-top:8px;font-size:12px;color:#34d399}
-.empty{color:#8fa3bf;font-size:13px;text-align:center;padding:16px;border:1px dashed #263241;border-radius:12px}
-.alert{background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.4);color:#f87171;padding:12px;border-radius:12px;margin-bottom:14px;font-size:13px}
-.ok{background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.4);color:#34d399;padding:12px;border-radius:12px;margin-bottom:14px;font-size:13px}
-.statline{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #263241;font-size:13px}
-.chips{display:flex;gap:6px;margin:10px 0;flex-wrap:wrap}
-.chips button{background:#1a2434;color:#8fa3bf;border:1px solid #263241;padding:7px 13px;border-radius:20px;font-size:12px;cursor:pointer}
-.chips button.on{background:#4f8cff;color:#fff;border-color:#4f8cff}
-.period{display:flex;gap:6px;align-items:center;margin-bottom:14px}
-.period button{background:#1a2434;color:#e8eef7;border:1px solid #263241;padding:8px 12px;border-radius:9px;cursor:pointer}
-.period input{width:auto;flex:1}
-.overlay{position:fixed;inset:0;background:#0d1420;z-index:50;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
-.overlay.hidden{display:none}
-.authcard{background:#131c2b;border:1px solid #263241;border-radius:14px;padding:22px;max-width:380px;width:100%}
-.authcard h2{text-align:center;font-size:19px;margin-bottom:4px}
-.authcard .sub{text-align:center;margin-bottom:14px}
-.authcard button{width:100%;margin-top:9px}
-.linkbtn{background:none;border:none;color:#4f8cff;font-size:12px;cursor:pointer;margin-top:10px;width:100%}
-#toast{position:fixed;top:calc(10px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);background:#1a2434;border:1px solid #4f8cff;color:#e8eef7;padding:10px 16px;border-radius:12px;font-size:13px;z-index:99;display:none;max-width:90%}
-#modalConflict{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:60;display:none;align-items:center;justify-content:center;padding:20px}
-#modalConflict .authcard button{display:block}
-footer{text-align:center;color:#8fa3bf;font-size:12px;margin-top:30px}
-@media(max-width:520px){.cards{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Minha Carteira — v3.3 (completa)</title>
+
+  <!-- PWA iOS Metas -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Minha Carteira">
+  <meta name="theme-color" content="#0d1420">
+
+  <!-- Shell & Basecoat -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/basecoat-css@1.0.2/dist/basecoat.cdn.min.css">
+  <style>
+/* Skip artifact shell — fixed styles served beside every artifact.
+   Complements basecoat; artifacts override --accent for their own identity. */
+:root {
+  color-scheme: light dark;
+  --accent: #2563eb;
+  --accent-contrast: #ffffff;
+  --accent-text: color-mix(in srgb, var(--accent) 72%, #000);
+  --bg: #f8f9fb;
+  --surface: #ffffff;
+  --text: #14171f;
+  --text-muted: #5b6472;
+  --border: rgba(20, 23, 31, 0.10);
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(20, 23, 31, 0.08);
+  --space: 16px;
+}
+/* Theme resolution. Without data-theme the viewer's system preference decides,
+   as it always did. With it, the artifact's own choice wins in BOTH directions:
+   a page that hardcodes one palette must not be handed the opposite set of
+   tokens by the machine it happens to be opened on. The dark values appear
+   twice because a media query cannot be folded into a selector list.
+   The attribute sits inside :where() so these blocks keep the specificity of a
+   bare :root — the page's own <style> is linked after this file and must go on
+   overriding any token it wants, exactly as it could before. */
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    --accent-text: color-mix(in srgb, var(--accent) 78%, #fff);
+    --bg: #101318;
+    --surface: #181c23;
+    --text: #eef1f6;
+    --text-muted: #9aa4b2;
+    --border: rgba(238, 241, 246, 0.12);
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+}
+:root:where([data-theme="dark"]) {
+  color-scheme: dark;
+  --accent-text: color-mix(in srgb, var(--accent) 78%, #fff);
+  --bg: #101318;
+  --surface: #181c23;
+  --text: #eef1f6;
+  --text-muted: #9aa4b2;
+  --border: rgba(238, 241, 246, 0.12);
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+:root:where([data-theme="light"]) { color-scheme: light; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+
+.shell-container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+.shell-section { padding: calc(var(--space) * 2) 0; }
+.shell-grid { display: grid; gap: var(--space); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.shell-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: var(--space); }
+.shell-footer { padding: 24px 0 40px; color: var(--text-muted); font-size: 13px; }
+
+.shell-hero { padding: calc(var(--space) * 3) 0 calc(var(--space) * 2); }
+.shell-hero h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.15; margin: 0 0 10px; text-wrap: balance; }
+.shell-hero p { color: var(--text-muted); max-width: 60ch; margin: 0; }
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space);
+}
+
+.kpi { display: flex; flex-direction: column; gap: 4px; }
+.kpi .kpi-value { font-size: 28px; font-weight: 650; line-height: 1.1; }
+.kpi .kpi-label { font-size: 13px; color: var(--text-muted); }
+.kpi .kpi-delta { font-size: 12.5px; font-weight: 600; }
+.kpi .kpi-delta.up { color: #0a8f3c; }
+.kpi .kpi-delta.down { color: #cf3131; }
+
+table.shell-table { border-collapse: collapse; width: 100%; font-size: 14px; }
+table.shell-table th {
+  text-align: left; font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--text-muted); font-weight: 600;
+}
+table.shell-table th, table.shell-table td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--border); }
+table.shell-table td.num, table.shell-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.shell-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+
+.chart-box { width: 100%; min-height: 220px; }
+.chart-box svg { width: 100%; height: auto; display: block; }
+
+.muted { color: var(--text-muted); }
+.accent { color: var(--accent-text); }
+.shell-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent-text);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .shell-fade { animation: shell-fade 400ms ease both; }
+  @keyframes shell-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+}
+
 </style>
+  
+
+  <style>
+    :root {
+      --bg: #0d1420;
+      --surface: #131c2b;
+      --border: #263241;
+      --text: #e8eef7;
+      --text-muted: #94a3b8;
+      --accent: #4f8cff;
+      --accent-text: #70a2ff;
+      --accent-contrast: #0d1420;
+      --green: #34d399;
+      --red: #f87171;
+      --yellow: #fbbf24;
+      --radius: 12px;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header & Top Bar */
+    header.mc-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .mc-header-row {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .mc-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .mc-status-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    /* Tab navigation */
+    .nav-tabs-wrapper {
+      background: #0f1726;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .nav-tabs-wrapper::-webkit-scrollbar { display: none; }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.25rem;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0.35rem 0.5rem;
+      white-space: nowrap;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 0.5rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .tab-btn.active {
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 2px 6px rgba(79, 140, 255, 0.35);
+    }
+
+    /* Main Container */
+    main.mc-main {
+      flex: 1;
+      max-width: 1080px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    /* Grid cards */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 640px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+    .card.full {
+      grid-column: 1 / -1;
+    }
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin: 0 0 0.75rem 0;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    .badge-green { background: rgba(52, 211, 153, 0.18); color: var(--green); border: 1px solid rgba(52, 211, 153, 0.3); }
+    .badge-red { background: rgba(248, 113, 113, 0.18); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.3); }
+    .badge-yellow { background: rgba(251, 191, 36, 0.18); color: var(--yellow); border: 1px solid rgba(251, 191, 36, 0.3); }
+    .badge-blue { background: rgba(79, 140, 255, 0.18); color: var(--accent); border: 1px solid rgba(79, 140, 255, 0.3); }
+    .badge-muted { background: rgba(148, 163, 184, 0.15); color: var(--text-muted); border: 1px solid rgba(148, 163, 184, 0.25); }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.55rem 0.9rem;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: filter 0.15s ease, transform 0.05s ease;
+      text-decoration: none;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-sm { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
+    .btn.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn.primary:hover { filter: brightness(1.1); }
+    .btn.secondary {
+      background: #1c2738;
+      border-color: var(--border);
+      color: var(--text);
+    }
+    .btn.secondary:hover { background: #24334a; }
+    .btn.delete {
+      background: rgba(248, 113, 113, 0.15);
+      border-color: rgba(248, 113, 113, 0.35);
+      color: var(--red);
+    }
+    .btn.delete:hover { background: rgba(248, 113, 113, 0.25); }
+    .btn.success {
+      background: rgba(52, 211, 153, 0.18);
+      border-color: rgba(52, 211, 153, 0.35);
+      color: var(--green);
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 0.75rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+    .form-control {
+      width: 100%;
+      box-sizing: border-box;
+      background: #0b111b;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 0.55rem 0.75rem;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .form-control:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(79, 140, 255, 0.2);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.6rem;
+    }
+
+    /* Form editing state */
+    form.editing {
+      border: 2px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      background: rgba(79, 140, 255, 0.05);
+    }
+
+    /* Lists and Items */
+    .search-bar {
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .item-card {
+      background: #0e1522;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .item-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+    .item-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text);
+      word-break: break-word;
+    }
+    .item-val {
+      font-size: 0.95rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .val-in { color: var(--green); }
+    .val-out { color: var(--red); }
+    .item-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .item-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.25rem;
+      padding-top: 0.4rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    /* Progress bar */
+    .progress-track {
+      width: 100%;
+      height: 7px;
+      background: #1e2a3c;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 0.25rem 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    /* Alerts */
+    .alerta-box {
+      padding: 0.85rem 1rem;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .alerta-ok {
+      background: rgba(52, 211, 153, 0.12);
+      border-color: rgba(52, 211, 153, 0.3);
+      color: #bbf7d0;
+    }
+    .alerta-warn {
+      background: rgba(248, 113, 113, 0.12);
+      border-color: rgba(248, 113, 113, 0.3);
+      color: #fecaca;
+    }
+
+    /* KPI Mini Cards */
+    .kpi-num {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0.2rem 0;
+    }
+
+    /* Timeline in Planning */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-top: 0.85rem;
+    }
+    .daycard {
+      background: #0f1725;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.7rem 0.85rem;
+    }
+    .daycard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .daycard-details summary {
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin: 0.4rem 0 0.2rem 0;
+      user-select: none;
+    }
+    .daycard-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 0.4rem 0;
+    }
+    .daycard-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      padding: 0.2rem 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+    }
+    .daycard-footer {
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-top: 0.4rem;
+      padding-top: 0.35rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Toast */
+    #toastContainer {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 100;
+      width: 90%;
+      max-width: 420px;
+      pointer-events: none;
+    }
+    .toast {
+      background: #1c2738;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      animation: toastIn 0.2s ease;
+      pointer-events: auto;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Modal / Overlay */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 90;
+      padding: 1rem;
+    }
+    .modal-overlay.hidden { display: none; }
+    .authcard {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Sections show/hide */
+    section.tab-pane {
+      display: none;
+    }
+    section.tab-pane.active {
+      display: block;
+      animation: tabFade 0.15s ease-out;
+    }
+    @keyframes tabFade {
+      from { opacity: 0; transform: translateY(3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer.mc-footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      text-align: center;
+      padding: 1.25rem 1rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: auto;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    @media print {
+      header.mc-header, .nav-tabs-wrapper, .btn, .item-actions, .search-bar, form, footer.mc-footer {
+        display: none !important;
+      }
+      body, main.mc-main {
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .card, .daycard {
+        border: 1px solid #ddd !important;
+        background: #fff !important;
+        color: #000 !important;
+      }
+    }
+  </style>
 </head>
 <body>
-<div id="toast"></div>
 
-<div id="cfgOverlay" class="overlay hidden">
-  <div class="authcard">
-    <h2>⚙️ Configurar a nuvem (só uma vez)</h2>
-    <p class="sub">Ativa o login e a sincronização entre aparelhos via Firebase (gratuito).</p>
-    <p class="sub">1) Crie um projeto grátis em console.firebase.google.com<br>2) Authentication → Sign-in method → ative E-mail/senha e Google<br>3) Ative o Firestore Database (modo de produção)<br>4) Configurações do projeto → Seus apps → app Web → copie o objeto firebaseConfig e cole abaixo:</p>
-    <textarea id="cfgTexto" placeholder='Cole aqui o objeto firebaseConfig inteiro'></textarea>
-    <button class="primary" onclick="salvarConfig()">💾 Salvar e conectar</button>
-    <button class="secondary" onclick="entrarModoLocal()">📴 Continuar sem nuvem (modo local)</button>
-    <details style="margin-top:12px"><summary style="color:#4f8cff;font-size:12px">🔒 Regras recomendadas para o Firestore</summary>
-      <p class="sub" style="margin-top:8px">No console do Firestore, aba Rules, cole:<br><br>rules_version = '2';<br>service cloud.firestore {<br>&nbsp;&nbsp;match /databases/{database}/documents {<br>&nbsp;&nbsp;&nbsp;&nbsp;match /carteiras/{uid} {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allow read, write: if request.auth != null && request.auth.uid == uid;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}</p>
-    </details>
-    <p class="sub" id="cfgErro" style="color:#f87171"></p>
-  </div>
-</div>
+  <!-- Header -->
+  <header class="mc-header">
+    <div class="mc-header-row">
+      <div class="mc-brand">
+        <span>💰 Minha Carteira</span>
+        <span class="badge badge-muted" style="font-size:0.65rem;">v3.3</span>
+      </div>
+      <div class="mc-status-bar">
+        <span id="syncIndicator" class="badge badge-yellow">📴 Modo local</span>
+        <span id="userIndicator" class="muted" style="display:none; font-size:0.75rem;"></span>
+        <button id="btnSairHeader" class="btn btn-sm secondary" style="display:none;" onclick="sairConta()">Sair</button>
+      </div>
+    </div>
+  </header>
 
-<div id="loginOverlay" class="overlay hidden">
-  <div class="authcard">
-    <h2>💰 Minha Carteira</h2>
-    <p class="sub">Acesse sua carteira para sincronizar em tempo real</p>
-    <label>E-mail</label><input id="logEmail" type="email" autocomplete="username">
-    <label>Senha</label><input id="logSenha" type="password" autocomplete="current-password">
-    <button class="primary" onclick="fazerLogin(false)">Entrar</button>
-    <button class="secondary" onclick="fazerLogin(true)">Criar conta</button>
-    <button class="secondary" onclick="fazerLoginGoogle()">Entrar com Google</button>
-    <button class="linkbtn" onclick="entrarModoLocal()">Continuar sem conta (modo local neste aparelho)</button>
-    <button class="linkbtn" onclick="reconfigFirebase()">⚙️ Reconfigurar projeto Firebase</button>
-    <p class="sub" id="loginErro" style="color:#f87171"></p>
-  </div>
-</div>
-
-<div id="modalConflict">
-  <div class="authcard">
-    <h2>⚠️ Dados diferentes</h2>
-    <p class="sub">Os dados do aparelho e da nuvem estão diferentes. Qual usar?</p>
-    <button class="primary" onclick="aplicarEscolha('nuvem')">☁️ Usar da nuvem</button>
-    <button class="secondary" onclick="aplicarEscolha('local')">📱 Usar deste aparelho</button>
-  </div>
-</div>
-
-<div class="container">
-  <header><h1>💰 Minha Carteira</h1><p>Controle financeiro pessoal multiusuário</p></header>
-  <div id="userBar"></div>
-  <nav>
-    <button class="active" onclick="showTab('resumo',this)">💰 Resumo</button>
-    <button onclick="showTab('movimentos',this)">📋 Movimentos</button>
-    <button onclick="showTab('recorrentes',this)">🔄 Recorrentes</button>
-    <button onclick="showTab('parcelas',this)">📅 Parcelas</button>
-    <button onclick="showTab('dividas',this)">🤝 Dívidas</button>
-    <button onclick="showTab('metas',this)">🎯 Metas</button>
-    <button onclick="showTab('planejamento',this)">🗓️ Planejamento</button>
-    <button onclick="showTab('historico',this)">📥 Histórico</button>
-    <button onclick="showTab('backup',this)">💾 Backup</button>
+  <!-- Abas -->
+  <nav class="nav-tabs-wrapper">
+    <div class="nav-tabs" id="tabBar">
+      <button class="tab-btn active" onclick="showTab('resumo')">💰 Resumo</button>
+      <button class="tab-btn" onclick="showTab('movimentos')">📋 Movimentos</button>
+      <button class="tab-btn" onclick="showTab('recorrentes')">🔄 Recorrentes</button>
+      <button class="tab-btn" onclick="showTab('parcelas')">📅 Parcelas</button>
+      <button class="tab-btn" onclick="showTab('dividas')">🤝 Dívidas</button>
+      <button class="tab-btn" onclick="showTab('metas')">🎯 Metas</button>
+      <button class="tab-btn" onclick="showTab('planejamento')">🗓️ Planejamento</button>
+      <button class="tab-btn" onclick="showTab('historico')">📥 Histórico</button>
+      <button class="tab-btn" onclick="showTab('backup')">💾 Backup</button>
+    </div>
   </nav>
 
-  <section id="resumo" class="active">
-    <div class="cards">
-      <div class="card"><small>Saldo atual</small><span id="saldoAtual" class="value">R$ 0,00</span></div>
-      <div class="card"><small>Entradas do mês</small><span id="entradasMes" class="value green">R$ 0,00</span></div>
-      <div class="card"><small>Gastos do mês</small><span id="gastosMes" class="value red">R$ 0,00</span></div>
-      <div class="card"><small>Compromissos do mês</small><span id="compromissos" class="value yellow">R$ 0,00</span></div>
-      <div class="card full"><small>Quanto preciso ter para pagar tudo?</small><span id="precisoTer" class="value">R$ 0,00</span></div>
-      <div class="card full"><small>Saldo previsto depois dos compromissos</small><span id="saldoPrevisto" class="value">R$ 0,00</span></div>
-    </div>
-    <div id="alerta"></div>
-    <div class="card full" style="margin-bottom:14px"><small>📊 Gastos por categoria (este mês)</small><div id="gastosCategorias"></div></div>
-    <div class="card full" style="margin-bottom:14px"><small>⏰ Vencem nos próximos 3 dias</small><div id="vencimentosProximos"></div></div>
-    <div class="card full" style="margin-bottom:14px"><small>📌 Situação deste mês</small><div id="situacao"></div></div>
-    <h2 style="font-size:16px;margin:14px 0 10px">📌 Próximos compromissos</h2><div id="proximos"></div>
-  </section>
+  <!-- Main Content -->
+  <main class="mc-main">
 
-  <section id="movimentos">
-    <h2 style="font-size:16px;margin-bottom:10px">📋 Adicionar movimento</h2>
-    <form id="movimentoForm">
-      <label>Tipo</label><select id="movTipo"><option value="saida">🔴 Saída (gasto)</option><option value="entrada">🟢 Entrada (receita)</option></select>
-      <label>Descrição</label><input id="movDescricao" required placeholder="Ex: Mercado">
-      <div class="form-row"><div><label>Valor (R$)</label><input id="movValor" required type="number" step="0.01" min="0"></div><div><label>Data</label><input id="movData" type="date" required></div></div>
-      <label>Categoria</label><input id="movCategoria" placeholder="Ex: Alimentação">
-      <label>Observação (opcional)</label><textarea id="movObs"></textarea>
-      <button class="primary" id="btnMov">Adicionar movimento</button>
-      <button type="button" class="linkbtn" id="cancelMov" onclick="cancelarEdicao('movimentos')" style="display:none">Cancelar edição</button>
-    </form>
-    <input class="searchbar" id="buscaMov" placeholder="🔎 Buscar por descrição, categoria ou valor...">
-    <div id="listaMovimentos"></div>
-  </section>
+    <!-- TAB 1: RESUMO -->
+    <section id="tab-resumo" class="tab-pane active">
+      <div id="alertaResumo" class="alerta-box alerta-ok">
+        <span style="font-size:1.2rem;">✅</span>
+        <span id="alertaResumoTexto">Tudo equilibrado no momento.</span>
+      </div>
 
-  <section id="recorrentes">
-    <h2 style="font-size:16px;margin-bottom:10px">🔄 Adicionar gasto recorrente</h2>
-    <form id="recorrenteForm">
-      <label>Nome</label><input id="recNome" required placeholder="Ex: Internet">
-      <div class="form-row"><div><label>Valor mensal (R$)</label><input id="recValor" required type="number" step="0.01" min="0"></div><div><label>Dia do vencimento (1-31)</label><input id="recDia" required type="number" min="1" max="31"></div></div>
-      <label>Categoria</label><input id="recCategoria">
-      <button class="primary" id="btnRec">Adicionar recorrente</button>
-      <button type="button" class="linkbtn" id="cancelRec" onclick="cancelarEdicao('recorrentes')" style="display:none">Cancelar edição</button>
-    </form>
-    <input class="searchbar" id="buscaRec" placeholder="🔎 Buscar...">
-    <div id="listaRecorrentes"></div>
-  </section>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Saldo Atual (até hoje)</div>
+          <div class="kpi-num" id="kpiSaldo">R$ 0,00</div>
+          <div class="muted" style="font-size:0.75rem;">Baseado em movimentos realizados</div>
+        </div>
 
-  <section id="parcelas">
-    <h2 style="font-size:16px;margin-bottom:10px">📅 Adicionar parcelamento</h2>
-    <form id="parcelaForm">
-      <label>Nome</label><input id="parNome" required placeholder="Ex: Notebook">
-      <div class="form-row"><div><label>Valor da parcela (R$)</label><input id="parValor" required type="number" step="0.01" min="0"></div><div><label>Dia do vencimento</label><input id="parDia" required type="number" min="1" max="31"></div></div>
-      <div class="form-row"><div><label>Total de parcelas</label><input id="parTotal" required type="number" min="1"></div><div><label>Parcelas restantes</label><input id="parRestantes" required type="number" min="0"></div></div>
-      <label>Observação (opcional)</label><input id="parObs">
-      <button class="primary" id="btnPar">Adicionar parcela</button>
-      <button type="button" class="linkbtn" id="cancelPar" onclick="cancelarEdicao('parcelas')" style="display:none">Cancelar edição</button>
-    </form>
-    <input class="searchbar" id="buscaPar" placeholder="🔎 Buscar...">
-    <div id="listaParcelas"></div>
-  </section>
+        <div class="card">
+          <div class="card-title">Entradas do Mês</div>
+          <div class="kpi-num val-in" id="kpiEntradas">R$ 0,00</div>
+          <div class="muted" style="font-size:0.75rem;">Recebimentos deste mês</div>
+        </div>
 
-  <section id="dividas">
-    <h2 style="font-size:16px;margin-bottom:10px">🤝 Adicionar dívida</h2>
-    <form id="dividaForm">
-      <label>Pessoa / Credor</label><input id="divPessoa" required placeholder="Ex: João">
-      <div class="form-row"><div><label>Valor (R$)</label><input id="divValor" required type="number" step="0.01" min="0"></div><div><label>Data de vencimento</label><input id="divData" type="date" required></div></div>
-      <label>Descrição ou motivo</label><input id="divDescricao">
-      <button class="primary" id="btnDiv">Adicionar dívida</button>
-      <button type="button" class="linkbtn" id="cancelDiv" onclick="cancelarEdicao('dividas')" style="display:none">Cancelar edição</button>
-    </form>
-    <input class="searchbar" id="buscaDiv" placeholder="🔎 Buscar...">
-    <div id="dividasResumo" class="sub" style="margin-bottom:10px"></div>
-    <div id="listaDividas"></div>
-  </section>
+        <div class="card">
+          <div class="card-title">Gastos Realizados no Mês</div>
+          <div class="kpi-num val-out" id="kpiGastos">R$ 0,00</div>
+          <div class="muted" style="font-size:0.75rem;">Saídas lançadas neste mês</div>
+        </div>
 
-  <section id="metas">
-    <h2 style="font-size:16px;margin-bottom:10px">🎯 Adicionar meta</h2>
-    <form id="metaForm">
-      <label>Nome da meta</label><input id="metaNome" required placeholder="Ex: Viagem">
-      <div class="form-row"><div><label>Valor desejado (R$)</label><input id="metaAlvo" required type="number" step="0.01" min="0"></div><div><label>Quanto já tenho (R$)</label><input id="metaAtual" required type="number" step="0.01" min="0" value="0"></div></div>
-      <label>Data desejada</label><input id="metaData" type="date">
-      <button class="primary" id="btnMeta">Adicionar meta</button>
-      <button type="button" class="linkbtn" id="cancelMeta" onclick="cancelarEdicao('metas')" style="display:none">Cancelar edição</button>
-    </form>
-    <input class="searchbar" id="buscaMeta" placeholder="🔎 Buscar...">
-    <div id="listaMetas"></div>
-  </section>
+        <div class="card">
+          <div class="card-title">Compromissos do Mês</div>
+          <div class="kpi-num" style="color:var(--yellow);" id="kpiCompromissos">R$ 0,00</div>
+          <div class="muted" style="font-size:0.75rem;">Recorrentes + parcelas + dívidas</div>
+        </div>
 
-  <section id="planejamento">
-    <div class="item"><strong>Quanto preciso ter em cada dia?</strong><div class="sub">O app usa os recorrentes, parcelas e dívidas cadastrados e organiza os compromissos pela data de vencimento.</div></div>
-    <div class="period">
-      <button onclick="mudarMes(-1)">⬅️</button>
-      <input id="seletorMes" type="month">
-      <button onclick="mudarMes(1)">➡️</button>
-      <button onclick="irHoje()">Hoje</button>
-    </div>
-    <div class="cards" style="margin-bottom:14px">
-      <div class="card"><small>Total a pagar no mês</small><span id="totalMesPagar" class="value yellow">R$ 0,00</span></div>
-      <div class="card"><small>Total de entradas no mês</small><span id="totalMesEntradas" class="value green">R$ 0,00</span></div>
-      <div class="card full"><small>Maior falta de dinheiro projetada</small><span id="maiorFalta" class="value">R$ 0,00</span></div>
-      <div class="card full"><small>Resumo por categoria no mês escolhido</small><div id="catMes"></div></div>
-    </div>
-    <h2 style="font-size:16px;margin:14px 0 10px">🗓️ Compromissos do mês escolhido</h2><div id="timelineAtual"></div>
-    <h2 style="font-size:16px;margin:18px 0 10px">🗓️ Compromissos do próximo mês</h2><div id="timelineProximo"></div>
-  </section>
+        <div class="card">
+          <div class="card-title">Quanto preciso ter?</div>
+          <div class="kpi-num" style="color:var(--red);" id="kpiPrecisoTer">R$ 0,00</div>
+          <div class="muted" style="font-size:0.75rem;">Total de compromissos pendentes</div>
+        </div>
 
-  <section id="historico">
-    <h2 style="font-size:16px;margin-bottom:6px">📥 Histórico de pagamentos</h2>
-    <p class="sub" style="margin-bottom:10px">Tudo que foi pago, concluído ou arquivado fica registrado aqui — e some das listas ativas.</p>
-    <div class="chips" id="histChips">
-      <button class="on" data-f="todos" onclick="setFiltroHist('todos',this)">Todos</button>
-      <button data-f="concluido" onclick="setFiltroHist('concluido',this)">✅ Concluídos</button>
-      <button data-f="pendente" onclick="setFiltroHist('pendente',this)">⏳ Pendentes</button>
-    </div>
-    <div class="sub" id="histContador" style="margin-bottom:10px"></div>
-    <div id="listaHistorico"></div>
-    <button class="secondary" style="margin-top:10px" onclick="limparHistConcluido()">🗑️ Limpar histórico concluído</button>
-  </section>
+        <div class="card">
+          <div class="card-title">Saldo Previsto Final</div>
+          <div class="kpi-num" id="kpiSaldoPrevisto">R$ 0,00</div>
+          <div class="muted" style="font-size:0.75rem;">Saldo atual - compromissos restantes</div>
+        </div>
 
-  <section id="backup">
-    <div class="item" id="cardNuvem">
-      <strong>☁️ Sincronização na Nuvem</strong>
-      <div class="sub">Sua conta mantém seus registros sincronizados entre seus dispositivos com segurança.</div>
-      <div class="sub" id="cloudStatus" style="margin-top:8px">Verificando...</div>
-      <div class="sub" id="cloudConta"></div>
-      <div class="sub" id="cloudSyncInfo"></div>
-      <div class="item-actions">
-        <button class="primary" onclick="forcarSync()">☁️ Sincronizar agora</button>
-        <button class="secondary" onclick="sairConta()">Sair da conta</button>
+        <!-- Vencem nos próximos 3 dias -->
+        <div class="card full">
+          <div class="card-title">
+            <span>⏰ Vencem nos próximos 3 dias</span>
+            <span id="badge3Dias" class="badge badge-yellow">0</span>
+          </div>
+          <div id="lista3Dias" class="item-list">
+            <div class="empty-state">Nada vence nos próximos 3 dias.</div>
+          </div>
+        </div>
+
+        <!-- Gastos por categoria -->
+        <div class="card">
+          <div class="card-title">📊 Gastos por Categoria (Mês)</div>
+          <div id="listaCatGastos" class="item-list">
+            <div class="empty-state">Nenhum gasto registrado neste mês.</div>
+          </div>
+        </div>
+
+        <!-- Situação deste mês -->
+        <div class="card">
+          <div class="card-title">📌 Situação deste Mês</div>
+          <div id="situacaoMesConteudo" style="font-size:0.85rem; line-height:1.6; color:var(--text-muted);">
+            Nenhum dado cadastrado para este mês.
+          </div>
+        </div>
+
+        <!-- 7 Próximos compromissos -->
+        <div class="card full">
+          <div class="card-title">
+            <span>📌 Próximos Compromissos</span>
+            <span class="badge badge-muted">Próximos 7</span>
+          </div>
+          <div id="listaProximosCompromissos" class="item-list">
+            <div class="empty-state">Nenhum compromisso agendado.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: MOVIMENTOS -->
+    <section id="tab-movimentos" class="tab-pane">
+      <div class="card" style="margin-bottom:1rem;">
+        <div class="card-title" id="movFormTitle">➕ Novo Movimento</div>
+        <form id="movimentoForm" onsubmit="salvarMovimento(event)">
+          <input type="hidden" id="movId">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="movTipo">Tipo</label>
+              <select id="movTipo" class="form-control" required>
+                <option value="saida">🔴 Saída (Gasto)</option>
+                <option value="entrada">🟢 Entrada (Receita)</option>
+              </select>
+            </div>
+            <div class="form-group" style="flex:2;">
+              <label for="movDescricao">Descrição</label>
+              <input type="text" id="movDescricao" class="form-control" placeholder="Ex: Supermercado" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="movValor">Valor (R$)</label>
+              <input type="number" step="0.01" min="0.01" id="movValor" class="form-control" placeholder="0,00" required>
+            </div>
+            <div class="form-group">
+              <label for="movData">Data</label>
+              <input type="date" id="movData" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="movCategoria">Categoria</label>
+              <input type="text" id="movCategoria" class="form-control" placeholder="Ex: Alimentação" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="movObs">Observações (opcional)</label>
+            <input type="text" id="movObs" class="form-control" placeholder="Detalhes adicionais...">
+          </div>
+          <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+            <button type="button" id="btnCancelMov" class="btn secondary" style="display:none;" onclick="cancelarEdicao('movimentos')">Cancelar edição</button>
+            <button type="submit" id="btnSalvarMov" class="btn primary">💾 Salvar movimento</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="search-bar">
+          <input type="text" id="buscaMov" class="form-control" placeholder="🔎 Buscar movimentos..." oninput="renderMovimentos()">
+          <span id="contMov" class="badge badge-muted" style="white-space:nowrap;">0 de 0</span>
+        </div>
+        <div id="listaMovimentos" class="item-list"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3: RECORRENTES -->
+    <section id="tab-recorrentes" class="tab-pane">
+      <div class="card" style="margin-bottom:1rem;">
+        <div class="card-title" id="recFormTitle">➕ Nova Despesa Recorrente</div>
+        <form id="recorrenteForm" onsubmit="salvarRecorrente(event)">
+          <input type="hidden" id="recId">
+          <div class="form-row">
+            <div class="form-group" style="flex:2;">
+              <label for="recNome">Nome do compromisso</label>
+              <input type="text" id="recNome" class="form-control" placeholder="Ex: Internet fibra" required>
+            </div>
+            <div class="form-group">
+              <label for="recValor">Valor mensal (R$)</label>
+              <input type="number" step="0.01" min="0.01" id="recValor" class="form-control" placeholder="0,00" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="recDia">Dia do vencimento</label>
+              <input type="number" min="1" max="31" id="recDia" class="form-control" placeholder="Ex: 10" required>
+            </div>
+            <div class="form-group" style="flex:2;">
+              <label for="recCategoria">Categoria</label>
+              <input type="text" id="recCategoria" class="form-control" placeholder="Ex: Contas fixas" required>
+            </div>
+          </div>
+          <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+            <button type="button" id="btnCancelRec" class="btn secondary" style="display:none;" onclick="cancelarEdicao('recorrentes')">Cancelar edição</button>
+            <button type="submit" id="btnSalvarRec" class="btn primary">💾 Salvar recorrente</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="search-bar">
+          <input type="text" id="buscaRec" class="form-control" placeholder="🔎 Buscar recorrentes..." oninput="renderRecorrentes()">
+          <span id="contRec" class="badge badge-muted" style="white-space:nowrap;">0 de 0</span>
+        </div>
+        <div id="listaRecorrentes" class="item-list"></div>
+      </div>
+    </section>
+
+    <!-- TAB 4: PARCELAS -->
+    <section id="tab-parcelas" class="tab-pane">
+      <div class="card" style="margin-bottom:1rem;">
+        <div class="card-title" id="parFormTitle">➕ Nova Compra Parcelada</div>
+        <form id="parcelaForm" onsubmit="salvarParcela(event)">
+          <input type="hidden" id="parId">
+          <div class="form-row">
+            <div class="form-group" style="flex:2;">
+              <label for="parNome">Nome da compra</label>
+              <input type="text" id="parNome" class="form-control" placeholder="Ex: Notebook novo" required>
+            </div>
+            <div class="form-group">
+              <label for="parValor">Valor da parcela (R$)</label>
+              <input type="number" step="0.01" min="0.01" id="parValor" class="form-control" placeholder="0,00" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="parTotal">Total de parcelas</label>
+              <input type="number" min="1" id="parTotal" class="form-control" placeholder="Ex: 10" required>
+            </div>
+            <div class="form-group">
+              <label for="parRestantes">Parcelas restantes</label>
+              <input type="number" min="1" id="parRestantes" class="form-control" placeholder="Ex: 10" required>
+            </div>
+            <div class="form-group">
+              <label for="parDia">Dia do vencimento</label>
+              <input type="number" min="1" max="31" id="parDia" class="form-control" placeholder="Ex: 15" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="parObs">Observações (opcional)</label>
+            <input type="text" id="parObs" class="form-control" placeholder="Ex: Cartão Nubank">
+          </div>
+          <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+            <button type="button" id="btnCancelPar" class="btn secondary" style="display:none;" onclick="cancelarEdicao('parcelas')">Cancelar edição</button>
+            <button type="submit" id="btnSalvarPar" class="btn primary">💾 Salvar parcela</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="search-bar">
+          <input type="text" id="buscaPar" class="form-control" placeholder="🔎 Buscar parcelas..." oninput="renderParcelas()">
+          <span id="contPar" class="badge badge-muted" style="white-space:nowrap;">0 de 0</span>
+        </div>
+        <div id="listaParcelas" class="item-list"></div>
+      </div>
+    </section>
+
+    <!-- TAB 5: DÍVIDAS -->
+    <section id="tab-dividas" class="tab-pane">
+      <div class="card" style="margin-bottom:1rem;">
+        <div class="card-title" id="divFormTitle">➕ Nova Dívida / Empréstimo</div>
+        <form id="dividaForm" onsubmit="salvarDivida(event)">
+          <input type="hidden" id="divId">
+          <div class="form-row">
+            <div class="form-group" style="flex:2;">
+              <label for="divPessoa">Para quem deve? (Pessoa ou Instituição)</label>
+              <input type="text" id="divPessoa" class="form-control" placeholder="Ex: João Silva" required>
+            </div>
+            <div class="form-group">
+              <label for="divValor">Valor devido (R$)</label>
+              <input type="number" step="0.01" min="0.01" id="divValor" class="form-control" placeholder="0,00" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="divData">Data de vencimento pactuada</label>
+              <input type="date" id="divData" class="form-control" required>
+            </div>
+            <div class="form-group" style="flex:2;">
+              <label for="divDescricao">Descrição / Motivo</label>
+              <input type="text" id="divDescricao" class="form-control" placeholder="Ex: Empréstimo reforma" required>
+            </div>
+          </div>
+          <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+            <button type="button" id="btnCancelDiv" class="btn secondary" style="display:none;" onclick="cancelarEdicao('dividas')">Cancelar edição</button>
+            <button type="submit" id="btnSalvarDiv" class="btn primary">💾 Salvar dívida</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="search-bar">
+          <input type="text" id="buscaDiv" class="form-control" placeholder="🔎 Buscar dívidas pendentes..." oninput="renderDividas()">
+          <span id="contDiv" class="badge badge-muted" style="white-space:nowrap;">0 de 0</span>
+        </div>
+        <div id="listaDividas" class="item-list"></div>
+      </div>
+    </section>
+
+    <!-- TAB 6: METAS -->
+    <section id="tab-metas" class="tab-pane">
+      <div class="card" style="margin-bottom:1rem;">
+        <div class="card-title" id="metaFormTitle">➕ Nova Meta de Economia</div>
+        <form id="metaForm" onsubmit="salvarMeta(event)">
+          <input type="hidden" id="metaId">
+          <div class="form-row">
+            <div class="form-group" style="flex:2;">
+              <label for="metaNome">Nome da meta</label>
+              <input type="text" id="metaNome" class="form-control" placeholder="Ex: Reserva de emergência" required>
+            </div>
+            <div class="form-group">
+              <label for="metaAlvo">Valor Alvo (R$)</label>
+              <input type="number" step="0.01" min="0.01" id="metaAlvo" class="form-control" placeholder="0,00" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="metaAtual">Valor já guardado (R$)</label>
+              <input type="number" step="0.01" min="0" id="metaAtual" class="form-control" value="0">
+            </div>
+            <div class="form-group">
+              <label for="metaData">Data limite desejada</label>
+              <input type="date" id="metaData" class="form-control" required>
+            </div>
+          </div>
+          <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+            <button type="button" id="btnCancelMeta" class="btn secondary" style="display:none;" onclick="cancelarEdicao('metas')">Cancelar edição</button>
+            <button type="submit" id="btnSalvarMeta" class="btn primary">💾 Salvar meta</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="search-bar">
+          <input type="text" id="buscaMeta" class="form-control" placeholder="🔎 Buscar metas..." oninput="renderMetas()">
+          <span id="contMeta" class="badge badge-muted" style="white-space:nowrap;">0 de 0</span>
+        </div>
+        <div id="listaMetas" class="item-list"></div>
+      </div>
+    </section>
+
+    <!-- TAB 7: PLANEJAMENTO -->
+    <section id="tab-planejamento" class="tab-pane">
+      <div class="card" style="margin-bottom:1rem;">
+        <div class="card-title">🗓️ Simulador & Planejamento Financeiro</div>
+        <p class="muted" style="font-size:0.8rem; margin:0 0 1rem 0;">
+          Acompanhe dia a dia o saldo projetado, considerando receitas esperadas e todos os pagamentos (recorrentes, parcelas e dívidas ajustadas).
+        </p>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:0.5rem;">
+          <button class="btn secondary btn-sm" onclick="mudarMes(-1)">⬅️ Mês anterior</button>
+          <input type="month" id="planejamentoMes" class="form-control" style="width:auto; padding:0.35rem 0.6rem;" onchange="renderPlanejamento()">
+          <button class="btn secondary btn-sm" onclick="mudarMes(1)">Próximo mês ➡️</button>
+          <button class="btn secondary btn-sm" onclick="irHoje()">Hoje</button>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:1rem;">
+        <div class="card">
+          <div class="card-title">Total a Pagar no Mês Selecionado</div>
+          <div class="kpi-num val-out" id="planTotalPagar">R$ 0,00</div>
+          <div class="muted" style="font-size:0.75rem;">Soma de todos os compromissos</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Total de Entradas no Mês</div>
+          <div class="kpi-num val-in" id="planTotalEntradas">R$ 0,00</div>
+          <div class="muted" style="font-size:0.75rem;">Receitas lançadas no período</div>
+        </div>
+
+        <div class="card full">
+          <div class="card-title">Maior Falta de Dinheiro Projetada</div>
+          <div class="kpi-num" id="planMaiorFalta">R$ 0,00</div>
+          <div class="muted" style="font-size:0.75rem;">Menor saldo atingido ao longo do mês (alerta se faltar caixa)</div>
+        </div>
+      </div>
+
+      <div class="card full" style="margin-bottom:1rem;">
+        <div class="card-title">Resumo por Categoria no Mês Escolhido</div>
+        <div id="planCategorias" class="item-list">
+          <div class="empty-state">Nenhum compromisso para este mês.</div>
+        </div>
+      </div>
+
+      <div class="card full" style="margin-bottom:1rem;">
+        <div class="card-title">
+          <span>Linha do Tempo Diária do Mês</span>
+          <span class="badge badge-muted" id="badgeTotalDiasPlan">0 dias</span>
+        </div>
+        <div id="planTimeline" class="timeline"></div>
+      </div>
+
+      <div class="card full">
+        <div class="card-title">🔮 Prévia: Compromissos do Próximo Mês</div>
+        <div id="planProximoMes" class="item-list"></div>
+      </div>
+    </section>
+
+    <!-- TAB 8: HISTÓRICO -->
+    <section id="tab-historico" class="tab-pane">
+      <div class="card" style="margin-bottom:1rem;">
+        <div class="card-title">
+          <span>📥 Histórico de Operações</span>
+          <span id="contHistorico" class="badge badge-muted">0 registros</span>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:0.75rem;">
+          <button class="btn btn-sm secondary" id="chipHistTodos" onclick="setFiltroHist('todos')">Todos</button>
+          <button class="btn btn-sm secondary" id="chipHistConcluidos" onclick="setFiltroHist('concluido')">✅ Concluídos</button>
+          <button class="btn btn-sm secondary" id="chipHistPendentes" onclick="setFiltroHist('pendente')">⏳ Pendentes</button>
+        </div>
+        <div id="listaHistorico" class="item-list">
+          <div class="empty-state">Nenhum registro no histórico.</div>
+        </div>
+        <div style="margin-top:1rem; text-align:right;">
+          <button class="btn delete btn-sm" onclick="limparHistConcluido()">🗑️ Limpar histórico concluído</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 9: BACKUP & NUVEM -->
+    <section id="tab-backup" class="tab-pane">
+      <div class="grid-2">
+        <!-- Nuvem -->
+        <div class="card full">
+          <div class="card-title">☁️ Sincronização na Nuvem</div>
+          <div style="font-size:0.85rem; line-height:1.5; margin-bottom:0.75rem;">
+            Status: <strong id="cloudStatusTxt">Modo local ativo</strong>
+          </div>
+          <div id="cloudInfoBlock" class="alerta-box alerta-ok" style="margin-bottom:0.75rem;">
+            <span>ℹ️</span>
+            <span>Para ativar login e nuvem em tempo real com Firebase, insira as credenciais no início do script na constante <code>FIREBASE_CONFIG</code>. Sem elas, seus dados ficam 100% seguros localmente no aparelho.</span>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+            <button class="btn primary" onclick="forcarSync()">☁️ Sincronizar agora</button>
+            <button class="btn secondary" id="btnSairBackup" style="display:none;" onclick="sairConta()">Sair da conta</button>
+          </div>
+        </div>
+
+        <!-- Exportar / Importar -->
+        <div class="card">
+          <div class="card-title">⬇️ Exportar & ⬆️ Restaurar</div>
+          <p class="muted" style="font-size:0.8rem; margin:0 0 0.75rem 0;">
+            Gere um arquivo JSON com todas as suas movimentações, parcelas, dívidas e metas para guardar onde quiser.
+          </p>
+          <div style="display:flex; flex-direction:column; gap:0.5rem;">
+            <button class="btn secondary" onclick="exportarBackup()">⬇️ Baixar arquivo de backup</button>
+            <label class="btn secondary" style="cursor:pointer; margin:0;">
+              ⬆️ Restaurar backup de arquivo
+              <input type="file" id="inputImportBackup" accept=".json" style="display:none;" onchange="importarBackup(event)">
+            </label>
+            <button class="btn secondary" onclick="recuperarBaseLocal()">🛟 Procurar dados antigos neste iPhone</button>
+          </div>
+        </div>
+
+        <!-- Diagnóstico -->
+        <div class="card">
+          <div class="card-title">🩺 Diagnóstico de Armazenamento</div>
+          <div id="diagStorage" style="font-size:0.8rem; line-height:1.6; color:var(--text-muted);">
+            Carregando diagnóstico...
+          </div>
+          <div style="margin-top:0.5rem; font-size:0.75rem; color:var(--text-muted);">
+            💡 <strong>Dica no iOS:</strong> Ao adicionar este site à Tela de Início via Safari ("Compartilhar &gt; Adicionar à Tela de Início"), o iOS mantém armazenamento persistente do PWA.
+          </div>
+        </div>
+
+        <!-- Zona de Perigo -->
+        <div class="card full" style="border-color:rgba(248, 113, 113, 0.4);">
+          <div class="card-title" style="color:var(--red);">⚠️ Zona de Perigo</div>
+          <p class="muted" style="font-size:0.8rem; margin:0 0 0.75rem 0;">
+            Esta ação apagará permanentemente todos os movimentos, dívidas, metas e parcelas salvos neste aparelho.
+          </p>
+          <button class="btn delete" onclick="limparTudo()">🗑️ Apagar todos os dados da carteira</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="mc-footer">
+    Minha Carteira • Multiusuário com Nuvem • v3.3
+  </footer>
+
+  <!-- Toast Container -->
+  <div id="toastContainer"></div>
+
+  <!-- Modal Conflito Nuvem / Aparelho -->
+  <div id="modalConflito" class="modal-overlay hidden">
+    <div class="authcard">
+      <h3 style="margin-top:0; color:var(--yellow);">⚠️ Conflito de dados</h3>
+      <p style="font-size:0.85rem; line-height:1.5;">
+        Foram encontrados dados diferentes armazenados na nuvem e neste aparelho. Qual versão você deseja manter como definitiva?
+      </p>
+      <div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:1rem;">
+        <button class="btn primary" onclick="aplicarEscolha('nuvem')">☁️ Manter dados da Nuvem</button>
+        <button class="btn secondary" onclick="aplicarEscolha('local')">📱 Manter dados deste Aparelho</button>
       </div>
     </div>
-    <div class="item">
-      <strong>💾 Cópia de segurança & Restauração</strong>
-      <div class="sub">Salve ou importe um arquivo JSON com todos os dados, incluindo histórico.</div>
-      <div class="item-actions">
-        <button class="primary" onclick="exportarBackup()">⬇️ Exportar backup</button>
-        <button class="secondary" onclick="document.getElementById('arquivoBackup').click()">⬆️ Restaurar backup</button>
-        <button class="secondary" onclick="recuperarBaseLocal()">🛟 Procurar dados antigos neste iPhone</button>
+  </div>
+
+  <!-- Modal Autenticação Opcional -->
+  <div id="modalAuth" class="modal-overlay hidden">
+    <div class="authcard">
+      <h2 style="margin-top:0; font-size:1.25rem;">💰 Minha Carteira</h2>
+      <p class="muted" style="font-size:0.8rem; margin-bottom:1rem;">Acesse sua conta para sincronizar entre múltiplos aparelhos.</p>
+      
+      <div class="form-group">
+        <label for="authEmail">E-mail</label>
+        <input type="email" id="authEmail" class="form-control" placeholder="seu@email.com">
       </div>
-      <input id="arquivoBackup" type="file" accept=".json,application/json" style="display:none" onchange="importarBackup(event)">
-    </div>
-    <div class="item">
-      <strong>🩺 Diagnóstico de armazenamento</strong>
-      <div id="diagConteudo" class="sub" style="margin-top:6px"></div>
-      <div class="sub" style="margin-top:8px">Se você usa o app pelo ícone da tela inicial, os dados ficam guardados só nesse atalho. Para atualizar o app: apague o atalho antigo, abra o link atualizado no Safari e adicione à tela inicial de novo. Seus dados antigos podem ser recuperados com o botão 🛟.</div>
-    </div>
-    <div class="item">
-      <strong>⚠️ Zona de perigo</strong>
-      <div class="sub">Isso apagará permanentemente todos os lançamentos, parcelas, dívidas e histórico salvos neste dispositivo.</div>
-      <div class="item-actions"><button class="delete" onclick="limparTudo()">⚠️ Apagar todos os dados</button></div>
-    </div>
-  </section>
+      <div class="form-group">
+        <label for="authSenha">Senha</label>
+        <input type="password" id="authSenha" class="form-control" placeholder="••••••••">
+      </div>
 
-  <footer>Minha Carteira • Multiusuário com Nuvem • v3.2</footer>
-</div>
+      <div style="display:flex; flex-direction:column; gap:0.5rem; margin-top:1rem;">
+        <button class="btn primary" onclick="fazerLogin('entrar')">Entrar</button>
+        <button class="btn secondary" onclick="fazerLogin('criar')">Criar conta</button>
+        <button class="btn secondary" onclick="fazerLoginGoogle()">Entrar com Google</button>
+      </div>
 
+      <div style="text-align:center; margin-top:1.2rem;">
+        <a href="#" onclick="entrarModoLocal(event)" style="color:var(--text-muted); font-size:0.8rem; text-decoration:underline;">
+          Continuar sem conta (modo local)
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Principal -->
+  <script>
+    /**
+     * CONFIGURAÇÃO FIREBASE (OPCIONAL)
+     * Para sincronização na nuvem com autenticação, preencha os valores abaixo.
+     * Deixando vazio ({ apiKey: "" }), o app operará 100% no Modo Local persistente.
+     */
+    const FIREBASE_CONFIG = {
+      apiKey: "",
+      authDomain: "",
+      projectId: "",
+      storageBucket: "",
+      messagingSenderId: "",
+      appId: ""
+    };
+
+    const VERSAO_APP = "3.3";
+    const CHAVE_CANONICA = "minhaCarteira";
+    const CHAVE_V1 = "minhaCarteiraV1";
+    const CHAVE_V2 = "minhaCarteiraV2";
+    const CHAVE_RECUPERACAO = "minhaCarteiraRecuperacao";
+    const CHAVE_MODO_LOCAL = "minhaCarteiraModoLocal";
+    const CHAVE_ULTIMA_SYNC = "minhaCarteiraUltimaSync";
+    const CHAVE_VERSAO = "minhaCarteiraVersao";
+
+    // Estrutura vazia padrão — 100% sem sementes
+    const EMPTY = {
+      movimentos: [],
+      recorrentes: [],
+      parcelas: [],
+      dividas: [],
+      metas: [],
+      historico: []
+    };
+
+    let db = JSON.parse(JSON.stringify(EMPTY));
+    let contadorId = 0;
+    let filtroHistorico = "todos";
+    let editandoId = null;
+    let editandoSecao = null;
+    let usuarioAtual = null;
+    let debounceSyncTimer = null;
+    let dadosNuvemPendentes = null;
+
+    /* --- HELPERS DE FORMATAÇÃO E DATA --- */
+    function uid() {
+      contadorId++;
+      return Date.now().toString(36) + "-" + contadorId;
+    }
+
+    function esc(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function money(v) {
+      const num = Number(v) || 0;
+      return num.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function today() {
+      const d = new Date();
+      const ano = d.getFullYear();
+      const mes = String(d.getMonth() + 1).padStart(2, "0");
+      const dia = String(d.getDate()).padStart(2, "0");
+      return `${ano}-${mes}-${dia}`;
+    }
+
+    function monthNow() {
+      const d = new Date();
+      const ano = d.getFullYear();
+      const mes = String(d.getMonth() + 1).padStart(2, "0");
+      return `${ano}-${mes}`;
+    }
+
+    function dateBR(str) {
+      if (!str) return "";
+      const [ano, mes, dia] = str.split("-");
+      if (!ano || !mes || !dia) return str;
+      return `${dia}/${mes}/${ano}`;
+    }
+
+    function diasEntre(dataIso1, dataIso2) {
+      const d1 = new Date(dataIso1 + "T00:00:00");
+      const d2 = new Date(dataIso2 + "T00:00:00");
+      return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+    }
+
+    function diasNoMes(ano, mes1a12) {
+      return new Date(ano, mes1a12, 0).getDate();
+    }
+
+    /* --- PERSISTÊNCIA BLINDADA --- */
+    function lerBase(ch) {
+      try {
+        const raw = localStorage.getItem(ch);
+        if (!raw) return null;
+        const obj = JSON.parse(raw);
+        if (!obj || typeof obj !== "object") return null;
+        return {
+          movimentos: Array.isArray(obj.movimentos) ? obj.movimentos : [],
+          recorrentes: Array.isArray(obj.recorrentes) ? obj.recorrentes : [],
+          parcelas: Array.isArray(obj.parcelas) ? obj.parcelas : [],
+          dividas: Array.isArray(obj.dividas) ? obj.dividas : [],
+          metas: Array.isArray(obj.metas) ? obj.metas : [],
+          historico: Array.isArray(obj.historico) ? obj.historico : []
+        };
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function quantidadeDados(x) {
+      if (!x) return 0;
+      return (
+        (x.movimentos?.length || 0) +
+        (x.recorrentes?.length || 0) +
+        (x.parcelas?.length || 0) +
+        (x.dividas?.length || 0) +
+        (x.metas?.length || 0) +
+        (x.historico?.length || 0)
+      );
+    }
+
+    function carregarBanco() {
+      const bCanon = lerBase(CHAVE_CANONICA);
+      const bV1 = lerBase(CHAVE_V1);
+      const bV2 = lerBase(CHAVE_V2);
+      const bRecup = lerBase(CHAVE_RECUPERACAO);
+
+      const candidatos = [
+        { chave: CHAVE_CANONICA, base: bCanon, q: quantidadeDados(bCanon) },
+        { chave: CHAVE_V2, base: bV2, q: quantidadeDados(bV2) },
+        { chave: CHAVE_V1, base: bV1, q: quantidadeDados(bV1) },
+        { chave: CHAVE_RECUPERACAO, base: bRecup, q: quantidadeDados(bRecup) }
+      ];
+
+      candidatos.sort((a, b) => b.q - a.q);
+      const melhor = candidatos[0];
+
+      if (melhor && melhor.q > 0) {
+        db = melhor.base;
+        // Auto-reparo na canônica e recuperação
+        try { localStorage.setItem(CHAVE_CANONICA, JSON.stringify(db)); } catch (e) {}
+        try { localStorage.setItem(CHAVE_RECUPERACAO, JSON.stringify(db)); } catch (e) {}
+      } else {
+        db = JSON.parse(JSON.stringify(EMPTY));
+      }
+    }
+
+    function save() {
+      const qAtual = quantidadeDados(db);
+      if (qAtual === 0) {
+        const bRecup = lerBase(CHAVE_RECUPERACAO);
+        if (bRecup && quantidadeDados(bRecup) > 0) {
+          // Proteção contra sobrescrita acidental vazia
+          db = bRecup;
+        }
+      }
+
+      const json = JSON.stringify(db);
+      try { localStorage.setItem(CHAVE_CANONICA, json); } catch (e) {}
+      try { localStorage.setItem(CHAVE_RECUPERACAO, json); } catch (e) {}
+      try { localStorage.setItem(CHAVE_V2, json); } catch (e) {}
+      try { localStorage.setItem(CHAVE_V1, json); } catch (e) {}
+      try { localStorage.setItem(CHAVE_ULTIMA_SYNC, Date.now().toString()); } catch (e) {}
+
+      agendarSyncNuvem();
+      render();
+    }
+
+    // Salvar síncrono no fechamento
+    window.addEventListener("pagehide", () => {
+      try {
+        localStorage.setItem(CHAVE_CANONICA, JSON.stringify(db));
+        localStorage.setItem(CHAVE_RECUPERACAO, JSON.stringify(db));
+      } catch (e) {}
+    });
+    window.addEventListener("beforeunload", () => {
+      try {
+        localStorage.setItem(CHAVE_CANONICA, JSON.stringify(db));
+        localStorage.setItem(CHAVE_RECUPERACAO, JSON.stringify(db));
+      } catch (e) {}
+    });
+
+    /* --- TOASTS --- */
+    function toast(msg) {
+      const box = document.getElementById("toastContainer");
+      if (!box) return;
+      const el = document.createElement("div");
+      el.className = "toast";
+      el.innerHTML = msg;
+      box.appendChild(el);
+      setTimeout(() => {
+        el.style.opacity = "0";
+        setTimeout(() => el.remove(), 250);
+      }, 3200);
+    }
+
+    /* --- NAVEGAÇÃO DE ABAS --- */
+    function showTab(id) {
+      document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+
+      const targetPane = document.getElementById("tab-" + id);
+      if (targetPane) targetPane.classList.add("active");
+
+      const btns = Array.from(document.querySelectorAll(".tab-btn"));
+      const match = btns.find(b => b.getAttribute("onclick")?.includes(`'${id}'`));
+      if (match) match.classList.add("active");
+
+      if (id === "planejamento") {
+        renderPlanejamento();
+      } else if (id === "backup") {
+        renderDiagnostico();
+      }
+    }
+
+    /* --- REGRA DÍVIDA VENCIDA -> PRÓXIMO MÊS --- */
+    function resolverDataEfetivaDivida(div, anoRef, mesRef) {
+      // div.data no formato YYYY-MM-DD
+      const [dAno, dMes, dDia] = div.data.split("-").map(Number);
+      const hojeIso = today();
+      const [hAno, hMes, hDia] = hojeIso.split("-").map(Number);
+
+      let anoEfetivo = dAno;
+      let mesEfetivo = dMes;
+      let diaEfetivo = dDia;
+      let deslocado = false;
+
+      // Se a dívida pertence ao mês atual e o vencimento já passou (< hoje)
+      if (dAno === hAno && dMes === hMes && div.data < hojeIso) {
+        mesEfetivo = dMes + 1;
+        if (mesEfetivo > 12) {
+          mesEfetivo = 1;
+          anoEfetivo = dAno + 1;
+        }
+        deslocado = true;
+      }
+
+      // Ajusta se dia não existe no mês (ex: 31 em fev -> 28/29)
+      const maxDias = diasNoMes(anoEfetivo, mesEfetivo);
+      if (diaEfetivo > maxDias) diaEfetivo = maxDias;
+
+      const mesPad = String(mesEfetivo).padStart(2, "0");
+      const diaPad = String(diaEfetivo).padStart(2, "0");
+      const dataIsoEfetiva = `${anoEfetivo}-${mesPad}-${diaPad}`;
+
+      return {
+        dataIso: dataIsoEfetiva,
+        ano: anoEfetivo,
+        mes: mesEfetivo,
+        dia: diaEfetivo,
+        deslocado: deslocado
+      };
+    }
+
+    /* --- OBTENÇÃO DE COMPROMISSOS DE UM MÊS --- */
+    function compromissosMes(ano, mes1a12) {
+      const lista = [];
+
+      // 1. Recorrentes
+      db.recorrentes.forEach(r => {
+        let dia = Number(r.dia);
+        const maxDias = diasNoMes(ano, mes1a12);
+        if (dia > maxDias) dia = maxDias;
+        const dataIso = `${ano}-${String(mes1a12).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
+        lista.push({
+          id: r.id,
+          tipoOrigem: "recorrente",
+          nome: r.nome,
+          valor: Number(r.valor),
+          dataIso: dataIso,
+          categoria: r.categoria || "Geral",
+          deslocado: false,
+          ref: r
+        });
+      });
+
+      // 2. Parcelas ativas
+      db.parcelas.forEach(p => {
+        if (p.restantes > 0) {
+          let dia = Number(p.dia);
+          const maxDias = diasNoMes(ano, mes1a12);
+          if (dia > maxDias) dia = maxDias;
+          const dataIso = `${ano}-${String(mes1a12).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
+          lista.push({
+            id: p.id,
+            tipoOrigem: "parcela",
+            nome: `${p.nome} (${p.total - p.restantes + 1}/${p.total})`,
+            valor: Number(p.valor),
+            dataIso: dataIso,
+            categoria: "Parcelamento",
+            deslocado: false,
+            ref: p
+          });
+        }
+      });
+
+      // 3. Dívidas (apenas não pagas e considerando regra de deslocamento)
+      db.dividas.forEach(d => {
+        const resolvida = resolverDataEfetivaDivida(d, ano, mes1a12);
+        if (resolvida.ano === ano && resolvida.mes === mes1a12) {
+          lista.push({
+            id: d.id,
+            tipoOrigem: "divida",
+            nome: `${d.pessoa} - ${d.descricao}`,
+            valor: Number(d.valor),
+            dataIso: resolvida.dataIso,
+            categoria: "Dívidas",
+            deslocado: resolvida.deslocado,
+            ref: d
+          });
+        }
+      });
+
+      lista.sort((a, b) => a.dataIso.localeCompare(b.dataIso));
+      return lista;
+    }
+
+    /* --- RENDERS GERAIS --- */
+    function render() {
+      renderResumo();
+      renderMovimentos();
+      renderRecorrentes();
+      renderParcelas();
+      renderDividas();
+      renderMetas();
+      renderHistorico();
+      renderDiagnostico();
+    }
+
+    /* --- TAB: RESUMO --- */
+    function renderResumo() {
+      const hojeIso = today();
+      const [anoAtual, mesAtual] = hojeIso.split("-").map(Number);
+      const prefixoMesAtual = `${anoAtual}-${String(mesAtual).padStart(2, "0")}`;
+
+      // Saldo atual: movimentos data <= hoje (entradas - saídas)
+      let saldoAtual = 0;
+      let entradasMes = 0;
+      let gastosMes = 0;
+
+      db.movimentos.forEach(m => {
+        const v = Number(m.valor) || 0;
+        if (m.data <= hojeIso) {
+          if (m.tipo === "entrada") saldoAtual += v;
+          else saldoAtual -= v;
+        }
+        if (m.data.startsWith(prefixoMesAtual)) {
+          if (m.tipo === "entrada") entradasMes += v;
+          else gastosMes += v;
+        }
+      });
+
+      const compMes = compromissosMes(anoAtual, mesAtual);
+      const totalCompMes = compMes.reduce((acc, c) => acc + c.valor, 0);
+
+      // Compromissos pendentes (data >= hoje)
+      const pendentesMes = compMes.filter(c => c.dataIso >= hojeIso);
+      const totalPendentes = pendentesMes.reduce((acc, c) => acc + c.valor, 0);
+      const saldoPrevisto = saldoAtual - totalPendentes;
+
+      // KPIs
+      const elSaldo = document.getElementById("kpiSaldo");
+      elSaldo.textContent = money(saldoAtual);
+      elSaldo.style.color = saldoAtual >= 0 ? "var(--green)" : "var(--red)";
+
+      document.getElementById("kpiEntradas").textContent = money(entradasMes);
+      document.getElementById("kpiGastos").textContent = money(gastosMes);
+      document.getElementById("kpiCompromissos").textContent = money(totalCompMes);
+      document.getElementById("kpiPrecisoTer").textContent = money(totalPendentes);
+
+      const elPrevisto = document.getElementById("kpiSaldoPrevisto");
+      elPrevisto.textContent = money(saldoPrevisto);
+      elPrevisto.style.color = saldoPrevisto >= 0 ? "var(--green)" : "var(--red)";
+
+      // Alerta
+      const boxAlerta = document.getElementById("alertaResumo");
+      const txtAlerta = document.getElementById("alertaResumoTexto");
+      if (saldoPrevisto < 0) {
+        boxAlerta.className = "alerta-box alerta-warn";
+        boxAlerta.firstElementChild.textContent = "⚠️";
+        txtAlerta.textContent = `Atenção: faltam ${money(Math.abs(saldoPrevisto))} para cobrir os compromissos deste mês!`;
+      } else {
+        boxAlerta.className = "alerta-box alerta-ok";
+        boxAlerta.firstElementChild.textContent = "✅";
+        txtAlerta.textContent = `Tudo sob controle. Saldo previsto positivo de ${money(saldoPrevisto)}.`;
+      }
+
+      // Vencem nos próximos 3 dias
+      const lista3 = [];
+      compMes.forEach(c => {
+        const diff = diasEntre(hojeIso, c.dataIso);
+        if (diff >= 0 && diff <= 3) {
+          lista3.push({ ...c, diff });
+        }
+      });
+
+      const elBadge3 = document.getElementById("badge3Dias");
+      elBadge3.textContent = lista3.length;
+      elBadge3.className = lista3.length > 0 ? "badge badge-red" : "badge badge-green";
+
+      const boxLista3 = document.getElementById("lista3Dias");
+      if (lista3.length === 0) {
+        boxLista3.innerHTML = `<div class="empty-state">Nada vence nos próximos 3 dias.</div>`;
+      } else {
+        boxLista3.innerHTML = lista3.map(item => {
+          let tagTxt = item.diff === 0 ? "Vence hoje" : item.diff === 1 ? "Vence amanhã" : `Vence em ${item.diff} dias`;
+          let badgeDesloc = item.deslocado ? `<span class="badge badge-yellow">⏭️ vai pro próximo mês</span>` : "";
+          return `
+            <div class="item-card">
+              <div class="item-head">
+                <span class="item-title">${esc(item.nome)}</span>
+                <span class="item-val val-out">${money(item.valor)}</span>
+              </div>
+              <div class="item-meta">
+                <span class="badge badge-red">⏰ ${tagTxt}</span>
+                <span>Vencimento: ${dateBR(item.dataIso)}</span>
+                <span>• ${esc(item.categoria)}</span>
+                ${badgeDesloc}
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // Gastos por categoria (saídas do mês + recorrentes do mês)
+      const mapaCat = {};
+      db.movimentos.forEach(m => {
+        if (m.tipo === "saida" && m.data.startsWith(prefixoMesAtual)) {
+          const cat = m.categoria || "Outros";
+          mapaCat[cat] = (mapaCat[cat] || 0) + Number(m.valor);
+        }
+      });
+      db.recorrentes.forEach(r => {
+        const cat = r.categoria || "Fixos";
+        mapaCat[cat] = (mapaCat[cat] || 0) + Number(r.valor);
+      });
+
+      const boxCat = document.getElementById("listaCatGastos");
+      const catsOrdenadas = Object.entries(mapaCat).sort((a, b) => b[1] - a[1]);
+      if (catsOrdenadas.length === 0) {
+        boxCat.innerHTML = `<div class="empty-state">Nenhum gasto registrado neste mês.</div>`;
+      } else {
+        const totalGastoCat = catsOrdenadas.reduce((a, b) => a + b[1], 0) || 1;
+        boxCat.innerHTML = catsOrdenadas.map(([cat, val]) => {
+          const pct = Math.round((val / totalGastoCat) * 100);
+          return `
+            <div style="margin-bottom:0.4rem;">
+              <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:0.2rem;">
+                <span><strong>${esc(cat)}</strong></span>
+                <span>${money(val)} (${pct}%)</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width:${pct}%; background:var(--red);"></div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // Situação deste mês
+      const boxSit = document.getElementById("situacaoMesConteudo");
+      boxSit.innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;">
+          <span>Total de compromissos:</span>
+          <strong>${compMes.length} itens (${money(totalCompMes)})</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;">
+          <span>Já vencidos no mês:</span>
+          <span>${compMes.length - pendentesMes.length} itens</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-bottom:0.3rem;">
+          <span>Ainda por vencer:</span>
+          <strong style="color:var(--yellow);">${pendentesMes.length} itens (${money(totalPendentes)})</strong>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+          <span>Balanço entradas x compromissos:</span>
+          <strong style="color:${entradasMes >= totalCompMes ? 'var(--green)' : 'var(--red)'};">
+            ${money(entradasMes - totalCompMes)}
+          </strong>
+        </div>
+      `;
+
+      // 7 Próximos compromissos
+      const prox7 = pendentesMes.slice(0, 7);
+      const boxProx = document.getElementById("listaProximosCompromissos");
+      if (prox7.length === 0) {
+        boxProx.innerHTML = `<div class="empty-state">Nenhum compromisso pendente neste mês.</div>`;
+      } else {
+        boxProx.innerHTML = prox7.map(item => {
+          const diff = diasEntre(hojeIso, item.dataIso);
+          let badgeVenc = "";
+          if (diff === 0) badgeVenc = `<span class="badge badge-red">Hoje</span>`;
+          else if (diff === 1) badgeVenc = `<span class="badge badge-yellow">Amanhã</span>`;
+          else badgeVenc = `<span class="badge badge-blue">Em ${diff} dias</span>`;
+
+          const badgeDesloc = item.deslocado ? `<span class="badge badge-yellow">⏭️ vai pro próximo mês</span>` : "";
+
+          return `
+            <div class="item-card">
+              <div class="item-head">
+                <span class="item-title">${esc(item.nome)}</span>
+                <span class="item-val val-out">${money(item.valor)}</span>
+              </div>
+              <div class="item-meta">
+                <span>Vence: ${dateBR(item.dataIso)}</span>
+                ${badgeVenc}
+                <span class="badge badge-muted">${esc(item.categoria)}</span>
+                ${badgeDesloc}
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+    }
+
+    /* --- TAB: MOVIMENTOS --- */
+    function renderMovimentos() {
+      const q = (document.getElementById("buscaMov")?.value || "").toLowerCase().trim();
+      const ordenados = [...db.movimentos].sort((a, b) => b.data.localeCompare(a.data));
+      const filtrados = ordenados.filter(m => {
+        if (!q) return true;
+        return (
+          m.descricao.toLowerCase().includes(q) ||
+          m.categoria.toLowerCase().includes(q) ||
+          (m.obs && m.obs.toLowerCase().includes(q)) ||
+          String(m.valor).includes(q)
+        );
+      });
+
+      document.getElementById("contMov").textContent = `${filtrados.length} de ${db.movimentos.length}`;
+      const box = document.getElementById("listaMovimentos");
+
+      if (filtrados.length === 0) {
+        box.innerHTML = `<div class="empty-state">${db.movimentos.length === 0 ? "Nenhum movimento registrado. Adicione um acima!" : "Nenhum movimento encontrado na busca."}</div>`;
+        return;
+      }
+
+      box.innerHTML = filtrados.map(m => `
+        <div class="item-card">
+          <div class="item-head">
+            <span class="item-title">${esc(m.descricao)}</span>
+            <span class="item-val ${m.tipo === 'entrada' ? 'val-in' : 'val-out'}">
+              ${m.tipo === 'entrada' ? '+ ' : '- '}${money(m.valor)}
+            </span>
+          </div>
+          <div class="item-meta">
+            <span class="badge ${m.tipo === 'entrada' ? 'badge-green' : 'badge-red'}">${m.tipo === 'entrada' ? 'Entrada' : 'Saída'}</span>
+            <span>📅 ${dateBR(m.data)}</span>
+            <span class="badge badge-muted">${esc(m.categoria)}</span>
+            ${m.obs ? `<span>📝 ${esc(m.obs)}</span>` : ''}
+          </div>
+          <div class="item-actions">
+            <button class="btn btn-sm secondary" onclick="editarRegistro('movimentos', '${m.id}')">✏️ Editar</button>
+            <button class="btn btn-sm secondary" onclick="arquivarMovimento('${m.id}')">📥 Arquivar</button>
+            <button class="btn btn-sm delete" onclick="del('movimentos', '${m.id}')">🗑️ Excluir</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function salvarMovimento(e) {
+      e.preventDefault();
+      const id = document.getElementById("movId").value;
+      const tipo = document.getElementById("movTipo").value;
+      const descricao = document.getElementById("movDescricao").value.trim();
+      const valor = parseFloat(document.getElementById("movValor").value);
+      const data = document.getElementById("movData").value;
+      const categoria = document.getElementById("movCategoria").value.trim();
+      const obs = document.getElementById("movObs").value.trim();
+
+      if (!descricao || isNaN(valor) || valor <= 0 || !data) {
+        toast("⚠️ Preencha todos os campos obrigatórios corretamente.");
+        return;
+      }
+
+      if (id) {
+        const idx = db.movimentos.findIndex(m => m.id === id);
+        if (idx !== -1) {
+          db.movimentos[idx] = { id, tipo, descricao, valor, data, categoria, obs };
+          toast("✅ Movimento atualizado!");
+        }
+      } else {
+        db.movimentos.push({ id: uid(), tipo, descricao, valor, data, categoria, obs });
+        toast("✅ Movimento adicionado!");
+      }
+
+      cancelarEdicao("movimentos");
+      save();
+    }
+
+    function arquivarMovimento(id) {
+      const idx = db.movimentos.findIndex(m => m.id === id);
+      if (idx === -1) return;
+      const mov = db.movimentos[idx];
+      db.movimentos.splice(idx, 1);
+      db.historico.push({
+        id: uid(),
+        tipo: "movimento",
+        status: "concluido",
+        nome: mov.descricao,
+        valor: mov.valor,
+        dataOriginal: mov.data,
+        dataRegistro: today(),
+        info: `Movimento arquivado (${mov.tipo === 'entrada' ? 'Entrada' : 'Saída'} - ${mov.categoria})`,
+        refId: mov.id
+      });
+      toast("📥 Movimento arquivado no Histórico.");
+      save();
+    }
+
+    /* --- TAB: RECORRENTES --- */
+    function renderRecorrentes() {
+      const q = (document.getElementById("buscaRec")?.value || "").toLowerCase().trim();
+      const filtrados = db.recorrentes.filter(r => {
+        if (!q) return true;
+        return (
+          r.nome.toLowerCase().includes(q) ||
+          r.categoria.toLowerCase().includes(q) ||
+          String(r.valor).includes(q) ||
+          String(r.dia).includes(q)
+        );
+      });
+
+      document.getElementById("contRec").textContent = `${filtrados.length} de ${db.recorrentes.length}`;
+      const box = document.getElementById("listaRecorrentes");
+
+      if (filtrados.length === 0) {
+        box.innerHTML = `<div class="empty-state">${db.recorrentes.length === 0 ? "Nenhuma despesa recorrente cadastrada." : "Nenhum resultado."}</div>`;
+        return;
+      }
+
+      const hoje = today();
+      const [hAno, hMes, hDia] = hoje.split("-").map(Number);
+
+      box.innerHTML = filtrados.map(r => {
+        let diaNum = Number(r.dia);
+        let maxD = diasNoMes(hAno, hMes);
+        if (diaNum > maxD) diaNum = maxD;
+        const dataVenc = `${hAno}-${String(hMes).padStart(2, "0")}-${String(diaNum).padStart(2, "0")}`;
+        const diff = diasEntre(hoje, dataVenc);
+        const badgeProximo = (diff >= 0 && diff <= 3) ? `<span class="badge badge-yellow">⏰ Vence em ${diff === 0 ? 'hoje' : diff + 'd'}</span>` : "";
+
+        return `
+          <div class="item-card">
+            <div class="item-head">
+              <span class="item-title">${esc(r.nome)}</span>
+              <span class="item-val val-out">${money(r.valor)}/mês</span>
+            </div>
+            <div class="item-meta">
+              <span>📅 Todo dia ${r.dia}</span>
+              <span class="badge badge-muted">${esc(r.categoria)}</span>
+              ${badgeProximo}
+            </div>
+            <div class="item-actions">
+              <button class="btn btn-sm secondary" onclick="editarRegistro('recorrentes', '${r.id}')">✏️ Editar</button>
+              <button class="btn btn-sm delete" onclick="del('recorrentes', '${r.id}')">🗑️ Excluir</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function salvarRecorrente(e) {
+      e.preventDefault();
+      const id = document.getElementById("recId").value;
+      const nome = document.getElementById("recNome").value.trim();
+      const valor = parseFloat(document.getElementById("recValor").value);
+      const dia = parseInt(document.getElementById("recDia").value, 10);
+      const categoria = document.getElementById("recCategoria").value.trim();
+
+      if (!nome || isNaN(valor) || valor <= 0 || isNaN(dia) || dia < 1 || dia > 31) {
+        toast("⚠️ Preencha corretamente os dados do compromisso recorrente.");
+        return;
+      }
+
+      if (id) {
+        const idx = db.recorrentes.findIndex(r => r.id === id);
+        if (idx !== -1) {
+          db.recorrentes[idx] = { id, nome, valor, dia, categoria };
+          toast("✅ Recorrente atualizado!");
+        }
+      } else {
+        db.recorrentes.push({ id: uid(), nome, valor, dia, categoria });
+        toast("✅ Despesa recorrente cadastrada!");
+      }
+
+      cancelarEdicao("recorrentes");
+      save();
+    }
+
+    /* --- TAB: PARCELAS --- */
+    function renderParcelas() {
+      const q = (document.getElementById("buscaPar")?.value || "").toLowerCase().trim();
+      const filtrados = db.parcelas.filter(p => {
+        if (!q) return true;
+        return (
+          p.nome.toLowerCase().includes(q) ||
+          (p.obs && p.obs.toLowerCase().includes(q)) ||
+          String(p.valor).includes(q)
+        );
+      });
+
+      document.getElementById("contPar").textContent = `${filtrados.length} de ${db.parcelas.length}`;
+      const box = document.getElementById("listaParcelas");
+
+      if (filtrados.length === 0) {
+        box.innerHTML = `<div class="empty-state">${db.parcelas.length === 0 ? "Nenhuma parcela ativa." : "Nenhum resultado."}</div>`;
+        return;
+      }
+
+      const hoje = today();
+      const [hAno, hMes] = hoje.split("-").map(Number);
+
+      box.innerHTML = filtrados.map(p => {
+        const pagas = p.total - p.restantes;
+        const pct = Math.round((pagas / p.total) * 100);
+
+        let diaNum = Number(p.dia);
+        let maxD = diasNoMes(hAno, hMes);
+        if (diaNum > maxD) diaNum = maxD;
+        const dataVenc = `${hAno}-${String(hMes).padStart(2, "0")}-${String(diaNum).padStart(2, "0")}`;
+        const diff = diasEntre(hoje, dataVenc);
+        const badgeProximo = (diff >= 0 && diff <= 3) ? `<span class="badge badge-yellow">⏰ Vence em ${diff === 0 ? 'hoje' : diff + 'd'}</span>` : "";
+
+        return `
+          <div class="item-card">
+            <div class="item-head">
+              <span class="item-title">${esc(p.nome)}</span>
+              <span class="item-val val-out">${money(p.valor)}/mês</span>
+            </div>
+            <div class="item-meta">
+              <span>📅 ${p.restantes} restantes de ${p.total} • Vence dia ${p.dia}</span>
+              ${badgeProximo}
+              ${p.obs ? `<span>📝 ${esc(p.obs)}</span>` : ''}
+            </div>
+            <div class="progress-track" title="${pct}% quitado">
+              <div class="progress-fill" style="width:${pct}%;"></div>
+            </div>
+            <div class="item-actions">
+              <button class="btn btn-sm success" onclick="baixarParcela('${p.id}')">💳 Paguei 1 parcela</button>
+              <button class="btn btn-sm secondary" onclick="editarRegistro('parcelas', '${p.id}')">✏️ Editar</button>
+              <button class="btn btn-sm delete" onclick="del('parcelas', '${p.id}')">🗑️ Excluir</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function salvarParcela(e) {
+      e.preventDefault();
+      const id = document.getElementById("parId").value;
+      const nome = document.getElementById("parNome").value.trim();
+      const valor = parseFloat(document.getElementById("parValor").value);
+      const total = parseInt(document.getElementById("parTotal").value, 10);
+      const restantes = parseInt(document.getElementById("parRestantes").value, 10);
+      const dia = parseInt(document.getElementById("parDia").value, 10);
+      const obs = document.getElementById("parObs").value.trim();
+
+      if (!nome || isNaN(valor) || valor <= 0 || isNaN(total) || isNaN(restantes) || isNaN(dia)) {
+        toast("⚠️ Preencha todos os campos obrigatórios.");
+        return;
+      }
+
+      if (restantes > total) {
+        toast("⚠️ As parcelas restantes não podem ser maiores que o total de parcelas!");
+        return;
+      }
+
+      if (id) {
+        const idx = db.parcelas.findIndex(p => p.id === id);
+        if (idx !== -1) {
+          db.parcelas[idx] = { id, nome, valor, total, restantes, dia, obs };
+          toast("✅ Parcela atualizada!");
+        }
+      } else {
+        db.parcelas.push({ id: uid(), nome, valor, total, restantes, dia, obs });
+        toast("✅ Parcelamento cadastrado!");
+      }
+
+      cancelarEdicao("parcelas");
+      save();
+    }
+
+    function baixarParcela(id) {
+      const idx = db.parcelas.findIndex(p => p.id === id);
+      if (idx === -1) return;
+      const par = db.parcelas[idx];
+
+      par.restantes -= 1;
+      if (par.restantes <= 0) {
+        // Concluído -> move pro histórico
+        db.parcelas.splice(idx, 1);
+        db.historico.push({
+          id: uid(),
+          tipo: "parcela",
+          status: "concluido",
+          nome: par.nome,
+          valor: par.valor,
+          dataOriginal: today(),
+          dataRegistro: today(),
+          info: `Parcelamento concluído (${par.total} de ${par.total} parcelas)`,
+          refId: par.id
+        });
+        toast("🎉 Parcelamento concluído — movido para o Histórico!");
+      } else {
+        toast(`✅ Parcela registrada! Restam ${par.restantes} de ${par.total}.`);
+      }
+      save();
+    }
+
+    /* --- TAB: DÍVIDAS --- */
+    function renderDividas() {
+      const q = (document.getElementById("buscaDiv")?.value || "").toLowerCase().trim();
+      const filtradas = db.dividas.filter(d => {
+        if (!q) return true;
+        return (
+          d.pessoa.toLowerCase().includes(q) ||
+          d.descricao.toLowerCase().includes(q) ||
+          String(d.valor).includes(q)
+        );
+      });
+
+      const totalDevido = db.dividas.reduce((a, b) => a + Number(b.valor), 0);
+      document.getElementById("contDiv").textContent = `${filtradas.length} pendentes • Total: ${money(totalDevido)}`;
+      const box = document.getElementById("listaDividas");
+
+      if (filtradas.length === 0) {
+        box.innerHTML = `<div class="empty-state">${db.dividas.length === 0 ? "Nenhuma dívida pendente cadastrada. Parabéns!" : "Nenhuma dívida encontrada."}</div>`;
+        return;
+      }
+
+      const hoje = today();
+      const [hAno, hMes] = hoje.split("-").map(Number);
+
+      box.innerHTML = filtradas.map(d => {
+        const resolvida = resolverDataEfetivaDivida(d, hAno, hMes);
+        const diff = diasEntre(hoje, resolvida.dataIso);
+
+        let badgeVenc = "";
+        if (diff < 0) {
+          badgeVenc = `<span class="badge badge-red">Vencida em ${dateBR(d.data)}</span>`;
+        } else if (diff <= 3) {
+          badgeVenc = `<span class="badge badge-yellow">⏰ Vence em ${diff === 0 ? 'hoje' : diff + 'd'}</span>`;
+        } else {
+          badgeVenc = `<span>Vencimento: ${dateBR(resolvida.dataIso)}</span>`;
+        }
+
+        const badgeDesloc = resolvida.deslocado ? `<span class="badge badge-yellow">⏭️ vai pro próximo mês</span>` : "";
+
+        return `
+          <div class="item-card">
+            <div class="item-head">
+              <span class="item-title">${esc(d.pessoa)} — ${esc(d.descricao)}</span>
+              <span class="item-val val-out">${money(d.valor)}</span>
+            </div>
+            <div class="item-meta">
+              ${badgeVenc}
+              ${badgeDesloc}
+            </div>
+            <div class="item-actions">
+              <button class="btn btn-sm success" onclick="pagarDivida('${d.id}')">✅ Marcar paga</button>
+              <button class="btn btn-sm secondary" onclick="editarRegistro('dividas', '${d.id}')">✏️ Editar</button>
+              <button class="btn btn-sm delete" onclick="del('dividas', '${d.id}')">🗑️ Excluir</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function salvarDivida(e) {
+      e.preventDefault();
+      const id = document.getElementById("divId").value;
+      const pessoa = document.getElementById("divPessoa").value.trim();
+      const valor = parseFloat(document.getElementById("divValor").value);
+      const data = document.getElementById("divData").value;
+      const descricao = document.getElementById("divDescricao").value.trim();
+
+      if (!pessoa || isNaN(valor) || valor <= 0 || !data || !descricao) {
+        toast("⚠️ Preencha todos os campos da dívida.");
+        return;
+      }
+
+      if (id) {
+        const idx = db.dividas.findIndex(d => d.id === id);
+        if (idx !== -1) {
+          db.dividas[idx] = { id, pessoa, valor, data, descricao };
+          toast("✅ Dívida atualizada!");
+        }
+      } else {
+        db.dividas.push({ id: uid(), pessoa, valor, data, descricao });
+        toast("✅ Dívida registrada!");
+      }
+
+      cancelarEdicao("dividas");
+      save();
+    }
+
+    function pagarDivida(id) {
+      const idx = db.dividas.findIndex(d => d.id === id);
+      if (idx === -1) return;
+      const d = db.dividas[idx];
+
+      db.dividas.splice(idx, 1);
+      db.historico.push({
+        id: uid(),
+        tipo: "divida",
+        status: "concluido",
+        nome: `${d.pessoa} - ${d.descricao}`,
+        valor: d.valor,
+        dataOriginal: d.data,
+        dataRegistro: today(),
+        info: "Dívida quitada e finalizada",
+        refId: d.id
+      });
+      toast("✅ Dívida paga e arquivada no Histórico.");
+      save();
+    }
+
+    /* --- TAB: METAS --- */
+    function renderMetas() {
+      const q = (document.getElementById("buscaMeta")?.value || "").toLowerCase().trim();
+      const filtradas = db.metas.filter(m => {
+        if (!q) return true;
+        return m.nome.toLowerCase().includes(q) || String(m.alvo).includes(q);
+      });
+
+      document.getElementById("contMeta").textContent = `${filtradas.length} de ${db.metas.length}`;
+      const box = document.getElementById("listaMetas");
+
+      if (filtradas.length === 0) {
+        box.innerHTML = `<div class="empty-state">${db.metas.length === 0 ? "Nenhuma meta de economia cadastrada." : "Nenhum resultado."}</div>`;
+        return;
+      }
+
+      box.innerHTML = filtradas.map(m => {
+        const atual = Number(m.atual) || 0;
+        const alvo = Number(m.alvo) || 1;
+        const pct = Math.min(100, Math.round((atual / alvo) * 100));
+        const batida = atual >= alvo;
+
+        return `
+          <div class="item-card">
+            <div class="item-head">
+              <span class="item-title">${esc(m.nome)}</span>
+              <span class="item-val val-in">${money(atual)} / ${money(alvo)}</span>
+            </div>
+            <div class="item-meta">
+              <span>Prazo desejado: ${dateBR(m.data)}</span>
+              <span class="badge ${batida ? 'badge-green' : 'badge-blue'}">${pct}%</span>
+              ${batida ? `<span class="badge badge-green">🎉 Meta batida!</span>` : ""}
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:${pct}%; background:${batida ? 'var(--green)' : 'var(--accent)'};"></div>
+            </div>
+            <div class="item-actions">
+              <button class="btn btn-sm success" onclick="adicionarDinheiro('${m.id}')">➕ Adicionar dinheiro</button>
+              <button class="btn btn-sm secondary" onclick="editarRegistro('metas', '${m.id}')">✏️ Editar</button>
+              <button class="btn btn-sm delete" onclick="del('metas', '${m.id}')">🗑️ Excluir</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function salvarMeta(e) {
+      e.preventDefault();
+      const id = document.getElementById("metaId").value;
+      const nome = document.getElementById("metaNome").value.trim();
+      const alvo = parseFloat(document.getElementById("metaAlvo").value);
+      const atual = parseFloat(document.getElementById("metaAtual").value) || 0;
+      const data = document.getElementById("metaData").value;
+
+      if (!nome || isNaN(alvo) || alvo <= 0 || !data) {
+        toast("⚠️ Preencha os campos obrigatórios da meta.");
+        return;
+      }
+
+      if (id) {
+        const idx = db.metas.findIndex(m => m.id === id);
+        if (idx !== -1) {
+          db.metas[idx] = { id, nome, alvo, atual, data };
+          toast("✅ Meta atualizada!");
+        }
+      } else {
+        db.metas.push({ id: uid(), nome, alvo, atual, data });
+        toast("✅ Meta criada com sucesso!");
+      }
+
+      cancelarEdicao("metas");
+      save();
+    }
+
+    function adicionarDinheiro(id) {
+      const idx = db.metas.findIndex(m => m.id === id);
+      if (idx === -1) return;
+      const m = db.metas[idx];
+
+      const input = prompt(`Adicionar quanto para a meta "${m.nome}"? (R$)`);
+      if (!input) return;
+      const v = parseFloat(input.replace(",", "."));
+      if (isNaN(v) || v <= 0) {
+        alert("Valor inválido.");
+        return;
+      }
+
+      m.atual = (Number(m.atual) || 0) + v;
+      if (m.atual >= m.alvo) {
+        toast("🎉 Parabéns! Você bateu a sua meta!");
+      } else {
+        toast(`✅ Adicionado ${money(v)} à meta.`);
+      }
+      save();
+    }
+
+    /* --- EDIÇÃO GLOBAL --- */
+    function editarRegistro(secao, id) {
+      cancelarEdicao(secao);
+      editandoSecao = secao;
+      editandoId = id;
+
+      if (secao === "movimentos") {
+        const it = db.movimentos.find(x => x.id === id);
+        if (!it) return;
+        document.getElementById("movId").value = it.id;
+        document.getElementById("movTipo").value = it.tipo;
+        document.getElementById("movDescricao").value = it.descricao;
+        document.getElementById("movValor").value = it.valor;
+        document.getElementById("movData").value = it.data;
+        document.getElementById("movCategoria").value = it.categoria;
+        document.getElementById("movObs").value = it.obs || "";
+        document.getElementById("movFormTitle").textContent = "✏️ Editar Movimento";
+        document.getElementById("btnSalvarMov").textContent = "💾 Salvar alterações";
+        document.getElementById("btnCancelMov").style.display = "inline-flex";
+        document.getElementById("movimentoForm").classList.add("editing");
+      } else if (secao === "recorrentes") {
+        const it = db.recorrentes.find(x => x.id === id);
+        if (!it) return;
+        document.getElementById("recId").value = it.id;
+        document.getElementById("recNome").value = it.nome;
+        document.getElementById("recValor").value = it.valor;
+        document.getElementById("recDia").value = it.dia;
+        document.getElementById("recCategoria").value = it.categoria;
+        document.getElementById("recFormTitle").textContent = "✏️ Editar Recorrente";
+        document.getElementById("btnSalvarRec").textContent = "💾 Salvar alterações";
+        document.getElementById("btnCancelRec").style.display = "inline-flex";
+        document.getElementById("recorrenteForm").classList.add("editing");
+      } else if (secao === "parcelas") {
+        const it = db.parcelas.find(x => x.id === id);
+        if (!it) return;
+        document.getElementById("parId").value = it.id;
+        document.getElementById("parNome").value = it.nome;
+        document.getElementById("parValor").value = it.valor;
+        document.getElementById("parTotal").value = it.total;
+        document.getElementById("parRestantes").value = it.restantes;
+        document.getElementById("parDia").value = it.dia;
+        document.getElementById("parObs").value = it.obs || "";
+        document.getElementById("parFormTitle").textContent = "✏️ Editar Parcela";
+        document.getElementById("btnSalvarPar").textContent = "💾 Salvar alterações";
+        document.getElementById("btnCancelPar").style.display = "inline-flex";
+        document.getElementById("parcelaForm").classList.add("editing");
+      } else if (secao === "dividas") {
+        const it = db.dividas.find(x => x.id === id);
+        if (!it) return;
+        document.getElementById("divId").value = it.id;
+        document.getElementById("divPessoa").value = it.pessoa;
+        document.getElementById("divValor").value = it.valor;
+        document.getElementById("divData").value = it.data;
+        document.getElementById("divDescricao").value = it.descricao;
+        document.getElementById("divFormTitle").textContent = "✏️ Editar Dívida";
+        document.getElementById("btnSalvarDiv").textContent = "💾 Salvar alterações";
+        document.getElementById("btnCancelDiv").style.display = "inline-flex";
+        document.getElementById("dividaForm").classList.add("editing");
+      } else if (secao === "metas") {
+        const it = db.metas.find(x => x.id === id);
+        if (!it) return;
+        document.getElementById("metaId").value = it.id;
+        document.getElementById("metaNome").value = it.nome;
+        document.getElementById("metaAlvo").value = it.alvo;
+        document.getElementById("metaAtual").value = it.atual;
+        document.getElementById("metaData").value = it.data;
+        document.getElementById("metaFormTitle").textContent = "✏️ Editar Meta";
+        document.getElementById("btnSalvarMeta").textContent = "💾 Salvar alterações";
+        document.getElementById("btnCancelMeta").style.display = "inline-flex";
+        document.getElementById("metaForm").classList.add("editing");
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function cancelarEdicao(secao) {
+      editandoId = null;
+      editandoSecao = null;
+
+      if (secao === "movimentos") {
+        document.getElementById("movId").value = "";
+        document.getElementById("movimentoForm").reset();
+        document.getElementById("movData").value = today();
+        document.getElementById("movFormTitle").textContent = "➕ Novo Movimento";
+        document.getElementById("btnSalvarMov").textContent = "💾 Salvar movimento";
+        document.getElementById("btnCancelMov").style.display = "none";
+        document.getElementById("movimentoForm").classList.remove("editing");
+      } else if (secao === "recorrentes") {
+        document.getElementById("recId").value = "";
+        document.getElementById("recorrenteForm").reset();
+        document.getElementById("recFormTitle").textContent = "➕ Nova Despesa Recorrente";
+        document.getElementById("btnSalvarRec").textContent = "💾 Salvar recorrente";
+        document.getElementById("btnCancelRec").style.display = "none";
+        document.getElementById("recorrenteForm").classList.remove("editing");
+      } else if (secao === "parcelas") {
+        document.getElementById("parId").value = "";
+        document.getElementById("parcelaForm").reset();
+        document.getElementById("parFormTitle").textContent = "➕ Nova Compra Parcelada";
+        document.getElementById("btnSalvarPar").textContent = "💾 Salvar parcela";
+        document.getElementById("btnCancelPar").style.display = "none";
+        document.getElementById("parcelaForm").classList.remove("editing");
+      } else if (secao === "dividas") {
+        document.getElementById("divId").value = "";
+        document.getElementById("dividaForm").reset();
+        document.getElementById("divData").value = today();
+        document.getElementById("divFormTitle").textContent = "➕ Nova Dívida / Empréstimo";
+        document.getElementById("btnSalvarDiv").textContent = "💾 Salvar dívida";
+        document.getElementById("btnCancelDiv").style.display = "none";
+        document.getElementById("dividaForm").classList.remove("editing");
+      } else if (secao === "metas") {
+        document.getElementById("metaId").value = "";
+        document.getElementById("metaForm").reset();
+        document.getElementById("metaAtual").value = "0";
+        document.getElementById("metaFormTitle").textContent = "➕ Nova Meta de Economia";
+        document.getElementById("btnSalvarMeta").textContent = "💾 Salvar meta";
+        document.getElementById("btnCancelMeta").style.display = "none";
+        document.getElementById("metaForm").classList.remove("editing");
+      }
+    }
+
+    /* --- EXCLUSÃO GENÉRICA --- */
+    function del(secao, id) {
+      if (!confirm("Tem certeza que deseja excluir este item permanentemente?")) return;
+      if (db[secao]) {
+        db[secao] = db[secao].filter(item => item.id !== id);
+        toast("🗑️ Item removido.");
+        save();
+      }
+    }
+
+    /* --- TAB: PLANEJAMENTO --- */
+    function getMesPlanejamento() {
+      const el = document.getElementById("planejamentoMes");
+      if (!el.value) el.value = monthNow();
+      const [ano, mes] = el.value.split("-").map(Number);
+      return { ano, mes, str: el.value };
+    }
+
+    function mudarMes(delta) {
+      const { ano, mes } = getMesPlanejamento();
+      const d = new Date(ano, mes - 1 + delta, 1);
+      const novoAno = d.getFullYear();
+      const novoMes = String(d.getMonth() + 1).padStart(2, "0");
+      document.getElementById("planejamentoMes").value = `${novoAno}-${novoMes}`;
+      renderPlanejamento();
+    }
+
+    function irHoje() {
+      document.getElementById("planejamentoMes").value = monthNow();
+      renderPlanejamento();
+    }
+
+    function renderPlanejamento() {
+      const { ano, mes, str: prefixoMes } = getMesPlanejamento();
+      const numDias = diasNoMes(ano, mes);
+
+      // Saldo base antes do dia 1 deste mês
+      let saldoBase = 0;
+      const dataInicioMes = `${prefixoMes}-01`;
+      db.movimentos.forEach(m => {
+        if (m.data < dataInicioMes) {
+          if (m.tipo === "entrada") saldoBase += Number(m.valor);
+          else saldoBase -= Number(m.valor);
+        }
+      });
+
+      // Entradas no mês
+      let totalEntradasMes = 0;
+      const entradasPorDia = {};
+      db.movimentos.forEach(m => {
+        if (m.data.startsWith(prefixoMes)) {
+          const diaNum = Number(m.data.split("-")[2]);
+          if (!entradasPorDia[diaNum]) entradasPorDia[diaNum] = [];
+          entradasPorDia[diaNum].push(m);
+          if (m.tipo === "entrada") totalEntradasMes += Number(m.valor);
+        }
+      });
+
+      // Compromissos do mês
+      const comp = compromissosMes(ano, mes);
+      const compPorDia = {};
+      const catMap = {};
+      let totalPagar = 0;
+
+      comp.forEach(c => {
+        totalPagar += c.valor;
+        const diaNum = Number(c.dataIso.split("-")[2]);
+        if (!compPorDia[diaNum]) compPorDia[diaNum] = [];
+        compPorDia[diaNum].push(c);
+        catMap[c.categoria] = (catMap[c.categoria] || 0) + c.valor;
+      });
+
+      // KPIs
+      document.getElementById("planTotalPagar").textContent = money(totalPagar);
+      document.getElementById("planTotalEntradas").textContent = money(totalEntradasMes);
+
+      // Timeline dia a dia
+      let saldoCorrente = saldoBase;
+      let menorSaldo = saldoCorrente;
+      const timelineCards = [];
+
+      for (let d = 1; d <= numDias; d++) {
+        const diaStr = String(d).padStart(2, "0");
+        const dataIso = `${prefixoMes}-${diaStr}`;
+        const itensDia = [];
+
+        // Adiciona entradas
+        if (entradasPorDia[d]) {
+          entradasPorDia[d].forEach(m => {
+            const v = Number(m.valor);
+            if (m.tipo === "entrada") saldoCorrente += v;
+            else saldoCorrente -= v;
+            itensDia.push({
+              tipo: m.tipo,
+              desc: m.descricao,
+              valor: v,
+              cat: m.categoria
+            });
+          });
+        }
+
+        // Adiciona compromissos
+        if (compPorDia[d]) {
+          compPorDia[d].forEach(c => {
+            saldoCorrente -= c.valor;
+            itensDia.push({
+              tipo: "saida",
+              desc: c.nome + (c.deslocado ? " (deslocado)" : ""),
+              valor: c.valor,
+              cat: c.categoria
+            });
+          });
+        }
+
+        if (saldoCorrente < menorSaldo) menorSaldo = saldoCorrente;
+
+        // Render card apenas se houver movimentação ou em dias chave (1, 15, fim)
+        if (itensDia.length > 0) {
+          const saldoClass = saldoCorrente >= 0 ? "val-in" : "val-out";
+          timelineCards.push(`
+            <div class="daycard" style="${saldoCorrente < 0 ? 'border-color:rgba(248,113,113,0.4);' : ''}">
+              <div class="daycard-header">
+                <span>📅 ${dateBR(dataIso)}</span>
+                <span class="${saldoClass}">${money(saldoCorrente)}</span>
+              </div>
+              <details class="daycard-details" open>
+                <summary>Ver itens (${itensDia.length})</summary>
+                <div class="daycard-items">
+                  ${itensDia.map(it => `
+                    <div class="daycard-row">
+                      <span>${it.tipo === 'entrada' ? '⬆️ 🟢' : '🔴'} ${esc(it.desc)} <small class="muted">(${esc(it.cat)})</small></span>
+                      <strong class="${it.tipo === 'entrada' ? 'val-in' : 'val-out'}">
+                        ${it.tipo === 'entrada' ? '+ ' : '- '}${money(it.valor)}
+                      </strong>
+                    </div>
+                  `).join("")}
+                </div>
+              </details>
+              <div class="daycard-footer">
+                <span>Saldo projetado após o dia:</span>
+                <span class="${saldoClass}">${saldoCorrente < 0 ? '⚠️ ' : ''}${money(saldoCorrente)}</span>
+              </div>
+            </div>
+          `);
+        }
+      }
+
+      // Maior falta de dinheiro projetada
+      const elMaiorFalta = document.getElementById("planMaiorFalta");
+      if (menorSaldo < 0) {
+        elMaiorFalta.textContent = money(menorSaldo);
+        elMaiorFalta.className = "kpi-num val-out";
+      } else {
+        elMaiorFalta.textContent = "Nenhuma (sempre positivo)";
+        elMaiorFalta.className = "kpi-num val-in";
+      }
+
+      document.getElementById("badgeTotalDiasPlan").textContent = `${timelineCards.length} dias com ações`;
+      const boxTl = document.getElementById("planTimeline");
+      if (timelineCards.length === 0) {
+        boxTl.innerHTML = `<div class="empty-state">Nenhuma movimentação ou compromisso agendado para este mês.</div>`;
+      } else {
+        boxTl.innerHTML = timelineCards.join("");
+      }
+
+      // Resumo categorias do mês
+      const boxCatPlan = document.getElementById("planCategorias");
+      const catEntradas = Object.entries(catMap).sort((a, b) => b[1] - a[1]);
+      if (catEntradas.length === 0) {
+        boxCatPlan.innerHTML = `<div class="empty-state">Nenhum compromisso para este mês.</div>`;
+      } else {
+        boxCatPlan.innerHTML = catEntradas.map(([cat, val]) => `
+          <div style="display:flex; justify-content:space-between; font-size:0.85rem; padding:0.3rem 0; border-bottom:1px solid rgba(255,255,255,0.04);">
+            <span>🏷️ <strong>${esc(cat)}</strong></span>
+            <span class="val-out">${money(val)}</span>
+          </div>
+        `).join("");
+      }
+
+      // Prévia: Compromissos do Próximo Mês
+      let proximoMesNum = mes + 1;
+      let proximoAnoNum = ano;
+      if (proximoMesNum > 12) {
+        proximoMesNum = 1;
+        proximoAnoNum++;
+      }
+      const compProx = compromissosMes(proximoAnoNum, proximoMesNum);
+      const boxProx = document.getElementById("planProximoMes");
+      if (compProx.length === 0) {
+        boxProx.innerHTML = `<div class="empty-state">Nenhum compromisso previsto para o próximo mês.</div>`;
+      } else {
+        const totalProx = compProx.reduce((a, b) => a + b.valor, 0);
+        boxProx.innerHTML = `
+          <div style="font-size:0.8rem; margin-bottom:0.6rem; color:var(--text-muted);">
+            Previsão para <strong>${String(proximoMesNum).padStart(2, "0")}/${proximoAnoNum}</strong>: ${compProx.length} compromissos somando <strong class="val-out">${money(totalProx)}</strong>
+          </div>
+          ${compProx.map(c => `
+            <div class="item-card">
+              <div class="item-head">
+                <span class="item-title">${esc(c.nome)}</span>
+                <span class="item-val val-out">${money(c.valor)}</span>
+              </div>
+              <div class="item-meta">
+                <span>Vence: ${dateBR(c.dataIso)}</span>
+                <span class="badge badge-muted">${esc(c.categoria)}</span>
+              </div>
+            </div>
+          `).join("")}
+        `;
+      }
+    }
+
+    /* --- TAB: HISTÓRICO --- */
+    function setFiltroHist(tipo) {
+      filtroHistorico = tipo;
+      document.getElementById("chipHistTodos").className = tipo === "todos" ? "btn btn-sm primary" : "btn btn-sm secondary";
+      document.getElementById("chipHistConcluidos").className = tipo === "concluido" ? "btn btn-sm primary" : "btn btn-sm secondary";
+      document.getElementById("chipHistPendentes").className = tipo === "pendente" ? "btn btn-sm primary" : "btn btn-sm secondary";
+      renderHistorico();
+    }
+
+    function renderHistorico() {
+      const filtrados = db.historico.filter(h => {
+        if (filtroHistorico === "todos") return true;
+        return h.status === filtroHistorico;
+      });
+
+      document.getElementById("contHistorico").textContent = `${filtrados.length} registros`;
+      const box = document.getElementById("listaHistorico");
+
+      if (filtrados.length === 0) {
+        box.innerHTML = `<div class="empty-state">Nenhum item no histórico com este filtro.</div>`;
+        return;
+      }
+
+      box.innerHTML = [...filtrados].reverse().map(h => {
+        let badgeTipo = "";
+        if (h.tipo === "divida") badgeTipo = `<span class="badge badge-blue">Dívida</span>`;
+        else if (h.tipo === "parcela") badgeTipo = `<span class="badge badge-yellow">Parcela</span>`;
+        else badgeTipo = `<span class="badge badge-muted">Movimento</span>`;
+
+        let badgeStatus = h.status === "concluido"
+          ? `<span class="badge badge-green">✅ Concluído</span>`
+          : `<span class="badge badge-yellow">⏳ Pendente</span>`;
+
+        return `
+          <div class="item-card">
+            <div class="item-head">
+              <span class="item-title">${esc(h.nome)}</span>
+              <span class="item-val">${money(h.valor)}</span>
+            </div>
+            <div class="item-meta">
+              ${badgeTipo}
+              ${badgeStatus}
+              <span>Data original: ${dateBR(h.dataOriginal)}</span>
+              <span>• Registrado em: ${dateBR(h.dataRegistro)}</span>
+            </div>
+            ${h.info ? `<div class="muted" style="font-size:0.75rem;">${esc(h.info)}</div>` : ''}
+            <div class="item-actions">
+              <button class="btn btn-sm secondary" onclick="devolverHistorico('${h.id}')">↩️ Devolver</button>
+              ${h.status === 'pendente' ? `<button class="btn btn-sm success" onclick="concluirHistorico('${h.id}')">✅ Concluir</button>` : ''}
+              <button class="btn btn-sm delete" onclick="excluirHistorico('${h.id}')">🗑️ Excluir</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function devolverHistorico(id) {
+      const idx = db.historico.findIndex(h => h.id === id);
+      if (idx === -1) return;
+      const h = db.historico[idx];
+
+      if (h.tipo === "divida") {
+        db.dividas.push({
+          id: uid(),
+          pessoa: h.nome.split(" - ")[0] || h.nome,
+          valor: h.valor,
+          data: h.dataOriginal || today(),
+          descricao: h.nome.split(" - ")[1] || "Dívida restaurada"
+        });
+        toast("↩️ Dívida devolvida para a aba Dívidas.");
+      } else if (h.tipo === "parcela") {
+        db.parcelas.push({
+          id: uid(),
+          nome: h.nome,
+          valor: h.valor,
+          total: 1,
+          restantes: 1,
+          dia: 10,
+          obs: "Restaurado do histórico"
+        });
+        toast("↩️ Parcela devolvida com 1 parcela restante.");
+      } else {
+        db.movimentos.push({
+          id: uid(),
+          tipo: "saida",
+          descricao: h.nome,
+          valor: h.valor,
+          data: h.dataOriginal || today(),
+          categoria: "Geral",
+          obs: "Restaurado do histórico"
+        });
+        toast("↩️ Movimento restaurado na lista de movimentos.");
+      }
+
+      db.historico.splice(idx, 1);
+      save();
+    }
+
+    function concluirHistorico(id) {
+      const it = db.historico.find(h => h.id === id);
+      if (it) {
+        it.status = "concluido";
+        toast("✅ Registro marcado como concluído.");
+        save();
+      }
+    }
+
+    function excluirHistorico(id) {
+      if (!confirm("Excluir definitivamente este registro do histórico?")) return;
+      db.historico = db.historico.filter(h => h.id !== id);
+      toast("🗑️ Registro apagado.");
+      save();
+    }
+
+    function limparHistConcluido() {
+      const concluidos = db.historico.filter(h => h.status === "concluido");
+      if (concluidos.length === 0) {
+        toast("Nenhum registro concluído para limpar.");
+        return;
+      }
+      if (!confirm(`Deseja remover ${concluidos.length} itens concluídos do histórico?`)) return;
+      if (!confirm("Tem certeza absoluta? Não será possível desfazer.")) return;
+
+      db.historico = db.historico.filter(h => h.status !== "concluido");
+      toast("🗑️ Histórico de concluídos limpo com sucesso.");
+      save();
+    }
+
+    /* --- TAB: BACKUP & DIAGNÓSTICO --- */
+    function renderDiagnostico() {
+      const el = document.getElementById("diagStorage");
+      if (!el) return;
+
+      const qCanon = quantidadeDados(lerBase(CHAVE_CANONICA));
+      const qRecup = quantidadeDados(lerBase(CHAVE_RECUPERACAO));
+      const qV2 = quantidadeDados(lerBase(CHAVE_V2));
+      const qV1 = quantidadeDados(lerBase(CHAVE_V1));
+
+      // Teste de escrita no localStorage
+      let writeOk = false;
+      try {
+        localStorage.setItem("__test_write__", "1");
+        localStorage.removeItem("__test_write__");
+        writeOk = true;
+      } catch (e) {
+        writeOk = false;
+      }
+
+      const ultSync = localStorage.getItem(CHAVE_ULTIMA_SYNC);
+      const ultSyncTxt = ultSync ? new Date(Number(ultSync)).toLocaleString("pt-BR") : "Nunca gravado";
+
+      el.innerHTML = `
+        <div>• <strong>Chave Canônica (${CHAVE_CANONICA}):</strong> ${qCanon} itens</div>
+        <div>• <strong>Cópia de Recuperação:</strong> ${qRecup} itens</div>
+        <div>• <strong>Espelho V2:</strong> ${qV2} itens</div>
+        <div>• <strong>Espelho Legado V1:</strong> ${qV1} itens</div>
+        <div>• <strong>Teste de escrita localStorage:</strong> ${writeOk ? '<span class="badge badge-green">Operacional ✅</span>' : '<span class="badge badge-red">Falhou ❌</span>'}</div>
+        <div>• <strong>Última gravação local:</strong> ${ultSyncTxt}</div>
+        <div>• <strong>Versão do App:</strong> ${VERSAO_APP}</div>
+      `;
+    }
+
+    function exportarBackup() {
+      const payload = {
+        app: "Minha Carteira",
+        versao: 3,
+        exportadoEm: new Date().toISOString(),
+        dados: db
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `minha-carteira-backup-${today()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast("⬇️ Arquivo de backup baixado!");
+    }
+
+    function importarBackup(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          const rawDados = parsed.dados || parsed;
+          if (typeof rawDados !== "object") throw new Error("Formato inválido");
+
+          const novoDb = {
+            movimentos: Array.isArray(rawDados.movimentos) ? rawDados.movimentos : [],
+            recorrentes: Array.isArray(rawDados.recorrentes) ? rawDados.recorrentes : [],
+            parcelas: Array.isArray(rawDados.parcelas) ? rawDados.parcelas : [],
+            dividas: Array.isArray(rawDados.dividas) ? rawDados.dividas : [],
+            metas: Array.isArray(rawDados.metas) ? rawDados.metas : [],
+            historico: Array.isArray(rawDados.historico) ? rawDados.historico : []
+          };
+
+          const q = quantidadeDados(novoDb);
+          if (!confirm(`O arquivo contém ${q} registros no total. Deseja restaurar e substituir a base atual?`)) return;
+
+          db = novoDb;
+          save();
+          toast("✅ Backup restaurado com sucesso!");
+        } catch (err) {
+          alert("Erro ao ler o arquivo de backup. Verifique se o formato é JSON válido.");
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = "";
+    }
+
+    function recuperarBaseLocal() {
+      const bCanon = lerBase(CHAVE_CANONICA);
+      const bV2 = lerBase(CHAVE_V2);
+      const bV1 = lerBase(CHAVE_V1);
+      const bRecup = lerBase(CHAVE_RECUPERACAO);
+
+      const lista = [
+        { nome: "Recuperação", base: bRecup, q: quantidadeDados(bRecup) },
+        { nome: "Canônica", base: bCanon, q: quantidadeDados(bCanon) },
+        { nome: "V2", base: bV2, q: quantidadeDados(bV2) },
+        { nome: "V1", base: bV1, q: quantidadeDados(bV1) }
+      ].sort((a, b) => b.q - a.q);
+
+      const melhor = lista[0];
+      if (!melhor || melhor.q === 0) {
+        toast("Nenhum dado encontrado nas memórias locais deste iPhone.");
+        return;
+      }
+
+      if (confirm(`Encontrada base "${melhor.nome}" com ${melhor.q} registros. Deseja restaurá-la agora?`)) {
+        db = melhor.base;
+        save();
+        toast("🛟 Base local recuperada e salva com sucesso!");
+      }
+    }
+
+    function limparTudo() {
+      if (!confirm("⚠️ ATENÇÃO: Esta ação apagará TODOS os seus dados financeiros deste aparelho. Deseja continuar?")) return;
+      if (!confirm("🚨 Confirmação final: Todos os movimentos, parcelas e dívidas serão excluídos permanentemente. Prosseguir?")) return;
+
+      db = JSON.parse(JSON.stringify(EMPTY));
+      localStorage.removeItem(CHAVE_CANONICA);
+      localStorage.removeItem(CHAVE_RECUPERACAO);
+      localStorage.removeItem(CHAVE_V1);
+      localStorage.removeItem(CHAVE_V2);
+      localStorage.removeItem(CHAVE_ULTIMA_SYNC);
+      
+      save();
+      toast("🗑️ Todos os dados foram apagados.");
+    }
+
+    /* --- MODO LOCAL & NUVEM FIREBASE --- */
+    function temFirebaseConfig() {
+      return Boolean(FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.projectId);
+    }
+
+    function entrarModoLocal(e) {
+      if (e) e.preventDefault();
+      localStorage.setItem(CHAVE_MODO_LOCAL, "sim");
+      document.getElementById("modalAuth").classList.add("hidden");
+      atualizarBadgeModoLocal();
+      toast("📴 Modo local ativado com persistência garantida!");
+    }
+
+    function atualizarBadgeModoLocal() {
+      const ind = document.getElementById("syncIndicator");
+      const cloudTxt = document.getElementById("cloudStatusTxt");
+      if (usuarioAtual) {
+        ind.className = "badge badge-green";
+        ind.textContent = `☁️ Sincronizado ${new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}`;
+        cloudTxt.innerHTML = `<span class="badge badge-green">Conectado</span> • ${esc(usuarioAtual.email || "Usuário")}`;
+        document.getElementById("btnSairHeader").style.display = "inline-flex";
+        document.getElementById("btnSairBackup").style.display = "inline-flex";
+        document.getElementById("userIndicator").style.display = "inline";
+        document.getElementById("userIndicator").textContent = usuarioAtual.email || "";
+      } else {
+        ind.className = "badge badge-yellow";
+        ind.textContent = "📴 Modo local";
+        cloudTxt.textContent = "Modo local ativo (dados seguros no aparelho)";
+        document.getElementById("btnSairHeader").style.display = "none";
+        document.getElementById("btnSairBackup").style.display = "none";
+        document.getElementById("userIndicator").style.display = "none";
+      }
+    }
+
+    function agendarSyncNuvem() {
+      if (!temFirebaseConfig() || !usuarioAtual) {
+        atualizarBadgeModoLocal();
+        return;
+      }
+
+      const ind = document.getElementById("syncIndicator");
+      ind.className = "badge badge-blue";
+      ind.textContent = "⏳ Sincronizando...";
+
+      clearTimeout(debounceSyncTimer);
+      debounceSyncTimer = setTimeout(() => {
+        executarSyncNuvem();
+      }, 2000);
+    }
+
+    function executarSyncNuvem() {
+      if (!window.firebase || !window.firebase.firestore || !usuarioAtual) {
+        atualizarBadgeModoLocal();
+        return;
+      }
+      try {
+        const firestore = firebase.firestore();
+        firestore.collection("carteiras").doc(usuarioAtual.uid).set({
+          dados: db,
+          atualizadoEm: Date.now()
+        }, { merge: true }).then(() => {
+          localStorage.setItem(CHAVE_ULTIMA_SYNC, Date.now().toString());
+          atualizarBadgeModoLocal();
+        }).catch(err => {
+          console.error(err);
+          const ind = document.getElementById("syncIndicator");
+          ind.className = "badge badge-red";
+          ind.textContent = "⚠️ Erro sync";
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function forcarSync() {
+      if (!temFirebaseConfig()) {
+        toast("ℹ️ Modo local ativo. Preencha FIREBASE_CONFIG para sincronizar com a nuvem.");
+        return;
+      }
+      if (!usuarioAtual) {
+        document.getElementById("modalAuth").classList.remove("hidden");
+        return;
+      }
+      toast("⏳ Enviando dados para a nuvem...");
+      executarSyncNuvem();
+    }
+
+    function sairConta() {
+      if (window.firebase && firebase.auth) {
+        firebase.auth().signOut().then(() => {
+          location.reload();
+        });
+      } else {
+        localStorage.removeItem(CHAVE_MODO_LOCAL);
+        location.reload();
+      }
+    }
+
+    function aplicarEscolha(origem) {
+      document.getElementById("modalConflito").classList.add("hidden");
+      if (origem === "nuvem" && dadosNuvemPendentes) {
+        db = dadosNuvemPendentes;
+        save();
+        toast("☁️ Dados da nuvem adotados com sucesso!");
+      } else {
+        executarSyncNuvem();
+        toast("📱 Dados deste aparelho mantidos e enviados à nuvem!");
+      }
+      dadosNuvemPendentes = null;
+    }
+
+    function fazerLogin(tipo) {
+      if (!temFirebaseConfig() || !window.firebase) {
+        toast("⚠️ Firebase não configurado no código.");
+        return;
+      }
+      const email = document.getElementById("authEmail").value.trim();
+      const senha = document.getElementById("authSenha").value;
+
+      if (!email || !senha) {
+        toast("⚠️ Preencha e-mail e senha.");
+        return;
+      }
+
+      const auth = firebase.auth();
+      const action = tipo === "criar"
+        ? auth.createUserWithEmailAndPassword(email, senha)
+        : auth.signInWithEmailAndPassword(email, senha);
+
+      action.then(() => {
+        document.getElementById("modalAuth").classList.add("hidden");
+      }).catch(err => {
+        let msg = "Erro ao autenticar.";
+        if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password" || err.code === "auth/user-not-found") {
+          msg = "E-mail ou senha incorretos.";
+        } else if (err.code === "auth/email-already-in-use") {
+          msg = "Este e-mail já está em uso.";
+        } else if (err.code === "auth/weak-password") {
+          msg = "A senha deve ter pelo menos 6 caracteres.";
+        } else if (err.code === "auth/too-many-requests") {
+          msg = "Muitas tentativas. Aguarde um momento.";
+        }
+        alert(msg);
+      });
+    }
+
+    function fazerLoginGoogle() {
+      if (!temFirebaseConfig() || !window.firebase) {
+        toast("⚠️ Firebase não configurado no código.");
+        return;
+      }
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(() => {
+        document.getElementById("modalAuth").classList.add("hidden");
+      }).catch(err => {
+        alert("Erro no login com Google: " + err.message);
+      });
+    }
+
+    /* --- INICIALIZAÇÃO DA APLICAÇÃO --- */
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Carrega dados blindados do armazenamento
+      carregarBanco();
+
+      // 2. Define data atual nos formulários
+      const hoje = today();
+      if (document.getElementById("movData")) document.getElementById("movData").value = hoje;
+      if (document.getElementById("divData")) document.getElementById("divData").value = hoje;
+      if (document.getElementById("planejamentoMes")) document.getElementById("planejamentoMes").value = monthNow();
+
+      // 3. Verifica atualização de versão
+      const versaoSalva = localStorage.getItem(CHAVE_VERSAO);
+      if (versaoSalva !== VERSAO_APP) {
+        toast(`🔄 O app foi atualizado para a versão ${VERSAO_APP}!`);
+        localStorage.setItem(CHAVE_VERSAO, VERSAO_APP);
+      }
+
+      // 4. Render inicial
+      render();
+
+      // 5. Tratamento de Firebase ou Modo Local
+      if (!temFirebaseConfig()) {
+        atualizarBadgeModoLocal();
+      } else {
+        const modoLocalAtivo = localStorage.getItem(CHAVE_MODO_LOCAL) === "sim";
+        if (!modoLocalAtivo) {
+          document.getElementById("modalAuth").classList.remove("hidden");
+        } else {
+          atualizarBadgeModoLocal();
+        }
+      }
+
+      // Monitoramento de conexão para o badge
+      window.addEventListener("online", () => {
+        if (temFirebaseConfig() && usuarioAtual) {
+          toast("🌐 Conexão restabelecida. Sincronizando...");
+          executarSyncNuvem();
+        }
+      });
+      window.addEventListener("offline", () => {
+        const ind = document.getElementById("syncIndicator");
+        ind.className = "badge badge-muted";
+        ind.textContent = "📴 Offline";
+      });
+    });
+  </script>
 <script>
-/* ============ MINHA CARTEIRA v3.2 — HTML/CSS/JS puro & offline ============ */
+/* Skip artifact shell — fixed helpers served beside every artifact. */
+(function () {
+  "use strict";
 
-/* ================= CONFIGURAÇÃO DA NUVEM (Firebase) =================
-   Para ativar o login e a sincronização entre aparelhos:
-   1) Crie um projeto GRÁTIS em https://console.firebase.google.com
-   2) Authentication → Sign-in method → ative "Email/Password" e "Google"
-   3) Firestore Database → criar (modo de produção) e colar as regras
-      (as regras estão na tela de configuração do app)
-   4) Configurações do projeto → Seus apps → app Web → copie o firebaseConfig
-      e preencha os campos abaixo. Vazio = modo local (só neste aparelho). */
-const FIREBASE_CONFIG = { apiKey: "", authDomain: "", projectId: "", storageBucket: "", messagingSenderId: "", appId: "" };
-/* ==================================================================== */
+  var fmt = {
+    num: function (v, opts) { return new Intl.NumberFormat("pt-BR", opts || {}).format(v); },
+    brl: function (v) { return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(v); },
+    pct: function (v) { return new Intl.NumberFormat("pt-BR", { style: "percent", maximumFractionDigits: 1 }).format(v); }
+  };
 
-const VERSAO_APP="3.2", KEY="minhaCarteira";
-const EMPTY={movimentos:[],recorrentes:[],parcelas:[],dividas:[],metas:[],historico:[]};
-const CHAVES=["minhaCarteira","minhaCarteiraV1","minhaCarteiraV2","minhaCarteiraRecuperacao"];
-let db=JSON.parse(JSON.stringify(EMPTY)), uidSeq=0, editando={secao:null,id:null}, filtroHist="todos", mesEscolhido=null, currentUser=null, syncTimer=null, cloudOn=false;
-
-/* ---------- UTILITÁRIOS ---------- */
-function money(v){return Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});}
-function dateBR(d){if(!d)return"-";return new Date(d+"T12:00:00").toLocaleDateString("pt-BR");}
-function today(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
-function monthNow(){return today().slice(0,7);}
-function esc(s){return String(s??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
-function newId(){return Date.now()+"-"+(++uidSeq);}
-function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",5000);}
-function normalizar(o){o=o&&typeof o==="object"?o:{};["movimentos","recorrentes","parcelas","dividas","metas","historico"].forEach(k=>{if(!Array.isArray(o[k]))o[k]=[];});return o;}
-function lerBase(ch){try{const raw=localStorage.getItem(ch);if(!raw)return null;return normalizar(JSON.parse(raw));}catch(e){return null;}}
-function qtd(x){if(!x)return 0;return x.movimentos.length+x.recorrentes.length+x.parcelas.length+x.dividas.length+x.metas.length+x.historico.length;}
-
-/* ---------- PERSISTÊNCIA BLINDADA ---------- */
-function carregarBanco(){
-  let melhor=null,qtdMax=0;
-  CHAVES.forEach(ch=>{const b=lerBase(ch);const n=qtd(b);if(n>qtdMax){melhor=b;qtdMax=n;}});
-  // NUNCA adotar vazio se alguma chave tiver dados
-  if(qtdMax>0){db=melhor;}
-  if(qtd(db)>0){try{localStorage.setItem("minhaCarteiraRecuperacao",JSON.stringify(db));}catch(e){}}
-  try{localStorage.setItem("minhaCarteiraUltimaAbertura",String(Date.now()));}catch(e){}
-}
-function save(){
-  // Blindagem: nunca gravar vazio por cima de dados existentes
-  if(qtd(db)===0){const rec=lerBase("minhaCarteiraRecuperacao");if(qtd(rec)>0){db=rec;}}
-  try{localStorage.setItem(KEY,JSON.stringify(db));}catch(e){alert("Não foi possível salvar os dados neste dispositivo.");}
-  try{localStorage.setItem("minhaCarteiraRecuperacao",JSON.stringify(db));}catch(e){}
-  try{localStorage.setItem("minhaCarteiraV1",JSON.stringify(db));}catch(e){}
-  try{localStorage.setItem("minhaCarteiraV2",JSON.stringify(db));}catch(e){}
-  agendarSyncNuvem();
-  render();
-}
-["pagehide","beforeunload"].forEach(ev=>window.addEventListener(ev,()=>{try{if(qtd(db)>0)localStorage.setItem(KEY,JSON.stringify(db));}catch(e){}}));
-
-/* ---------- NAVEGAÇÃO ---------- */
-function showTab(id,btn){
-  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");window.scrollTo(0,0);
-}
-
-/* ---------- FORMULÁRIOS + EDIÇÃO ---------- */
-document.getElementById("movData").value=today();
-document.getElementById("movimentoForm").onsubmit=e=>{e.preventDefault();
-  const obj={tipo:movTipo.value,descricao:movDescricao.value.trim(),valor:Number(movValor.value),data:movData.value,categoria:movCategoria.value.trim(),obs:movObs.value.trim()};
-  if(editando.secao==="movimentos"){const m=db.movimentos.find(x=>x.id===editando.id);if(m)Object.assign(m,obj);}
-  else db.movimentos.push({id:newId(),...obj});
-  e.target.reset();movData.value=today();limparEdicao("movimentos");save();};
-document.getElementById("recorrenteForm").onsubmit=e=>{e.preventDefault();
-  const obj={nome:recNome.value.trim(),valor:Number(recValor.value),dia:Number(recDia.value),categoria:recCategoria.value.trim()};
-  if(editando.secao==="recorrentes"){const m=db.recorrentes.find(x=>x.id===editando.id);if(m)Object.assign(m,obj);}
-  else db.recorrentes.push({id:newId(),...obj});
-  e.target.reset();limparEdicao("recorrentes");save();};
-document.getElementById("parcelaForm").onsubmit=e=>{e.preventDefault();
-  const total=Number(parTotal.value),restantes=Number(parRestantes.value);
-  if(restantes>total){alert("As parcelas restantes não podem ser maiores que o total.");return;}
-  const obj={nome:parNome.value.trim(),valor:Number(parValor.value),total,restantes,dia:Number(parDia.value),obs:parObs.value.trim()};
-  if(editando.secao==="parcelas"){const m=db.parcelas.find(x=>x.id===editando.id);if(m)Object.assign(m,obj);}
-  else db.parcelas.push({id:newId(),...obj});
-  e.target.reset();limparEdicao("parcelas");save();};
-document.getElementById("dividaForm").onsubmit=e=>{e.preventDefault();
-  const obj={pessoa:divPessoa.value.trim(),valor:Number(divValor.value),data:divData.value,descricao:divDescricao.value.trim()};
-  if(editando.secao==="dividas"){const m=db.dividas.find(x=>x.id===editando.id);if(m)Object.assign(m,obj);}
-  else db.dividas.push({id:newId(),...obj});
-  e.target.reset();limparEdicao("dividas");save();};
-document.getElementById("metaForm").onsubmit=e=>{e.preventDefault();
-  const obj={nome:metaNome.value.trim(),alvo:Number(metaAlvo.value),atual:Number(metaAtual.value),data:metaData.value};
-  if(editando.secao==="metas"){const m=db.metas.find(x=>x.id===editando.id);if(m)Object.assign(m,obj);}
-  else db.metas.push({id:newId(),...obj});
-  e.target.reset();limparEdicao("metas");save();};
-
-function editarRegistro(secao,id){
-  editando={secao,id};
-  const x=db[secao].find(r=>r.id===id);if(!x)return;
-  if(secao==="movimentos"){movTipo.value=x.tipo;movDescricao.value=x.descricao;movValor.value=x.valor;movData.value=x.data;movCategoria.value=x.categoria||"";movObs.value=x.obs||"";document.getElementById("btnMov").textContent="💾 Salvar alterações";document.getElementById("cancelMov").style.display="block";}
-  if(secao==="recorrentes"){recNome.value=x.nome;recValor.value=x.valor;recDia.value=x.dia;recCategoria.value=x.categoria||"";document.getElementById("btnRec").textContent="💾 Salvar alterações";document.getElementById("cancelRec").style.display="block";}
-  if(secao==="parcelas"){parNome.value=x.nome;parValor.value=x.valor;parTotal.value=x.total;parRestantes.value=x.restantes;parDia.value=x.dia;parObs.value=x.obs||"";document.getElementById("btnPar").textContent="💾 Salvar alterações";document.getElementById("cancelPar").style.display="block";}
-  if(secao==="dividas"){divPessoa.value=x.pessoa;divValor.value=x.valor;divData.value=x.data;divDescricao.value=x.descricao||"";document.getElementById("btnDiv").textContent="💾 Salvar alterações";document.getElementById("cancelDiv").style.display="block";}
-  if(secao==="metas"){metaNome.value=x.nome;metaAlvo.value=x.alvo;metaAtual.value=x.atual;metaData.value=x.data||"";document.getElementById("btnMeta").textContent="💾 Salvar alterações";document.getElementById("cancelMeta").style.display="block";}
-  const f=document.querySelector("#"+(secao==="movimentos"?"movimentoForm":secao+"Form"));if(f){f.classList.add("editing");f.scrollIntoView({behavior:"smooth"});}
-}
-function limparEdicao(secao){
-  editando={secao:null,id:null};
-  const f=document.querySelector("#"+(secao==="movimentos"?"movimentoForm":secao+"Form"));if(f)f.classList.remove("editing");
-  const map={movimentos:["btnMov","cancelMov","Adicionar movimento"],recorrentes:["btnRec","cancelRec","Adicionar recorrente"],parcelas:["btnPar","cancelPar","Adicionar parcela"],dividas:["btnDiv","cancelDiv","Adicionar dívida"],metas:["btnMeta","cancelMeta","Adicionar meta"]};
-  if(map[secao]){document.getElementById(map[secao][0]).textContent=map[secao][2];document.getElementById(map[secao][1]).style.display="none";}
-}
-function cancelarEdicao(secao){limparEdicao(secao);document.querySelector("#"+(secao==="movimentos"?"movimentoForm":secao+"Form")).reset();if(secao==="movimentos")movData.value=today();}
-
-/* ---------- AÇÕES ---------- */
-function del(tipo,id){if(!confirm("Excluir este registro?"))return;db[tipo]=db[tipo].filter(x=>x.id!==id);save();}
-function pagarDivida(id){const d=db.dividas.find(x=>x.id===id);if(!d)return;
-  db.historico.push({id:newId(),tipo:"divida",status:"concluido",nome:d.pessoa,valor:d.valor,dataOriginal:d.data,dataRegistro:new Date().toISOString(),info:d.descricao,refId:d.id});
-  db.dividas=db.dividas.filter(x=>x.id!==id);save();toast("✅ Dívida paga e arquivada no Histórico.");}
-function baixarParcela(id){const p=db.parcelas.find(x=>x.id===id);if(!p)return;
-  if(p.restantes>0)p.restantes--;
-  if(p.restantes===0){db.historico.push({id:newId(),tipo:"parcela",status:"concluido",nome:p.nome,valor:p.valor,dataOriginal:today(),dataRegistro:new Date().toISOString(),info:"Parcelamento concluído ("+p.total+" de "+p.total+" parcelas)",refId:p.id});db.parcelas=db.parcelas.filter(x=>x.id!==id);save();toast("🎉 Parcelamento concluído — movido para o Histórico.");return;}
-  save();}
-function arquivarMovimento(id){const m=db.movimentos.find(x=>x.id===id);if(!m)return;
-  db.historico.push({id:newId(),tipo:"movimento",status:"concluido",nome:m.descricao,valor:m.valor,dataOriginal:m.data,dataRegistro:new Date().toISOString(),info:m.obs||m.categoria,refId:m.id});
-  db.movimentos=db.movimentos.filter(x=>x.id!==id);save();toast("📥 Movimento arquivado no Histórico.");}
-function adicionarDinheiro(id){const v=prompt("Quanto deseja adicionar à meta?");if(v===null)return;const n=Number(v);
-  if(!isNaN(n)&&n>0){const m=db.metas.find(x=>x.id===id);if(m)m.atual+=n;save();}}
-
-/* ---------- HISTÓRICO ---------- */
-function setFiltroHist(f,btn){filtroHist=f;document.querySelectorAll("#histChips button").forEach(b=>b.classList.remove("on"));btn.classList.add("on");render();}
-function devolverHistorico(id){const h=db.historico.find(x=>x.id===id);if(!h)return;
-  if(h.tipo==="divida")db.dividas.push({id:newId(),pessoa:h.nome,valor:h.valor,data:h.dataOriginal,descricao:h.info||""});
-  else if(h.tipo==="parcela")db.parcelas.push({id:newId(),nome:h.nome,valor:h.valor,total:h.total||1,restantes:1,dia:h.dia||Number(today().slice(8)),obs:h.info||""});
-  else db.movimentos.push({id:newId(),tipo:h.tipoMov||"saida",descricao:h.nome,valor:h.valor,data:h.dataOriginal,categoria:"",obs:h.info||""});
-  db.historico=db.historico.filter(x=>x.id!==id);save();toast("↩️ Registro devolvido para a lista.");}
-function concluirHistorico(id){const h=db.historico.find(x=>x.id===id);if(h){h.status="concluido";h.dataRegistro=new Date().toISOString();save();}}
-function excluirHistorico(id){if(!confirm("Excluir este registro do histórico?"))return;db.historico=db.historico.filter(x=>x.id!==id);save();}
-function limparHistConcluido(){if(!confirm("Apagar todos os registros CONCLUÍDOS do histórico?"))return;if(!confirm("Última confirmação: apagar agora?"))return;db.historico=db.historico.filter(x=>x.status!=="concluido");save();}
-
-/* ---------- CÁLCULOS ---------- */
-function compromissosMes(){const mes=monthNow();
-  const recorrentes=db.recorrentes.reduce((s,x)=>s+Number(x.valor||0),0);
-  const parcelas=db.parcelas.filter(x=>x.restantes>0).reduce((s,x)=>s+Number(x.valor||0),0);
-  const dividas=db.dividas.filter(x=>dividaNoMes(x,mes)).reduce((s,x)=>s+Number(x.valor||0),0);
-  return {recorrentes,parcelas,dividas,total:recorrentes+parcelas+dividas};}
-function dividaNoMes(d,mes){
-  // REGRA: dívida do mês atual com dia já passado vale para o PRÓXIMO mês
-  let ef=d.data;
-  if(ef.slice(0,7)===monthNow()&&Number(ef.slice(8))<Number(today().slice(8))){
-    const [ano,m,dia]=ef.split("-").map(Number);const prox=new Date(ano,m,1);const ult=new Date(prox.getFullYear(),prox.getMonth()+1,0).getDate();
-    ef=prox.getFullYear()+"-"+String(prox.getMonth()+1).padStart(2,"0")+"-"+String(Math.min(dia,ult)).padStart(2,"0");
+  // axisFmt keeps axis tick labels short (compact notation) so long values
+  // (e.g. full BRL amounts) never clip against the plot edge.
+  function axisFmt(v) {
+    return fmt.num(v, { notation: "compact", maximumFractionDigits: 1 });
   }
-  return ef.slice(0,7)===mes;}
-function calcular(){const mes=monthNow();let saldo=0,entradas=0,gastos=0;
-  db.movimentos.forEach(m=>{if(m.data<=today())saldo+=(m.tipo==="entrada"?m.valor:-m.valor);
-    if(m.data.startsWith(mes)){if(m.tipo==="entrada")entradas+=m.valor;else gastos+=m.valor;}});
-  const c=compromissosMes();const previsto=saldo-c.total;
-  document.getElementById("saldoAtual").textContent=money(saldo);
-  document.getElementById("entradasMes").textContent=money(entradas);
-  document.getElementById("gastosMes").textContent=money(gastos);
-  document.getElementById("compromissos").textContent=money(c.total);
-  document.getElementById("precisoTer").textContent=money(Math.max(c.total,0));
-  const sp=document.getElementById("saldoPrevisto");sp.textContent=money(previsto);sp.className="value "+(previsto<0?"red":"green");
-  document.getElementById("alerta").innerHTML=previsto<0
-    ?'<div class="alert">⚠️ Faltam <strong>'+money(Math.abs(previsto))+'</strong> para cobrir os compromissos deste mês.</div>'
-    :'<div class="ok">✅ Depois dos compromissos, a previsão é ficar com <strong>'+money(previsto)+'</strong>.</div>';
-  return {saldo,entradas,gastos,...c};}
-function dataDoDiaNoMes(ano,mes,dia){const ultimo=new Date(ano,mes+1,0).getDate();const d=Math.min(Number(dia)||1,ultimo);return ano+"-"+String(mes+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");}
-function compromissosPorData(ano,mes){const itens={};const prefixo=ano+"-"+String(mes+1).padStart(2,"0");
-  function add(data,nome,valor,tipo,flag){if(!data)return;if(!itens[data])itens[data]=[];itens[data].push({nome,valor:Number(valor||0),tipo,flag});}
-  db.recorrentes.forEach(x=>add(dataDoDiaNoMes(ano,mes,x.dia),"Recorrente • "+x.nome,x.valor,"recorrente"));
-  db.parcelas.filter(x=>x.restantes>0).forEach(x=>add(dataDoDiaNoMes(ano,mes,x.dia),"Parcela • "+x.nome,x.valor,"parcela"));
-  db.dividas.filter(x=>dividaNoMes(x,prefixo)).forEach(x=>{
-    let ef=x.data,flag=0;
-    if(ef.slice(0,7)===monthNow()&&Number(ef.slice(8))<Number(today().slice(8))){flag=1;
-      const [a,m,dia]=ef.split("-").map(Number);const prox=new Date(a,m,1);const ult=new Date(prox.getFullYear(),prox.getMonth()+1,0).getDate();
-      ef=prox.getFullYear()+"-"+String(prox.getMonth()+1).padStart(2,"0")+"-"+String(Math.min(dia,ult)).padStart(2,"0");}
-    add(ef,"Dívida • "+x.pessoa,x.valor,"dívida",flag);});
-  return itens;}
-function entradasPorData(ano,mes){const itens={};const prefixo=ano+"-"+String(mes+1).padStart(2,"0");
-  db.movimentos.filter(x=>x.tipo==="entrada"&&x.data.startsWith(prefixo)).forEach(x=>{if(!itens[x.data])itens[x.data]=[];itens[x.data].push({nome:"Entrada • "+x.descricao,valor:Number(x.valor||0)});});
-  return itens;}
-function renderTimeline(id,ano,mes){const el=document.getElementById(id);
-  const pagamentos=compromissosPorData(ano,mes),entradas=entradasPorData(ano,mes);
-  const datas=[...new Set([...Object.keys(pagamentos),...Object.keys(entradas)])].sort();
-  if(!datas.length){el.innerHTML='<div class="empty">Nenhum compromisso ou entrada neste período.</div>';return;}
-  let saldoBase=0;const inicio=ano+"-"+String(mes+1).padStart(2,"0")+"-01";
-  db.movimentos.forEach(x=>{if(x.data<inicio)saldoBase+=(x.tipo==="entrada"?x.valor:-x.valor);});
-  let html="",saldo=saldoBase;
-  datas.forEach(data=>{const pays=pagamentos[data]||[],ins=entradas[data]||[];
-    saldo+=ins.reduce((s,x)=>s+x.valor,0)-pays.reduce((s,x)=>s+x.valor,0);
-    html+='<div class="daycard"><div class="dayhead"><strong>'+dateBR(data)+'</strong><span class="daytotal '+(saldo<0?"red":"green")+'">'+money(saldo)+'</span></div>';
-    html+='<details><summary>Ver itens ('+(pays.length+ins.length)+')</summary>';
-    ins.forEach(x=>html+='<div class="timelineitem"><span class="green">⬆️ '+esc(x.nome)+'</span><strong class="green">+ '+money(x.valor)+'</strong></div>');
-    pays.forEach(x=>html+='<div class="timelineitem"><span>🔴 '+esc(x.nome)+(x.flag?' <span class="badge badge-blue">⏭️ vai pro próximo mês</span>':'')+'</span><strong class="red">- '+money(x.valor)+'</strong></div>');
-    html+='</details>';
-    if(saldo<0)html+='<div class="need">⚠️ Neste dia, o saldo projetado fica negativo em <strong>'+money(Math.abs(saldo))+'</strong>.</div>';
-    else html+='<div class="covered">Saldo projetado após este dia: <strong>'+money(saldo)+'</strong></div>';
-    html+='</div>';});
-  el.innerHTML=html;}
 
-/* ---------- BUSCA ---------- */
-function buscaOk(q,texto,valor){if(!q)return true;q=q.toLowerCase();
-  return String(texto||"").toLowerCase().includes(q)||String(valor||"").toLowerCase().includes(q);}
+  // format accepts a function OR one of the fmt names ("num" | "brl" | "pct").
+  function coerceFormat(spec) {
+    if (typeof spec === "function") return spec;
+    if (typeof spec === "string" && fmt[spec]) return fmt[spec];
+    return function (v) { return fmt.num(v); };
+  }
 
-/* ---------- RENDER ---------- */
-function render(){
-  const c=calcular();
-  // Gastos por categoria (saídas + recorrentes do mês)
-  const cat={};const mes=monthNow();
-  db.movimentos.filter(x=>x.tipo==="saida"&&x.data.startsWith(mes)).forEach(x=>{const k=(x.categoria||"Sem categoria").trim();cat[k]=(cat[k]||0)+Number(x.valor||0);});
-  db.recorrentes.forEach(x=>{const k=(x.categoria||"Sem categoria").trim()||"Sem categoria";cat[k]=(cat[k]||0)+Number(x.valor||0);});
-  const cats=Object.entries(cat).sort((a,b)=>b[1]-a[1]);
-  document.getElementById("gastosCategorias").innerHTML=cats.length?cats.map(([k,v])=>'<div class="statline"><span>'+esc(k)+'</span><strong class="red">'+money(v)+'</strong></div>').join(""):'<div class="sub">Nenhum gasto este mês.</div>';
-  // Vencimentos 3 dias
-  const limites=[];const hoje=new Date();
-  function diasAte(d){const x=new Date(d+"T12:00:00");return Math.round((x-hoje)/86400000);}
-  db.dividas.filter(x=>!dividaPaga(x)&&diasAte(dataEfetiva(x))>=0&&diasAte(dataEfetiva(x))<=3).forEach(x=>limites.push({nome:"Dívida • "+x.pessoa,data:dataEfetiva(x),valor:x.valor}));
-  db.parcelas.filter(x=>x.restantes>0).forEach(x=>{const d=dataDoDiaNoMes(hoje.getFullYear(),hoje.getMonth(),x.dia);if(diasAte(d)>=0&&diasAte(d)<=3)limites.push({nome:"Parcela • "+x.nome,data:d,valor:x.valor});});
-  db.recorrentes.forEach(x=>{const d=dataDoDiaNoMes(hoje.getFullYear(),hoje.getMonth(),x.dia);if(diasAte(d)>=0&&diasAte(d)<=3)limites.push({nome:"Recorrente • "+x.nome,data:d,valor:x.valor});});
-  limites.sort((a,b)=>a.data.localeCompare(b.data));
-  document.getElementById("vencimentosProximos").innerHTML=limites.length?limites.map(x=>{const n=diasAte(x.data);const t=n===0?"⏰ Vence hoje":n===1?"⏰ Vence amanhã":"⏰ Vence em "+n+" dias";
-    return '<div class="statline"><span>'+esc(x.nome)+' <span class="badge badge-yellow">'+t+'</span></span><strong class="red">'+money(x.valor)+'</strong></div>';}).join(""):'<div class="sub">Nada vence nos próximos 3 dias.</div>';
-  // Situação
-  document.getElementById("situacao").innerHTML='<div class="statline"><span>🔄 Recorrentes mensais</span><strong>'+money(c.recorrentes)+'</strong></div><div class="statline"><span>📅 Parcelamentos</span><strong>'+money(c.parcelas)+'</strong></div><div class="statline"><span>🤝 Dívidas a pagar</span><strong>'+money(c.dividas)+'</strong></div>';
-  // Próximos compromissos (7)
-  const lista=[];
-  db.dividas.forEach(x=>lista.push({nome:"Dívida • "+x.pessoa,data:dataEfetiva(x),valor:x.valor}));
-  db.recorrentes.forEach(x=>lista.push({nome:"Recorrente • "+x.nome,data:dataDoDiaNoMes(hoje.getFullYear(),hoje.getMonth(),x.dia),valor:x.valor}));
-  db.parcelas.filter(x=>x.restantes>0).forEach(x=>lista.push({nome:"Parcela • "+x.nome,data:dataDoDiaNoMes(hoje.getFullYear(),hoje.getMonth(),x.dia),valor:x.valor}));
-  lista.sort((a,b)=>a.data.localeCompare(b.data));
-  document.getElementById("proximos").innerHTML=lista.length?'<div class="item">'+lista.slice(0,7).map(x=>'<div class="statline"><span>'+esc(x.nome)+'</span><strong>'+dateBR(x.data)+' • '+money(x.valor)+'</strong></div>').join("")+'</div>':'<div class="empty">Nenhum compromisso cadastrado.</div>';
+  function accent() {
+    return getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#2563eb";
+  }
+  function mutedColor() {
+    return getComputedStyle(document.documentElement).getPropertyValue("--text-muted").trim() || "#5b6472";
+  }
+  function svgEl(tag, attrs) {
+    var el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    for (var k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+  function frame(el, w, h) {
+    var svg = svgEl("svg", { viewBox: "0 0 " + w + " " + h, role: "img" });
+    el.innerHTML = "";
+    el.appendChild(svg);
+    return svg;
+  }
 
-  // Listas
-  const q1=document.getElementById("buscaMov").value;
-  const movs=db.movimentos.slice().sort((a,b)=>b.data.localeCompare(a.data)).filter(x=>buscaOk(q1,x.descricao+" "+x.categoria,x.valor));
-  document.getElementById("listaMovimentos").innerHTML=!movs.length?'<div class="empty">Nenhum movimento cadastrado.</div>':
-    movs.map(x=>'<div class="item"><strong>'+esc(x.descricao)+'</strong><div class="sub">'+dateBR(x.data)+(x.categoria?" • "+esc(x.categoria):"")+'</div><div class="money '+(x.tipo==="entrada"?"green":"red")+'">'+(x.tipo==="entrada"?"+ ":"- ")+money(x.valor)+'</div>'+(x.obs?'<div class="sub">'+esc(x.obs)+'</div>':'')+'<div class="item-actions"><button onclick="editarRegistro(\'movimentos\',\''+x.id+'\')">✏️ Editar</button><button onclick="arquivarMovimento(\''+x.id+'\')">📥 Arquivar</button><button class="delete" onclick="del(\'movimentos\',\''+x.id+'\')">Excluir</button></div></div>').join("");
+  // maxOf guards the axis scale: empty values would give -Infinity (truthy,
+  // so "|| 1" can't catch it) and a non-positive max would flip the chart.
+  function maxOf(values) {
+    var m = values.length ? Math.max.apply(null, values) : 0;
+    return m > 0 ? m : 1;
+  }
 
-  const q2=document.getElementById("buscaRec").value;
-  const recs=db.recorrentes.filter(x=>buscaOk(q2,x.nome+" "+x.categoria,x.valor));
-  document.getElementById("listaRecorrentes").innerHTML=!recs.length?'<div class="empty">Nenhum gasto recorrente.</div>':
-    recs.map(x=>'<div class="item"><strong>'+esc(x.nome)+'</strong><div class="sub">Todo dia '+x.dia+(x.categoria?" • "+esc(x.categoria):"")+'</div><div class="money yellow">'+money(x.valor)+' / mês</div><div class="item-actions"><button onclick="editarRegistro(\'recorrentes\',\''+x.id+'\')">✏️ Editar</button><button class="delete" onclick="del(\'recorrentes\',\''+x.id+'\')">Excluir</button></div></div>').join("");
+  // bar(el, {labels:[], values:[], color?, format?}) — vertical bar chart.
+  function bar(el, cfg) {
+    var W = 640, H = 280, padL = 46, padB = 30, padT = 12;
+    var svg = frame(el, W, H);
+    var max = maxOf(cfg.values);
+    var n = cfg.values.length;
+    var plotW = W - padL - 12, plotH = H - padT - padB;
+    var step = plotW / n, bw = Math.min(step * 0.62, 64);
+    var color = cfg.color || accent();
+    var f = coerceFormat(cfg.format);
+    for (var g = 0; g <= 4; g++) {
+      var gy = padT + plotH - (plotH * g) / 4;
+      svg.appendChild(svgEl("line", { x1: padL, y1: gy, x2: W - 12, y2: gy, stroke: "currentColor", "stroke-opacity": 0.08 }));
+      var lbl = svgEl("text", { x: padL - 8, y: gy + 4, "text-anchor": "end", "font-size": 10, fill: mutedColor() });
+      lbl.textContent = axisFmt((max * g) / 4);
+      svg.appendChild(lbl);
+    }
+    cfg.values.forEach(function (v, i) {
+      var bh = Math.max(0, (v / max) * plotH);
+      var x = padL + i * step + (step - bw) / 2;
+      var y = padT + plotH - bh;
+      var r = svgEl("rect", { x: x, y: y, width: bw, height: bh, rx: 4, fill: color });
+      var t = svgEl("title", {});
+      t.textContent = cfg.labels[i] + ": " + f(v);
+      r.appendChild(t);
+      svg.appendChild(r);
+      var tx = svgEl("text", { x: x + bw / 2, y: H - 10, "text-anchor": "middle", "font-size": 11, fill: mutedColor() });
+      tx.textContent = cfg.labels[i];
+      svg.appendChild(tx);
+    });
+  }
 
-  const q3=document.getElementById("buscaPar").value;
-  const pars=db.parcelas.filter(x=>buscaOk(q3,x.nome,x.valor));
-  document.getElementById("listaParcelas").innerHTML=!pars.length?'<div class="empty">Nenhum parcelamento.</div>':
-    pars.map(x=>{const pct=x.total>0?Math.min(100,((x.total-x.restantes)/x.total)*100):0;
-      return '<div class="item"><strong>'+esc(x.nome)+'</strong><div class="sub">'+x.restantes+' restantes de '+x.total+' • vence dia '+x.dia+'</div><div class="money yellow">'+money(x.valor)+' / mês</div><div class="progress"><div style="width:'+pct+'%"></div></div>'+(x.obs?'<div class="sub">'+esc(x.obs)+'</div>':'')+'<div class="item-actions"><button onclick="baixarParcela(\''+x.id+'\')">Paguei 1 parcela</button><button onclick="editarRegistro(\'parcelas\',\''+x.id+'\')">✏️ Editar</button><button class="delete" onclick="del(\'parcelas\',\''+x.id+'\')">Excluir</button></div></div>';}).join("");
+  // line(el, {labels:[], values:[], color?, format?}) — single-series line.
+  function line(el, cfg) {
+    var W = 640, H = 280, padL = 46, padB = 30, padT = 12;
+    var svg = frame(el, W, H);
+    var max = maxOf(cfg.values);
+    var n = cfg.values.length;
+    var plotW = W - padL - 16, plotH = H - padT - padB;
+    var color = cfg.color || accent();
+    var f = coerceFormat(cfg.format);
+    for (var g = 0; g <= 4; g++) {
+      var gy = padT + plotH - (plotH * g) / 4;
+      svg.appendChild(svgEl("line", { x1: padL, y1: gy, x2: W - 16, y2: gy, stroke: "currentColor", "stroke-opacity": 0.08 }));
+      var lbl = svgEl("text", { x: padL - 8, y: gy + 4, "text-anchor": "end", "font-size": 10, fill: mutedColor() });
+      lbl.textContent = axisFmt((max * g) / 4);
+      svg.appendChild(lbl);
+    }
+    var pts = cfg.values.map(function (v, i) {
+      var x = padL + (n === 1 ? plotW / 2 : (plotW * i) / (n - 1));
+      var y = padT + plotH - (v / max) * plotH;
+      return [x, y];
+    });
+    var d = pts.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" ");
+    svg.appendChild(svgEl("path", { d: d, fill: "none", stroke: color, "stroke-width": 2, "stroke-linejoin": "round" }));
+    pts.forEach(function (p, i) {
+      var c = svgEl("circle", { cx: p[0], cy: p[1], r: 3.5, fill: color });
+      var t = svgEl("title", {});
+      t.textContent = cfg.labels[i] + ": " + f(cfg.values[i]);
+      c.appendChild(t);
+      svg.appendChild(c);
+      var tx = svgEl("text", { x: p[0], y: H - 10, "text-anchor": "middle", "font-size": 11, fill: mutedColor() });
+      tx.textContent = cfg.labels[i];
+      svg.appendChild(tx);
+    });
+  }
 
-  const q4=document.getElementById("buscaDiv").value;
-  const divs=db.dividas.filter(x=>buscaOk(q4,x.pessoa+" "+x.descricao,x.valor));
-  const totalDiv=db.dividas.reduce((s,x)=>s+Number(x.valor||0),0);
-  document.getElementById("dividasResumo").textContent=db.dividas.length+" dívidas pendentes • Total: "+money(totalDiv);
-  document.getElementById("listaDividas").innerHTML=!divs.length?'<div class="empty">Nenhuma dívida pendente. 🎉</div>':
-    divs.map(x=>'<div class="item"><strong>'+esc(x.pessoa)+'</strong><div class="sub">'+(x.descricao?esc(x.descricao)+" • ":"")+dateBR(x.data)+'</div><div class="money red">'+money(x.valor)+' • PENDENTE</div><div class="item-actions"><button onclick="pagarDivida(\''+x.id+'\')">✅ Marcar paga</button><button onclick="editarRegistro(\'dividas\',\''+x.id+'\')">✏️ Editar</button><button class="delete" onclick="del(\'dividas\',\''+x.id+'\')">Excluir</button></div></div>').join("");
+  // donut(el, {labels:[], values:[], colors?}) — donut with center total.
+  function donut(el, cfg) {
+    var W = 320, H = 280, cx = W / 2, cy = H / 2, R = 92, r = 58;
+    var svg = frame(el, W, H);
+    var total = cfg.values.reduce(function (a, b) { return a + b; }, 0) || 1;
+    var palette = cfg.colors || [accent(), "#1baf7a", "#eda100", "#e34948", "#4a3aa7", "#e87ba4"];
+    var a0 = -Math.PI / 2;
+    cfg.values.forEach(function (v, i) {
+      var a1 = a0 + (v / total) * Math.PI * 2;
+      var large = a1 - a0 > Math.PI ? 1 : 0;
+      var p = ["M", cx + R * Math.cos(a0), cy + R * Math.sin(a0),
+        "A", R, R, 0, large, 1, cx + R * Math.cos(a1), cy + R * Math.sin(a1),
+        "L", cx + r * Math.cos(a1), cy + r * Math.sin(a1),
+        "A", r, r, 0, large, 0, cx + r * Math.cos(a0), cy + r * Math.sin(a0), "Z"].join(" ");
+      var path = svgEl("path", { d: p, fill: palette[i % palette.length] });
+      var t = svgEl("title", {});
+      t.textContent = cfg.labels[i] + ": " + fmt.num(v) + " (" + fmt.pct(v / total) + ")";
+      path.appendChild(t);
+      svg.appendChild(path);
+      a0 = a1;
+    });
+    var center = svgEl("text", { x: cx, y: cy + 5, "text-anchor": "middle", "font-size": 20, "font-weight": 650, fill: "currentColor" });
+    center.textContent = fmt.num(total);
+    svg.appendChild(center);
+  }
 
-  const q5=document.getElementById("buscaMeta").value;
-  const metas=db.metas.filter(x=>buscaOk(q5,x.nome,x.valor)).filter(x=>buscaOk(q5,x.nome,(x.atual||0)+" "+x.alvo));
-  document.getElementById("listaMetas").innerHTML=!metas.length?'<div class="empty">Nenhuma meta cadastrada.</div>':
-    metas.map(x=>{const pct=x.alvo>0?Math.min(100,(x.atual/x.alvo)*100):0;
-      return '<div class="item"><strong>'+esc(x.nome)+'</strong><div class="sub">'+money(x.atual)+' de '+money(x.alvo)+(x.data?" • até "+dateBR(x.data):"")+'</div><div class="progress"><div style="width:'+pct+'%"></div></div><div class="sub" style="margin-top:6px">'+pct.toFixed(0)+'% concluído'+(x.atual>=x.alvo&&x.alvo>0?' <span class="badge badge-green">🎉 Meta batida!</span>':'')+'</div><div class="item-actions"><button onclick="adicionarDinheiro(\''+x.id+'\')">Adicionar dinheiro</button><button onclick="editarRegistro(\'metas\',\''+x.id+'\')">✏️ Editar</button><button class="delete" onclick="del(\'metas\',\''+x.id+'\')">Excluir</button></div></div>';}).join("");
+  window.skipShell = { fmt: fmt };
+  window.skipChart = { bar: bar, line: line, donut: donut };
+})();
 
-  // Histórico
-  const hist=db.historico.slice().sort((a,b)=>String(b.dataRegistro||"").localeCompare(String(a.dataRegistro||""))).filter(x=>filtroHist==="todos"||x.status===filtroHist);
-  document.getElementById("histContador").textContent=hist.length+" registros";
-  document.getElementById("listaHistorico").innerHTML=!hist.length?'<div class="empty">Nenhum registro no histórico.</div>':
-    hist.map(x=>{const tp=x.tipo==="divida"?"Dívida":x.tipo==="parcela"?"Parcela":"Movimento";
-      return '<div class="item"><strong>'+esc(x.nome)+'</strong> <span class="badge badge-blue">'+tp+'</span> <span class="badge '+(x.status==="concluido"?"badge-green":"badge-yellow")+'">'+(x.status==="concluido"?"Concluído":"Pendente")+'</span><div class="sub">'+dateBR(x.dataOriginal)+' • Registrado em '+dateBR(String(x.dataRegistro||"").slice(0,10))+'</div><div class="money">'+money(x.valor)+'</div>'+(x.info?'<div class="sub">'+esc(x.info)+'</div>':'')+'<div class="item-actions"><button onclick="devolverHistorico(\''+x.id+'\')">↩️ Devolver</button>'+(x.status!=="concluido"?'<button onclick="concluirHistorico(\''+x.id+'\')">✅ Concluir</button>':'')+'<button class="delete" onclick="excluirHistorico(\''+x.id+'\')">🗑️</button></div></div>';}).join("");
-
-  renderPlanejamento();
-  renderDiagnostico();
-}
-
-function dataEfetiva(d){let ef=d.data;
-  if(ef.slice(0,7)===monthNow()&&Number(ef.slice(8))<Number(today().slice(8))){
-    const [a,m,dia]=ef.split("-").map(Number);const prox=new Date(a,m,1);const ult=new Date(prox.getFullYear(),prox.getMonth()+1,0).getDate();
-    ef
+</script>
+</body>
+</html>
